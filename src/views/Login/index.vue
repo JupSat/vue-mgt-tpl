@@ -137,7 +137,7 @@ export default {
 <style scoped lang="scss">
 .login_content {
   width: 375px;
-  background-color: #222b45;
+  background-color: #13152C;
   padding: 40px;
   border-radius: 10px;
 

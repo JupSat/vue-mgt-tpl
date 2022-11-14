@@ -34,7 +34,8 @@ export default {
 .home {
   height: 100vh;
   width: 100vw;
-  background: url("~@/assets/background.jpg") no-repeat center;
+  // background: url("~@/assets/background.jpg") no-repeat center;
+  background: url("~@/assets/hero-bg.webp") no-repeat center;
   background-size: cover;
 
   .home-container {
@@ -44,14 +45,15 @@ export default {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    background-color: #151a30;
+    // background-color: #151a30;
 
     .home-left {
-      width: 40%;
-      height: 49%;
+      width: 37%;
+      height: 66%;
+      margin-top: 104px;
       float: right !important;
       border-radius: 8px;
-      background: url("~@/assets/work.webp") no-repeat center;
+      background: url("~@/assets/astrocat.webp") no-repeat center;
       background-size: cover;
     }
   }
