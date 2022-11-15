@@ -1,13 +1,7 @@
 <template>
   <el-container class="layout-container">
     <Header></Header>
-    <div class="toggle-settings">
-      <el-button>
-        <el-icon :size="20">
-          <Setting />
-        </el-icon>
-      </el-button>
-    </div>
+    <Settings></Settings>
     <el-container class="body-container">
       <Aside></Aside>
       <Main></Main>
@@ -16,15 +10,17 @@
 </template>
 
 <script>
-import Header from "./Header/index";
-import Aside from "./Aside/index";
-import Main from "./Main/index";
+import Header from "./Header";
+import Aside from "./Aside";
+import Main from "./Main";
+import Settings from "./Setting";
 export default {
   name: "Layout",
   components: {
     Header,
     Aside,
-    Main
+    Main,
+    Settings
   },
   setup() { },
 };

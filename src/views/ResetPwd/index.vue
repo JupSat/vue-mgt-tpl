@@ -34,7 +34,6 @@
 </template>
 <script>
 import { reactive, toRefs, ref } from "vue";
-
 export default {
   name: "ResetPassword",
   emits: ["toLogin"],

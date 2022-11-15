@@ -12,8 +12,8 @@
 
 <script>
 import { reactive, toRefs } from "vue";
-import Login from "./../Login/index";
-import ResetPassword from "./../ResetPwd/index";
+import Login from "./../Login";
+import ResetPassword from "./../ResetPwd";
 
 export default {
   name: "Home",

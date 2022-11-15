@@ -1,0 +1,65 @@
+<template>
+  <div class="e-commerce">
+    <el-row :gutter="32">
+      <el-col :span="12">
+        <ActionCard :iconName="'Platform'" title="System customization" tip="Contact US"></ActionCard>
+      </el-col>
+      <el-col :span="12">
+        <ActionCard :iconName="'Management'" title="Documentation and customization articles" tip="Learn more">
+        </ActionCard>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="32">
+      <el-col :span="10">
+        <el-row class="inner-row">
+          <el-col :span="11">
+            <StatusCard></StatusCard>
+          </el-col>
+          <el-col :span="11" style="margin-left: 37px">
+            <EarningCard></EarningCard>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <TrafficCard></TrafficCard>
+          </el-col>
+        </el-row>
+      </el-col>
+      <el-col :span="14">
+        <ChartsCard></ChartsCard>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<script>
+import ActionCard from "@/components/ECommerce/ActionCard";
+import StatusCard from "@/components/ECommerce/StatusCard";
+import EarningCard from "@/components/ECommerce/EarningCard";
+import TrafficCard from "@/components/ECommerce/TrafficCard";
+import ChartsCard from "@/components/ECommerce/ChartsCard";
+
+export default {
+  name: "ECommerce",
+  components: {
+    ActionCard,
+    StatusCard,
+    EarningCard,
+    TrafficCard,
+    ChartsCard
+  },
+  setup() {
+    return {};
+  },
+};
+</script>
+
+<style scoped lang="scss">
+.e-commerce {
+  .el-row {
+    display: flex;
+    margin-bottom: 30px;
+  }
+}
+</style>
