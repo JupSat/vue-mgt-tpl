@@ -154,7 +154,7 @@ export default {
 .register_content {
   width: 375px;
   padding: 40px;
-  background-color: #222b45;
+  background-color: #13152C;
   border-radius: 10px;
 
   .title {

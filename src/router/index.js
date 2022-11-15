@@ -10,6 +10,11 @@ const routes = [
     name: 'Home',
     component: () => import(/* webpackChunkName: "home" */ '@/views/Home/index')
   },
+  {
+    path: '/layout',
+    name: 'Layout',
+    component: () => import(/* webpackChunkName: "layout" */ '@/views/Layout/index')
+  },
 ]
 
 const router = createRouter({

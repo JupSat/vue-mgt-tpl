@@ -41,6 +41,7 @@
         <div class="operation">
           <span class="free-register" @click="showLogin = !showLogin">免费注册</span>
           <span class="forget-password" @click="forgetPsw">忘记密码</span>
+          <span class="to-other-page" @click="goOtherPage">测试跳转</span>
         </div>
       </el-form-item>
     </el-form>
@@ -52,6 +53,7 @@
 <script>
 import { reactive, ref, toRefs } from "vue";
 import Register from "./../Register/index";
+import { useRouter } from "vue-router";
 
 export default {
   name: "Login",
@@ -120,6 +122,11 @@ export default {
       emit("toResetPwd");
     };
 
+    const router = useRouter();
+    const goOtherPage = () => {
+      router.push({ path: 'layout' });
+    };
+
     return {
       loginRef,
       formData,
@@ -130,6 +137,7 @@ export default {
       ...toRefs(state),
       validatePsd,
       forgetPsw,
+      goOtherPage
     };
   },
 };
@@ -170,6 +178,10 @@ export default {
 
     .forget-password {
       color: #9fa2a8;
+    }
+
+    .to-other-page {
+      margin-left: 5px;
     }
   }
 

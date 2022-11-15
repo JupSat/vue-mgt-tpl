@@ -2,8 +2,10 @@
   <div class="home">
     <div class="home-container">
       <div class="home-left"></div>
-      <Login v-if="showLogin" @toResetPwd="showLogin = !showLogin"></Login>
-      <ResetPassword v-else @toLogin="showLogin = !showLogin"></ResetPassword>
+      <div class="home-right">
+        <Login v-if="showLogin" @toResetPwd="showLogin = !showLogin"></Login>
+        <ResetPassword v-else @toLogin="showLogin = !showLogin"></ResetPassword>
+      </div>
     </div>
   </div>
 </template>
@@ -35,7 +37,7 @@ export default {
   height: 100vh;
   width: 100vw;
   // background: url("~@/assets/background.jpg") no-repeat center;
-  background: url("~@/assets/hero-bg.webp") no-repeat center;
+  background: url("~@/assets/img/hero-bg.webp") no-repeat center;
   background-size: cover;
 
   .home-container {
@@ -53,7 +55,7 @@ export default {
       margin-top: 104px;
       float: right !important;
       border-radius: 8px;
-      background: url("~@/assets/astrocat.webp") no-repeat center;
+      background: url("~@/assets/img/astrocat.webp") no-repeat center;
       background-size: cover;
     }
   }
