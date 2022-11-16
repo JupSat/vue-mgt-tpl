@@ -2,14 +2,13 @@
   <div class="e-commerce">
     <el-row :gutter="32">
       <el-col :span="12">
-        <ActionCard :iconName="'Platform'" title="System customization" tip="Contact US"></ActionCard>
+        <ActionCard :iconName="'Platform'" title="systemCustomization" tip="contactUS"></ActionCard>
       </el-col>
       <el-col :span="12">
-        <ActionCard :iconName="'Management'" title="Documentation and customization articles" tip="Learn more">
+        <ActionCard :iconName="'Management'" title="docArticle" tip="learnMore">
         </ActionCard>
       </el-col>
     </el-row>
-
     <el-row :gutter="32">
       <el-col :span="10">
         <el-row class="inner-row">

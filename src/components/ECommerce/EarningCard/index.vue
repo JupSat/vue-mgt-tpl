@@ -5,9 +5,9 @@
         <div class="front-card-header">
           <div class="header-select">
             <el-select v-model="coinType">
-              <el-option label="Bitcoin" :value="0" />
-              <el-option label="Tether" :value="90" />
-              <el-option label="Ethereum" :value="45" />
+              <el-option :label="$t('bitcoin')" :value="0" />
+              <el-option :label="$t('tether')" :value="90" />
+              <el-option :label="$t('ethereum')" :value="45" />
             </el-select>
           </div>
           <el-icon class="arrow-right" :size="15">
@@ -16,7 +16,7 @@
         </div>
         <div class="front-card-body chart-pdg">
           <div class="chart-info">
-            <div>Daily Income</div>
+            <div>{{ $t('dailyIncome') }}</div>
             <div class="h6">584</div>
             <div class="percent">
               <span>
@@ -232,6 +232,7 @@ export default {
       }
 
       .front-card-body {
+        width: 100%;
         height: 100%;
 
         .chart-info {

@@ -3,7 +3,7 @@
     <div class="card-body">
       <div class="front-container">
         <div class="front-card-header">
-          <div class="header-title">Profit</div>
+          <div class="header-title">{{ $t('profit') }}</div>
           <el-icon class="arrow-right" :size="15">
             <ArrowRight />
           </el-icon>
@@ -18,9 +18,12 @@
 <script>
 import { onMounted } from "vue";
 import * as echarts from "echarts";
+import { useI18n } from 'vue-i18n'
+
 export default {
   name: "StatusCard",
   setup() {
+    const { t } = useI18n();
     const setEChartsLine = () => {
       let chart1 = document.getElementById("statusCardId");
       let myChart = echarts.init(chart1);
@@ -38,7 +41,7 @@ export default {
         //   text: "Bar Animation Delay",
         // },
         legend: {
-          data: ["transactions", "orders"],
+          data: [t("transactions"), t("orders")],
           itemWidth: 15,
           textStyle: {
             color: "white",
@@ -179,6 +182,7 @@ export default {
       }
 
       .front-card-body {
+        width: 100%;
         height: 100%;
 
         .chart-info {

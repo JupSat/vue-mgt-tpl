@@ -4,19 +4,19 @@
       <el-tabs v-model="activeName" class="tabs-body">
         <div class="summary-container">
           <div>
-            <div>Marketplace</div>
+            <div>{{ $t('marketplace') }}</div>
             <div class="total">3654</div>
           </div>
           <div>
-            <div>Last Month</div>
+            <div>{{ $t('lastMonth') }}</div>
             <div class="total">946</div>
           </div>
           <div>
-            <div>Last Week</div>
+            <div>{{ $t('lastWeek') }}</div>
             <div class="total">654</div>
           </div>
           <div>
-            <div>Today</div>
+            <div> {{ $t('today') }}</div>
             <div class="total">230</div>
           </div>
         </div>
@@ -27,14 +27,14 @@
             <el-option label="Week" :value="45" />
           </el-select>
         </div>
-        <el-tab-pane label="Orders" name="Orders">
+        <el-tab-pane :label="$t('orders')" name="Orders">
           <div class="chart-header">
             <div class="legend-chart"></div>
           </div>
           <OrderChart></OrderChart>
         </el-tab-pane>
 
-        <el-tab-pane label="Profit" name="Profit">
+        <el-tab-pane :label="$t('profit')" name="Profit">
           <div class="chart-header">
             <div class="legend-chart"></div>
           </div>

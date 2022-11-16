@@ -5,9 +5,13 @@
 <script>
 import { onMounted, ref } from "vue";
 import * as echarts from "echarts";
+import { useI18n } from 'vue-i18n'
+
 export default {
   name: "OrderChart",
   setup() {
+    const { t } = useI18n();
+
     const setEChartsBar = () => {
       const id = "chartBar"
       let chart = null;
@@ -36,7 +40,7 @@ export default {
           borderColor: "#151a30",
         },
         legend: {
-          data: ['Payment', 'Canceled', 'All orders'],
+          data: [t("payment"), t("canceled"), t("allOrders")],
           itemWidth: 15,
           itemGap: 20,
           textStyle: {
@@ -92,7 +96,7 @@ export default {
         ],
         series: [
           {
-            name: 'Payment',
+            name: t("payment"),
             type: 'bar',
             barGap: 0,
             emphasis: {
@@ -104,7 +108,7 @@ export default {
             data: [320, 332, 301, 334, 390, 353, 489]
           },
           {
-            name: 'Canceled',
+            name: t("canceled"),
             type: 'bar',
             emphasis: {
               focus: 'series'
@@ -115,7 +119,7 @@ export default {
             data: [220, 182, 191, 234, 290, 253, 172]
           },
           {
-            name: 'All orders',
+            name: t("allOrders"),
             type: 'bar',
             emphasis: {
               focus: 'series'

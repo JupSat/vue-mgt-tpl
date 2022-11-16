@@ -6,10 +6,11 @@ import locale from 'element-plus/lib/locale/lang/zh-cn';
 import '@/styles/index.scss';
 import 'element-plus/lib/theme-chalk/index.css';
 import '@/mock';
+import i18n from '@/language';
 
 import * as Icons from "@element-plus/icons-vue";
 const app = createApp(App)
 for (const name in Icons) {
   app.component(name, (Icons)[name])
 }
-app.use(router).use(ElementPlus, { locale: locale }).mount('#app')
+app.use(router).use(ElementPlus, { locale: locale }).use(i18n).mount('#app')

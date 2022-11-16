@@ -2,15 +2,14 @@
   <div class="traffic-card">
     <div class="card-header">
       <div class="header-info">
-        <span>Traffic</span>
+        <span>{{ $t('traffic') }}</span>
         <div class="header-select">
           <el-select v-model="dataType">
-            <el-option label="Year" :value="0" />
-            <el-option label="Month" :value="90" />
-            <el-option label="Week" :value="45" />
+            <el-option :label="$t('year')" :value="0" />
+            <el-option :label="$t('month')" :value="90" />
+            <el-option :label="$t('week')" :value="45" />
           </el-select>
         </div>
-
       </div>
       <el-icon class="arrow" :size="15">
         <ArrowUp />

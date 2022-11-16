@@ -9,11 +9,11 @@
     </div>
     <div class="details">
       <div class="title h6">
-        {{ title }}
+        {{ $t(title) }}
       </div>
     </div>
     <div class="actions">
-      <a href="" class="danger size-large">{{ tip }}</a>
+      <a href="" class="danger size-large">{{ $t(tip) }}</a>
     </div>
   </div>
 </template>

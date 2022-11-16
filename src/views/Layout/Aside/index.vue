@@ -3,24 +3,24 @@
     <el-scrollbar always>
       <el-menu :default-openeds="defaultExpand" default-active="1" :collapse="isCollapse" collapse-transition
         @open="handleOpen" @close="handleClose">
-        <el-menu-item v-for="{ id, icon, name } in menuList" :key="id" :index="id" @click="clickMenu">
+        <el-menu-item v-for="{ id, icon } in menuList" :key="id" :index="id" @click="clickMenu">
           <el-icon>
             <component :is="icon" />
           </el-icon>
-          <template #title>{{ name }}</template>
+          <template #title>{{ $t(id) }}</template>
         </el-menu-item>
-        <el-sub-menu v-for="{ id, icon, name, menuItemGroup } in subMenuList" :key="id" :index="id" @select="clickMenu"
+        <el-sub-menu v-for="{ id, icon, menuItemGroup } in subMenuList" :key="id" :index="id" @select="clickMenu"
           @open="handleOpen" @close="handleClose">
           <template #title>
             <el-icon>
               <component :is="icon" />
             </el-icon>
-            <span>{{ name }}</span>
+            <span>{{ $t(id) }}</span>
           </template>
           <el-menu-item-group v-for="group in  menuItemGroup" :key="group.id" @select="selectMenuItem">
             <template #title>{{ group.title }}</template>
             <el-menu-item v-for="item in group.menuItem" :key="item.index" :index="`${id}-${item.index}`"
-              @click="clickMenuItem">{{ item.name }}</el-menu-item>
+              @click="clickMenuItem">{{ $t(item.id) }}</el-menu-item>
           </el-menu-item-group>
         </el-sub-menu>
       </el-menu>
@@ -93,28 +93,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.layout-container {
-  text-align: left;
-  background: #151a30;
-}
-
-:deep(.el-popper-container-1717) {
-  .is-light {
-    background: none;
-    border: none;
-  }
-}
-
-
-.el-menu {
-  border-right: none;
-  margin-right: 5px;
-}
-
-.el-main {
-  padding: 0;
-}
-
 .el-aside {
   background-color: #151a30;
   box-shadow: 0 0.5rem 1rem 0 #1a1f33;
@@ -125,6 +103,12 @@ export default {
   line-height: 1.25rem;
   width: auto;
 }
+
+.el-menu {
+  border-right: none;
+  margin-right: 5px;
+}
+
 
 :deep(.el-sub-menu__title) {
   background-color: #222b45;

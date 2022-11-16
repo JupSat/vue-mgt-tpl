@@ -5,7 +5,7 @@
     </div>
     <el-form ref="loginRef" :model="formData" :rules="rules" @keyup.enter="submitForm">
       <el-form-item prop="username">
-        <el-input v-model="formData.username" placeholder="请输入用户名">
+        <el-input v-model="formData.username" :placeholder="$t('plzEnterUsrNam')">
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -16,7 +16,7 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" :type="'password'" placeholder="请输入密码">
+        <el-input v-model="formData.password" :type="'password'" :placeholder="$t('plzEnterPwd')">
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -28,20 +28,20 @@
       </el-form-item>
       <el-form-item prop="captcha">
         <div class="captcha-item">
-          <el-input v-model="formData.captcha" placeholder="Please enter captcha" style="width: 60%" />
+          <el-input v-model="formData.captcha" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
           <div class="img">
-            <img v-if="picPath" :src="picPath" alt="Please enter captcha" />
+            <img v-if="picPath" :src="picPath" :alt="$t('plzEnterCaptcha')" />
           </div>
         </div>
       </el-form-item>
       <el-form-item>
         <div class="btn-login">
-          <el-button type="primary" style="width: 100%" @click="submitForm">Login</el-button>
+          <el-button type="primary" style="width: 100%" @click="submitForm">{{ $t('signIn') }}</el-button>
         </div>
         <div class="operation">
-          <span class="free-register" @click="showLogin = !showLogin">Free Register</span>
-          <span class="forget-password" @click="forgetPsw">Reset Password</span>
-          <span class="to-other-page" @click="goOtherPage">Test for other page</span>
+          <span class="free-register" @click="showLogin = !showLogin">{{ $t('freeRegister') }}</span>
+          <span class="forget-password" @click="forgetPsw">{{ $t('forgotPassword') }}</span>
+          <span class="to-other-page" @click="goOtherPage">{{ $t('test') }}</span>
         </div>
       </el-form-item>
     </el-form>
@@ -54,6 +54,7 @@
 import { reactive, ref, toRefs } from "vue";
 import Register from "./../Register";
 import { useRouter } from "vue-router";
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: "Login",
@@ -75,9 +76,10 @@ export default {
       captcha: "",
     });
 
+    const { t } = useI18n();
     const checkUsername = (rule, value, callback) => {
       if (value.length < 5) {
-        return callback(new Error("请输入正确的用户名"));
+        return callback(new Error(t("plzEnterCorrectUerNam")));
       } else {
         callback();
       }
@@ -85,7 +87,7 @@ export default {
 
     const checkPassword = (rule, value, callback) => {
       if (value.length < 6) {
-        return callback(new Error("请输入正确的密码"));
+        return callback(new Error(t("plzEnterCorrectPwd")));
       } else {
         callback();
       }
@@ -97,7 +99,7 @@ export default {
       captcha: [
         {
           required: true,
-          message: "验证码格式不正确",
+          message: t("verificationCodeError"),
           trigger: "blur",
         },
       ],
@@ -105,7 +107,7 @@ export default {
 
     const validatePsd = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入密码"));
+        callback(new Error(t("plzEnterPwd")));
       } else {
         if (registerFormData.checkPass) {
           registerForm.value.validateField("checkPass");

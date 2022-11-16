@@ -1,33 +1,35 @@
 <template>
   <div class="reset-pwd">
     <div class="title">
-      <h3>密码重置</h3>
+      <h3>{{ $t('forgotPassword') }}</h3>
     </div>
     <el-form ref="resetPwdRef" :model="formData" status-icon :hide-required-asterisk="true" :rules="rules">
       <el-form-item prop="email">
-        <el-input v-model="formData.email" autocomplete="off" placeholder="请输入注册邮箱">
+        <el-input v-model="formData.email" autocomplete="off" :placeholder="$t('plzEnterEmail')">
           <template #append>
-            <el-button :disabled="sendingCode">获取验证码</el-button>
+            <el-button :disabled="sendingCode">{{ $t('getCaptcha') }}</el-button>
           </template>
         </el-input>
       </el-form-item>
       <el-form-item prop="validCod">
         <el-input v-model.number="formData.validCod" maxlength="6" autocomplete="off"
-          placeholder="Please enter captcha"></el-input>
+          :placeholder="$t('plzEnterCaptcha')"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" type="password" autocomplete="off" placeholder="请输入密码"></el-input>
+        <el-input v-model="formData.password" type="password" autocomplete="off" :placeholder="$t('plzEnterPwd')">
+        </el-input>
       </el-form-item>
       <el-form-item prop="checkPass">
-        <el-input v-model="formData.checkPass" type="password" autocomplete="off" placeholder="请再次输入密码"></el-input>
+        <el-input v-model="formData.checkPass" type="password" autocomplete="off" :placeholder="$t('plzEnterPwdAgain')">
+        </el-input>
       </el-form-item>
 
       <el-form-item>
         <div class="btn-reset">
-          <el-button type="primary" style="width: 100%">Confirm</el-button>
+          <el-button type="primary" style="width: 100%">{{ $t('confirm') }}</el-button>
         </div>
         <div class="go-login">
-          <span class="to-login" @click="toLogin"><em>Login</em></span>
+          <span class="to-login" @click="toLogin"><em>{{ $t('signIn') }}</em></span>
         </div>
       </el-form-item>
     </el-form>
@@ -35,6 +37,8 @@
 </template>
 <script>
 import { reactive, toRefs, ref } from "vue";
+import { useI18n } from 'vue-i18n'
+
 export default {
   name: "ResetPassword",
   emits: ["toLogin"],
@@ -52,12 +56,13 @@ export default {
     const toLogin = () => {
       emit("toLogin");
     };
+    const { t } = useI18n();
 
     const validatePwdAgain = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请再次输入密码"));
+        callback(new Error(t("plzEnterPwdAgain")));
       } else if (value !== state.formData.password) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error(t("psdInconsistent")));
       } else {
         callback();
       }
@@ -65,7 +70,7 @@ export default {
 
     const validatePwd = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入密码"));
+        callback(new Error(t("plzEnterPwd")));
       } else {
         if (!state.formData.checkPass) {
           resetPwdRef.value.validateField("checkPass");
@@ -77,18 +82,18 @@ export default {
     const rules = {
       password: [
         { validator: validatePwd, trigger: "blur" },
-        { min: 6, max: 10, message: "长度在 6 到 10 个字符", trigger: "blur" },
+        { min: 6, max: 10, message: t("psdLenIn6To10"), trigger: "blur" },
       ],
       checkPass: [{ validator: validatePwdAgain, trigger: "blur" }],
       email: [
-        { required: true, message: "请输入注册邮箱", trigger: "change" },
+        { required: true, message: t("plzEnterEmail"), trigger: "change" },
         {
           type: "email",
-          message: "请输入正确的邮箱地址",
+          message: t("plzEnterCorrectEmail"),
           trigger: ["blur", "change"],
         },
       ],
-      validCod: [{ required: true, message: "Please enter captcha", trigger: "blur" }],
+      validCod: [{ required: true, message: t('plzEnterCaptcha'), trigger: "blur" }],
     };
     return {
       ...toRefs(state),

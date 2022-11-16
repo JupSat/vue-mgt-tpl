@@ -12,10 +12,10 @@
         </div>
 
         <div>
-          <el-select @change="changeTheme" v-model="them">
-            <el-option label="Dark" :value="0" />
-            <el-option label="Light" :value="90" />
-            <el-option label="Cosmic" :value="45" />
+          <el-select @change="changeTheme" v-model="theme">
+            <el-option :label="$t('dark')" :value="0" />
+            <el-option :label="$t('light')" :value="90" />
+            <el-option :label="$t('cosmic')" :value="45" />
           </el-select>
         </div>
       </div>
@@ -36,6 +36,12 @@
             <Bell />
           </el-icon>
         </div>
+        <div class="language">
+          <el-select @change="switchLanguage" v-model="language">
+            <el-option :label="$t('langZh')" value="zh" />
+            <el-option :label="$t('langEn')" value="en" />
+          </el-select>
+        </div>
         <div class="user-info">
           <div>
             <img class="user-img" src="~@/assets/img/doge.jpg" alt="" />
@@ -53,7 +59,9 @@ import {
   toRefs,
   onBeforeMount,
   onMounted,
+  watch
 } from "vue";
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: "Header",
@@ -61,7 +69,8 @@ export default {
   emits: ['changeCollapse'],
   setup(props, { emit }) {
     const state = reactive({
-      them: 0,
+      theme: 0,
+      language: 'zh'
     });
     onBeforeMount(() => { });
     onMounted(() => { });
@@ -77,6 +86,12 @@ export default {
     const navigateHome = () => {
       // to-do: 首页导航
     };
+
+    const { locale } = useI18n()
+    watch(() => state.language, () => {
+      locale.value = state.language
+    })
+
     return {
       ...toRefs(state),
       setCollapse,
@@ -140,7 +155,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  width: 380px;
+  // width: 380px;
 
   >div {
     display: flex;
@@ -148,6 +163,15 @@ export default {
     justify-content: center;
     width: 85px;
     border-left: 1px solid #151a30;
+  }
+
+  .language {
+    width: 102px;
+
+    .el-select {
+      height: 45px;
+      padding-top: 4px;
+    }
   }
 
   .user-info {

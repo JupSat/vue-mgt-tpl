@@ -5,17 +5,17 @@
     </div>
     <el-form ref="registerRef" :model="formData" :rules="rules" @keyup.enter="register">
       <el-form-item prop="email">
-        <el-input v-model="formData.email" placeholder="请输入邮箱">
+        <el-input v-model="formData.email" :placeholder="$t('plzEnterEmail')">
           <template #append>
-            <el-button :disabled="sendingCode">获取验证码</el-button>
+            <el-button :disabled="sendingCode">{{ $t('getCaptcha') }}</el-button>
           </template>
         </el-input>
       </el-form-item>
       <el-form-item prop="validCod">
-        <el-input v-model="formData.validCod" placeholder="Please enter captcha" />
+        <el-input v-model="formData.validCod" :placeholder="$t('plzEnterCaptcha')" />
       </el-form-item>
       <el-form-item prop="regUsrNam">
-        <el-input v-model="formData.regUsrNam" placeholder="请输入用户名">
+        <el-input v-model="formData.regUsrNam" :placeholder="$t('plzEnterUsrNam')">
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -26,7 +26,7 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" :type="'password'" placeholder="请输入密码">
+        <el-input v-model="formData.password" :type="'password'" :placeholder="$t('plzEnterPwd')">
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -37,16 +37,16 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="checkPass">
-        <el-input v-model="formData.checkPass" :type="'password'" placeholder="请再次输入密码">
+        <el-input v-model="formData.checkPass" :type="'password'" :placeholder="$t('plzEnterPwdAgain')">
         </el-input>
       </el-form-item>
 
       <el-form-item>
         <div class="btn-register">
-          <el-button type="primary" style="width: 100%">Register</el-button>
+          <el-button type="primary" style="width: 100%">{{ $t('signUp') }}</el-button>
         </div>
         <div class="go-login">
-          <span class="to-login">Have a account?<em @click="goLogin">Login</em></span>
+          <span class="to-login">{{ $t('haveAccount') }}<em @click="goLogin">{{ $t('signIn') }}</em></span>
         </div>
       </el-form-item>
     </el-form>
@@ -55,6 +55,7 @@
 
 <script>
 import { reactive, ref, toRefs } from "vue";
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: "Register",
@@ -73,9 +74,11 @@ export default {
       checkPass: "",
     });
 
+
+    const { t } = useI18n();
     const checkUsername = (rule, value, callback) => {
       if (value.length < 5) {
-        return callback(new Error("用户名不能小于5位"));
+        return callback(new Error(t("usrNamDonLessLen5")));
       } else {
         callback();
       }
@@ -83,7 +86,7 @@ export default {
 
     const checkPassword = (rule, value, callback) => {
       if (value.length < 6) {
-        return callback(new Error("密码不能小于6位"));
+        return callback(new Error(t("psdDonLessLen6")));
       } else {
         callback();
       }
@@ -91,9 +94,9 @@ export default {
 
     const validatePsdAgain = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请再次输入密码"));
+        callback(new Error(t("plzEnterPwdAgain")));
       } else if (value !== formData.password) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error(t("psdInconsistent")));
       } else {
         callback();
       }
@@ -101,7 +104,7 @@ export default {
 
     const validatePsd = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入密码"));
+        callback(new Error(t("plzEnterPwd")));
       } else {
         if (formData.checkPass) {
           registerRef.value.validateField("checkPass");
@@ -112,18 +115,18 @@ export default {
 
     const rules = {
       email: [
-        { required: true, message: "请输入注册邮箱", trigger: "change" },
+        { required: true, message: t("plzEnterEmail"), trigger: "change" },
         {
           type: "email",
-          message: "请输入正确的邮箱地址",
+          message: t("plzEnterCorrectEmail"),
           trigger: ["blur", "change"],
         },
       ],
-      validCod: [{ required: true, message: "Please enter captcha", trigger: "blur" }],
-      regUsrNam: [{ required: true, message: "请输入名称", trigger: "blur" }],
+      validCod: [{ required: true, message: t('plzEnterCaptcha'), trigger: "blur" }],
+      regUsrNam: [{ required: true, message: t('plzEnterUsrNam'), trigger: "blur" }],
       password: [
         { validator: validatePsd, trigger: "blur" },
-        { min: 6, max: 10, message: "长度在 6 到 10 个字符", trigger: "blur" },
+        { min: 6, max: 10, message: t('psdLenIn6To10'), trigger: "blur" },
       ],
       checkPass: [{ validator: validatePsdAgain, trigger: "blur" }],
     };
