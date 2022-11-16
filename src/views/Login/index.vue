@@ -28,20 +28,20 @@
       </el-form-item>
       <el-form-item prop="captcha">
         <div class="captcha-item">
-          <el-input v-model="formData.captcha" placeholder="请输入验证码" style="width: 60%" />
+          <el-input v-model="formData.captcha" placeholder="Please enter captcha" style="width: 60%" />
           <div class="img">
-            <img v-if="picPath" :src="picPath" alt="请输入验证码" />
+            <img v-if="picPath" :src="picPath" alt="Please enter captcha" />
           </div>
         </div>
       </el-form-item>
       <el-form-item>
         <div class="btn-login">
-          <el-button type="primary" style="width: 100%" @click="submitForm">登录</el-button>
+          <el-button type="primary" style="width: 100%" @click="submitForm">Login</el-button>
         </div>
         <div class="operation">
-          <span class="free-register" @click="showLogin = !showLogin">免费注册</span>
-          <span class="forget-password" @click="forgetPsw">忘记密码</span>
-          <span class="to-other-page" @click="goOtherPage">测试跳转</span>
+          <span class="free-register" @click="showLogin = !showLogin">Free Register</span>
+          <span class="forget-password" @click="forgetPsw">Reset Password</span>
+          <span class="to-other-page" @click="goOtherPage">Test for other page</span>
         </div>
       </el-form-item>
     </el-form>

@@ -39,13 +39,12 @@
         <div class="user-info">
           <div>
             <img class="user-img" src="~@/assets/img/doge.jpg" alt="" />
-            <span>Alex</span>
+            <span>JupSat</span>
           </div>
         </div>
       </div>
     </div>
   </el-header>
-
 </template>
 
 <script>
@@ -59,6 +58,7 @@ import {
 export default {
   name: "Header",
   components: {},
+  emits: ['changeCollapse'],
   setup(props, { emit }) {
     const state = reactive({
       them: 0,

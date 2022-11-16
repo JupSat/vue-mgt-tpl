@@ -12,7 +12,7 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="validCod">
-        <el-input v-model="formData.validCod" placeholder="请输入验证码" />
+        <el-input v-model="formData.validCod" placeholder="Please enter captcha" />
       </el-form-item>
       <el-form-item prop="regUsrNam">
         <el-input v-model="formData.regUsrNam" placeholder="请输入用户名">
@@ -43,10 +43,10 @@
 
       <el-form-item>
         <div class="btn-register">
-          <el-button type="primary" style="width: 100%">注册</el-button>
+          <el-button type="primary" style="width: 100%">Register</el-button>
         </div>
         <div class="go-login">
-          <span class="to-login">已有账号<em @click="goLogin">去登陆</em></span>
+          <span class="to-login">Have a account?<em @click="goLogin">Login</em></span>
         </div>
       </el-form-item>
     </el-form>
@@ -119,7 +119,7 @@ export default {
           trigger: ["blur", "change"],
         },
       ],
-      validCod: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+      validCod: [{ required: true, message: "Please enter captcha", trigger: "blur" }],
       regUsrNam: [{ required: true, message: "请输入名称", trigger: "blur" }],
       password: [
         { validator: validatePsd, trigger: "blur" },

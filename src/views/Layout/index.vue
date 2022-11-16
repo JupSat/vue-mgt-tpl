@@ -1,19 +1,21 @@
 <template>
   <el-container class="layout-container">
-    <Header></Header>
+    <Header @changeCollapse="setCollapse"></Header>
     <Settings></Settings>
     <el-container class="body-container">
-      <Aside></Aside>
-      <Main></Main>
+      <Aside @goView="switchView" ref="asideRef"></Aside>
+      <Main ref="mainRef"></Main>
     </el-container>
   </el-container>
 </template>
 
 <script>
+import { ref } from "vue";
 import Header from "./Header";
 import Aside from "./Aside";
 import Main from "./Main";
 import Settings from "./Setting";
+
 export default {
   name: "Layout",
   components: {
@@ -22,7 +24,24 @@ export default {
     Main,
     Settings
   },
-  setup() { },
+  setup() {
+    const mainRef = ref(null)
+    const asideRef = ref(null)
+
+    const switchView = (path) => {
+      mainRef.value.switchView(path)
+    }
+    const setCollapse = () => {
+      asideRef.value.setCollapse()
+    }
+
+    return {
+      mainRef,
+      asideRef,
+      switchView,
+      setCollapse
+    }
+  },
 };
 </script>
 
@@ -30,26 +49,6 @@ export default {
 .layout-container {
   text-align: left;
   background: #151a30;
-
-  .toggle-settings {
-    position: fixed;
-    top: 50%;
-    right: 0;
-    border-radius: 0.25rem;
-    box-shadow: none;
-    transition: transform .3s ease;
-    z-index: 998;
-
-    >.el-button {
-      background: #fff;
-      box-shadow: none;
-      border: none;
-      height: 3rem;
-      width: 3rem;
-      padding: 0;
-      text-align: center;
-    }
-  }
 
   .body-container {
     height: 100vh;

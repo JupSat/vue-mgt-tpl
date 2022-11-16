@@ -12,7 +12,8 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="validCod">
-        <el-input v-model.number="formData.validCod" maxlength="6" autocomplete="off" placeholder="请输入验证码"></el-input>
+        <el-input v-model.number="formData.validCod" maxlength="6" autocomplete="off"
+          placeholder="Please enter captcha"></el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input v-model="formData.password" type="password" autocomplete="off" placeholder="请输入密码"></el-input>
@@ -23,10 +24,10 @@
 
       <el-form-item>
         <div class="btn-reset">
-          <el-button type="primary" style="width: 100%">确认重置</el-button>
+          <el-button type="primary" style="width: 100%">Confirm</el-button>
         </div>
         <div class="go-login">
-          <span class="to-login" @click="toLogin"><em>去登陆</em></span>
+          <span class="to-login" @click="toLogin"><em>Login</em></span>
         </div>
       </el-form-item>
     </el-form>
@@ -87,7 +88,7 @@ export default {
           trigger: ["blur", "change"],
         },
       ],
-      validCod: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+      validCod: [{ required: true, message: "Please enter captcha", trigger: "blur" }],
     };
     return {
       ...toRefs(state),

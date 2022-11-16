@@ -5,8 +5,7 @@
         <div class="main-body">
           <div class="main-container">
             <div class="main-content">
-              <!-- <router-outlet/> -->
-              <ECommerce></ECommerce>
+              <router-view />
             </div>
           </div>
         </div>
@@ -16,16 +15,22 @@
 </template>
 
 <script>
-import { reactive, toRefs, onMounted } from "vue";
-import * as echarts from "echarts";
 import ECommerce from '@/components/ECommerce';
+import { useRouter } from 'vue-router'
+
 export default {
   name: "Main",
   components: {
     ECommerce
   },
   setup() {
-    return {};
+    const router = useRouter()
+    const switchView = (path) => {
+      router.push({ name: path })
+    }
+    return {
+      switchView
+    };
   },
 };
 </script>
