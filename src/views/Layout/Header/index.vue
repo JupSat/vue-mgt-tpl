@@ -4,7 +4,7 @@
       <div class="header-container">
         <div class="logo-container">
           <div @click="setCollapse()" class="sidebar-toggle">
-            <el-icon :size="22" color="#8f9bb3">
+            <el-icon :size="22" :color="color">
               <Fold />
             </el-icon>
           </div>
@@ -12,7 +12,7 @@
         </div>
 
         <div>
-          <el-select @change="changeTheme" v-model="theme">
+          <el-select @change="changeTheme" v-model="theme" popper-class="custom-select">
             <el-option :label="$t('dark')" :value="0" />
             <el-option :label="$t('light')" :value="90" />
             <el-option :label="$t('cosmic')" :value="45" />
@@ -22,32 +22,84 @@
 
       <div class="header-container-right">
         <div>
-          <el-icon :size="22" color="#8f9bb3">
+          <el-icon :size="23" :color="color">
             <Search />
           </el-icon>
         </div>
         <div>
-          <el-icon :size="22" color="#8f9bb3">
-            <Message />
-          </el-icon>
+          <el-dropdown trigger="click">
+            <el-badge :value="99" class="item">
+              <el-icon :size="23" :color="color">
+                <Message />
+              </el-icon>
+            </el-badge>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="item in [1, 2, 3, 4, 5]">
+                  这是第{{ item }} 个邮件
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
         <div>
-          <el-icon :size="22" color="#8f9bb3">
-            <Bell />
-          </el-icon>
+          <el-dropdown trigger="click">
+            <el-badge :value="66" class="item" type="primary">
+              <el-icon :size="23" :color="color">
+                <Bell />
+              </el-icon>
+            </el-badge>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item v-for="item in [1, 2, 3, 4, 5]">
+                  这是第{{ item }} 条消息
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
+
         <div class="language">
-          <el-select @change="switchLanguage" v-model="language">
+          <el-select v-model="language" popper-class="custom-select">
             <el-option :label="$t('langZh')" value="zh" />
             <el-option :label="$t('langEn')" value="en" />
           </el-select>
         </div>
-        <div class="user-info">
-          <div>
-            <img class="user-img" src="~@/assets/img/doge.jpg" alt="" />
-            <span>JupSat</span>
-          </div>
+
+
+        <div class="user-info-dropdown">
+          <el-dropdown trigger="click">
+            <span class="el-dropdown-link">
+              <div class="user-info">
+                <div>
+                  <img class="user-img" src="~@/assets/img/doge.jpg" alt="" />
+                  <span>JupSat</span>
+                  <el-icon class="el-icon--right">
+                    <caret-bottom />
+                  </el-icon>
+                </div>
+              </div>
+
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  {{ $t('profile') }}
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  {{ $t('forgotPassword') }}
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  {{ $t('settings') }}
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  {{ $t('signOut') }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </div>
+
       </div>
     </div>
   </el-header>
@@ -70,7 +122,8 @@ export default {
   setup(props, { emit }) {
     const state = reactive({
       theme: 0,
-      language: 'zh'
+      language: 'zh',
+      color: '#8f9bb3'
     });
     onBeforeMount(() => { });
     onMounted(() => { });
@@ -119,8 +172,6 @@ export default {
   .el-select {
     width: 105px;
     margin-left: 30px;
-    // border: 1px solid #36f;
-    // border-radius: 4px;
     background-color: #192038;
   }
 
@@ -155,13 +206,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  // width: 380px;
+  margin-right: 25px;
 
   >div {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 85px;
+    width: 60px;
+    margin: 0px 2px;
     border-left: 1px solid #151a30;
   }
 
@@ -174,27 +226,35 @@ export default {
     }
   }
 
-  .user-info {
+  .user-info-dropdown {
     width: 120px;
-    font-size: 18px;
-    color: #fff;
+    margin-left: 20px;
 
-    >div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .el-dropdown {
+      margin-right: 0
     }
 
-    span {
-      margin-left: 6px;
+    .user-info {
+      font-size: 18px;
+      color: #fff;
+
+      >div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      span {
+        margin-left: 6px;
+      }
     }
   }
+
 }
 
 .logo-container {
   display: flex;
   align-items: center;
-  //   width: calc(#{nb-theme(sidebar-width)} - #{nb-theme(header-padding)});
 }
 
 :deep(.el-input__wrapper) {
@@ -211,24 +271,36 @@ export default {
   }
 }
 
-:deep(#el-popper-container-621 > .el-popper) {
+.el-popper {
   background-color: #222b45;
-}
-
-:deep(.el-select__popper) {
-  background-color: #222b45;
-
-  .el-select-dropdown__item {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    line-height: 1.5rem;
-    color: #fff;
-  }
 }
 
 .user-img {
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 50%;
+}
+
+.el-dropdown {
+  // margin-left: 50px;
+}
+
+.el-dropdown__popper .el-dropdown-menu {
+  background-color: #222b45;
+
+  :deep(.el-dropdown-menu__item) {
+    border: 1px solid #151a30;
+    color: #fff !important
+  }
+
+  :deep(.el-dropdown-menu__item:not(.is-disabled):hover) {
+    background-color: #598bff;
+    color: #66b1ff;
+  }
+}
+
+:deep(.is-light) {
+  background: none;
+  border: 0px solid #151a30;
 }
 </style>

@@ -15,7 +15,7 @@
           <el-col :span="11">
             <StatusCard></StatusCard>
           </el-col>
-          <el-col :span="11" style="margin-left: 37px">
+          <el-col :span="11">
             <EarningCard></EarningCard>
           </el-col>
         </el-row>
@@ -59,6 +59,13 @@ export default {
   .el-row {
     display: flex;
     margin-bottom: 30px;
+  }
+
+  .inner-row {
+    display: flex;
+    justify-content: space-between;
+    margin-left: -15px;
+    margin-right: -15px;
   }
 }
 </style>

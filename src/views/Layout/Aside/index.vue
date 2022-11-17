@@ -3,7 +3,7 @@
     <el-scrollbar always>
       <el-menu :default-openeds="defaultExpand" default-active="1" :collapse="isCollapse" collapse-transition
         @open="handleOpen" @close="handleClose">
-        <el-menu-item v-for="{ id, icon } in menuList" :key="id" :index="id" @click="clickMenu">
+        <el-menu-item v-for="{ id, icon } in menuList" :key="id" :index="id" @click="clickMenu(id)">
           <el-icon>
             <component :is="icon" />
           </el-icon>
@@ -19,8 +19,8 @@
           </template>
           <el-menu-item-group v-for="group in  menuItemGroup" :key="group.id" @select="selectMenuItem">
             <template #title>{{ group.title }}</template>
-            <el-menu-item v-for="item in group.menuItem" :key="item.index" :index="`${id}-${item.index}`"
-              @click="clickMenuItem">{{ $t(item.id) }}</el-menu-item>
+            <el-menu-item v-for="item in group.menuItem" :key="item.index" @click="clickMenu(item.id)">{{ $t(item.id) }}
+            </el-menu-item>
           </el-menu-item-group>
         </el-sub-menu>
       </el-menu>
@@ -49,8 +49,8 @@ export default {
       console.log(key, keyPath);
     };
 
-    const clickMenu = (key, keyPath) => {
-      emit('goView', key.index)
+    const clickMenu = (path) => {
+      emit('goView', path)
     };
 
     const selectMenu = (key, keyPath) => {
@@ -58,10 +58,6 @@ export default {
     };
 
     const selectMenuItem = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
-
-    const clickMenuItem = (key, keyPath) => {
       console.log(key, keyPath);
     };
 
@@ -85,7 +81,6 @@ export default {
       clickMenu,
       selectMenu,
       selectMenuItem,
-      clickMenuItem,
       setCollapse
     };
   },
@@ -106,9 +101,7 @@ export default {
 
 .el-menu {
   border-right: none;
-  margin-right: 5px;
 }
-
 
 :deep(.el-sub-menu__title) {
   background-color: #222b45;
@@ -124,6 +117,10 @@ export default {
   color: #598bff;
 }
 
+:deep(.el-menu-item) {
+  min-width: 217.37px;
+}
+
 .el-menu-item-group {
   background-color: #222b45;
 
@@ -133,7 +130,6 @@ export default {
 }
 
 :deep(.el-menu-item-group__title) {
-  // border-bottom: 1px solid #151a30;
   display: none;
 }
 

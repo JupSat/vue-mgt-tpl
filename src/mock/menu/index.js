@@ -12,7 +12,7 @@ Mock.mock('/menu/getMenu', 'post', () => ({
     menuList: [{
       id: "eCommerce",
       name: "E-commerce",
-      icon: 'ShoppingCart'
+      icon: 'Monitor'
     }, {
       id: "dashboard",
       name: "IoT Dashboard",
@@ -190,8 +190,8 @@ Mock.mock('/menu/getMenu', 'post', () => ({
             id: "1",
             title: "Group 1",
             menuItem: [
-              { id: '401', name: "401", index: "1" },
-              { id: '404', name: "404", index: "2" },
+              { id: 'page401', name: "401", index: "1" },
+              { id: 'page404', name: "404", index: "2" },
             ],
           },
         ],

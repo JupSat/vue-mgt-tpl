@@ -44,7 +44,7 @@ export default {
   icons: '图标',
   typography: '排版',
   animated: '动画',
-  modalOverlays: '模型、覆盖图',
+  modalOverlays: '模型与覆盖图',
   dialog: '对话框',
   window: '窗口',
   popover: '弹框',
@@ -98,5 +98,9 @@ export default {
   marketplace: '市场',
   lastMonth: '上月',
   lastWeek: '上周',
-  today: '今天'
+  today: '今天',
+  page401: '401',
+  page404: '404',
+  profile: '个人信息',
+  settings: '设置',
 };

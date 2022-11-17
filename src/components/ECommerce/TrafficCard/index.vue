@@ -4,7 +4,7 @@
       <div class="header-info">
         <span>{{ $t('traffic') }}</span>
         <div class="header-select">
-          <el-select v-model="dataType">
+          <el-select v-model="dataType" popper-class="custom-select">
             <el-option :label="$t('year')" :value="0" />
             <el-option :label="$t('month')" :value="90" />
             <el-option :label="$t('week')" :value="45" />

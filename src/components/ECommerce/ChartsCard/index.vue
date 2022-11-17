@@ -21,10 +21,10 @@
           </div>
         </div>
         <div class="header-select">
-          <el-select v-model="dataType">
-            <el-option label="Year" :value="0" />
-            <el-option label="Month" :value="90" />
-            <el-option label="Week" :value="45" />
+          <el-select v-model="dataType" popper-class="custom-select">
+            <el-option :label="$t('year')" :value="0" />
+            <el-option :label="$t('month')" :value="90" />
+            <el-option :label="$t('week')" :value="45" />
           </el-select>
         </div>
         <el-tab-pane :label="$t('orders')" name="Orders">

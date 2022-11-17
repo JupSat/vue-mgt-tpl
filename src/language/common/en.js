@@ -98,5 +98,9 @@ export default {
   marketplace: 'Marketplace',
   lastMonth: 'Last Month',
   lastWeek: 'Last Week',
-  today: 'Today'
+  today: 'Today',
+  page401: '401',
+  page404: '404',
+  profile: 'Profile',
+  settings: 'Settings',
 };

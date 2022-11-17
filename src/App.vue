@@ -23,4 +23,8 @@ nav {
     }
   }
 }
+
+.custom-select {
+  background-color: #222b45 !important;
+}
 </style>

@@ -8,7 +8,9 @@
             <ArrowRight />
           </el-icon>
         </div>
-        <div class="front-card-body" id="statusCardId"></div>
+        <div class="front-card-body">
+          <div id="statusCardId" class="body-chart"></div>
+        </div>
       </div>
       <div class="back-container"></div>
     </div>
@@ -83,7 +85,7 @@ export default {
         },
         series: [
           {
-            name: "transactions",
+            name: t("transactions"),
             type: "bar",
             data: data1,
             emphasis: {
@@ -94,7 +96,7 @@ export default {
             },
           },
           {
-            name: "orders",
+            name: t("orders"),
             type: "bar",
             data: data2,
             emphasis: {
@@ -156,18 +158,6 @@ export default {
         font-weight: 600;
         line-height: 1.5rem;
 
-        .header-select {
-          height: 35px;
-          margin-top: -5px;
-          padding-right: 35px;
-
-          .el-select {
-            width: 105px;
-            border-radius: 4px;
-            background-color: #192038;
-          }
-        }
-
         .header-title::before {
           content: "$";
           margin-right: 10px;
@@ -182,30 +172,13 @@ export default {
       }
 
       .front-card-body {
-        width: 100%;
+        width: 225px;
         height: 100%;
 
-        .chart-info {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-          margin: 0 15px 20px;
-
-          .percent {
-            position: absolute;
-            display: inline-block;
-            top: 0;
-            right: 0;
-          }
-        }
-
         .body-chart {
-          height: 73%;
+          width: 100%;
+          height: 100%;
         }
-      }
-
-      .chart-pdg {
-        padding: 15px 0 0;
       }
     }
   }

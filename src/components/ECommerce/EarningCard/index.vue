@@ -4,7 +4,7 @@
       <div class="front-container">
         <div class="front-card-header">
           <div class="header-select">
-            <el-select v-model="coinType">
+            <el-select v-model="coinType" popper-class="custom-select">
               <el-option :label="$t('bitcoin')" :value="0" />
               <el-option :label="$t('tether')" :value="90" />
               <el-option :label="$t('ethereum')" :value="45" />
@@ -48,7 +48,7 @@ export default {
     });
 
     let startNum = 0;
-    let endNum = 40;
+    let endNum = 60;
 
     const setEChartsLine = () => {
       const chart = document.getElementById("earningCardId");
@@ -144,12 +144,12 @@ export default {
         ],
       };
 
-      setInterval(function () {
+      setInterval(() => {
         startNum = startNum + 0.1;
         endNum = endNum + 0.1;
         if (endNum >= 100) {
           startNum = 0;
-          endNum = 40;
+          endNum = 60;
         }
         myChart2.dispatchAction({
           type: "dataZoom",
@@ -191,7 +191,6 @@ export default {
     height: 100%;
 
     .front-container {
-      width: 100%;
       height: 100%;
 
       .front-card-header {
@@ -232,7 +231,7 @@ export default {
       }
 
       .front-card-body {
-        width: 100%;
+        width: 225px;
         height: 100%;
 
         .chart-info {
@@ -250,6 +249,7 @@ export default {
         }
 
         .body-chart {
+          width: 100%;
           height: 73%;
         }
       }
