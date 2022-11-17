@@ -31,14 +31,14 @@
           <div class="chart-header">
             <div class="legend-chart"></div>
           </div>
-          <OrderChart></OrderChart>
+          <OrderChart v-if="activeName === 'Orders'"></OrderChart>
         </el-tab-pane>
 
         <el-tab-pane :label="$t('profit')" name="Profit">
           <div class="chart-header">
             <div class="legend-chart"></div>
           </div>
-          <ProfitChart></ProfitChart>
+          <ProfitChart v-if="activeName === 'Profit'"></ProfitChart>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -59,7 +59,7 @@ export default {
   setup() {
     const state = reactive({
       dataType: 0,
-      activeName: 'Orders'
+      activeName: 'Orders',
     });
 
     return {

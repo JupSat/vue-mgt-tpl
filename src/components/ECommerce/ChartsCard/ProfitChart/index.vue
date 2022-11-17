@@ -1,22 +1,18 @@
 <template>
-  <div id="chartLine" ref="profitChart" class="line-chart"></div>
+  <div id="chartLine" ref="chartRef" class="line-chart"></div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref, nextTick, onMounted, onUnmounted, shallowRef } from "vue";
 import * as echarts from "echarts";
 export default {
   name: "ProfitChart",
   setup() {
+    const chart = shallowRef(null);;
+    const chartRef = ref(null);
     const setEChartsLine = () => {
-      const id = "chartLine"
-      let chart = null;
-      let chartInstance = null;
-      let option = null;
-      chart = document.getElementById(id);
-      chartInstance = echarts.init(chart);
-
-      option = {
+      chart.value = echarts.init(chartRef.value);
+      const option = {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -93,7 +89,7 @@ export default {
         series: [
           {
             name: 'Payment',
-            type: 'bar',
+            type: 'line',
             barGap: 0,
             emphasis: {
               focus: 'series'
@@ -105,7 +101,7 @@ export default {
           },
           {
             name: 'Canceled',
-            type: 'bar',
+            type: 'line',
             emphasis: {
               focus: 'series'
             },
@@ -116,7 +112,7 @@ export default {
           },
           {
             name: 'All orders',
-            type: 'bar',
+            type: 'line',
             emphasis: {
               focus: 'series'
             },
@@ -128,17 +124,25 @@ export default {
         ]
       };
 
-      option && chartInstance.setOption(option, true);
+      chart.value && chart.value.setOption(option, true);
     };
 
-    const profitChart = ref(null);
-    onMounted(() => {
+    onMounted(async () => {
+      await nextTick();
       setEChartsLine();
+    });
+
+    onUnmounted(() => {
+      if (!chart.value) {
+        return;
+      }
+      chart.value.dispose();
+      chart.value = null;
     });
 
     return {
       setEChartsLine,
-      profitChart
+      chartRef
     };
   },
 };

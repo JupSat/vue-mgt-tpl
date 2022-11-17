@@ -36,7 +36,7 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item v-for="item in [1, 2, 3, 4, 5]">
-                  这是第{{ item }} 个邮件
+                  这是第{{ item }}个邮件
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -52,7 +52,7 @@
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item v-for="item in [1, 2, 3, 4, 5]">
-                  这是第{{ item }} 条消息
+                  这是第{{ item }}条消息
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -66,7 +66,6 @@
           </el-select>
         </div>
 
-
         <div class="user-info-dropdown">
           <el-dropdown trigger="click">
             <span class="el-dropdown-link">
@@ -79,7 +78,6 @@
                   </el-icon>
                 </div>
               </div>
-
             </span>
             <template #dropdown>
               <el-dropdown-menu>
@@ -99,7 +97,6 @@
             </template>
           </el-dropdown>
         </div>
-
       </div>
     </div>
   </el-header>

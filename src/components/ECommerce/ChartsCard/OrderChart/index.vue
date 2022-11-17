@@ -1,9 +1,9 @@
 <template>
-  <div id="chartBar" ref="orderChart" class="bar-chart"></div>
+  <div id="chartBar" ref="chartRef" class="bar-chart"></div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref, nextTick, onMounted, onUnmounted, shallowRef } from "vue";
 import * as echarts from "echarts";
 import { useI18n } from 'vue-i18n'
 
@@ -12,15 +12,13 @@ export default {
   setup() {
     const { t } = useI18n();
 
+    const chart = shallowRef(null);;
+    const chartRef = ref(null);
     const setEChartsBar = () => {
-      const id = "chartBar"
-      let chart = null;
-      let chartInstance = null;
-      let option = null;
-      chart = document.getElementById(id);
-      chartInstance = echarts.init(chart);
 
-      option = {
+      chart.value = echarts.init(chartRef.value);
+
+      const option = {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -132,18 +130,26 @@ export default {
         ]
       };
 
-      option && chartInstance.setOption(option);
+      chart.value && chart.value.setOption(option, true);
     };
 
-    const orderChart = ref(null);
 
-    onMounted(() => {
+    onMounted(async () => {
+      await nextTick();
       setEChartsBar()
+    });
+
+    onUnmounted(() => {
+      if (!chart.value) {
+        return;
+      }
+      chart.value.dispose();
+      chart.value = null;
     });
 
     return {
       setEChartsBar,
-      orderChart,
+      chartRef,
     };
   },
 };

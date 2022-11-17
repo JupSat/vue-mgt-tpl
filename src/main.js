@@ -10,7 +10,7 @@ import i18n from '@/language';
 
 import * as Icons from "@element-plus/icons-vue";
 const app = createApp(App)
-for (const name in Icons) {
-  app.component(name, (Icons)[name])
+for (const [key, component] of Object.entries(Icons)) {
+  app.component(key, component)
 }
 app.use(router).use(ElementPlus, { locale: locale }).use(i18n).mount('#app')
