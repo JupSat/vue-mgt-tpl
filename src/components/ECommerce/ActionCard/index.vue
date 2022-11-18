@@ -41,12 +41,14 @@ export default {
 };
 </script>
 <style lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .action-card {
   display: flex;
   align-items: center;
   border-radius: 4px;
   min-height: 94px;
-  background-color: #222b45;
+  @include bg_color("secondaryColor");
 
   .icon-container {
     height: 100%;
@@ -89,9 +91,9 @@ export default {
 
     .danger {
       background-image: linear-gradient(90deg, #ff708d, #ff3d71);
-      border: none;
       box-shadow: 0 0 0 0 #db2c66, 0 0 0 0 #b81d5b, 0 0 transparent;
       color: #fff;
+      border: none;
       border-radius: 4px;
     }
 

@@ -70,24 +70,24 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .chart-card {
   width: 100%;
   height: 586px;
-  // background-color: cadetblue;
   border-radius: 4px;
 
   .tab-set {
     height: 100%;
-    background-color: #222b45;
-    border: 0.0625rem solid #101426;
+    margin-bottom: 1.875rem;
+    @include bg_color("secondaryColor");
     border-radius: 0.25rem;
     box-shadow: none;
-    color: #fff;
+    @include font_color("fontColor");
     font-family: Open Sans, sans-serif;
     font-size: .9375rem;
     font-weight: 400;
     line-height: 1.25rem;
-    margin-bottom: 1.875rem;
 
     :deep(.el-tabs__item) {
       background-color: transparent;
@@ -155,7 +155,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         flex: 1;
-        background-color: #192038;
+        @include bg_color("mainColor");
         justify-content: space-between;
         padding: 2rem 4rem 1rem;
         border: 1px solid #151a30;
@@ -179,7 +179,7 @@ export default {
         .el-select {
           width: 105px;
           border-radius: 4px;
-          background-color: #192038;
+          @include bg_color("mainColor");
         }
       }
 

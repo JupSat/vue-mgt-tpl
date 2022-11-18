@@ -1,0 +1,68 @@
+$themes: (
+  'light': (
+    //整体主色调/菜单栏背景
+    mainColor: #fff,
+    //主体内容
+    mainBodyColor: #ecf0f6,
+    //组件等背景
+    secondaryColor: #fff,
+    //主题色
+    activeMainColor: #ab343c,
+    //
+    fontColor: #8f9bb3,
+    // 滚动条
+    scrollbarColor: #8f9bb3,
+    // 边框线
+    borderColor: #fff,
+    //页面主标题色/重要文字/弹框标题色
+    titleColor: #08121c,
+    //默认字体色/二级信息字体色
+    infoColor: #545454,
+    //菜单列表背景色
+    menuBackgroundColor: #bc485014,
+    menuIconBackgroundColor: #bc48501f,
+    //默认字体色/二级信息字体/标签默认色
+    divInfoColor: #929aa2,
+    //控件不可用/禁用状态/不可点击
+    disabledColor: #eaeaea,
+    //整体页面背景色/图标底色/文字信息底色
+    bodyBackgroundColor: #f5f7f6,
+    //辅助警示提示作用
+    warningColor: #e7d62c,
+    //错误提示文字色/错误提示边框色
+    errorColor: #ff542c,
+    hoverColor: #fff
+  ),
+  'dark': (
+    //整体主色调/菜单栏背景
+    mainColor: #151a30,
+    //主体内容
+    mainBodyColor: #151a30,
+    secondaryColor: #222b45,
+    //主题色
+    activeMainColor: #ab343c,
+    fontColor: #fff,
+    // 边框线
+    borderColor: #151a30,
+    // 滚动条
+    scrollbarColor: #101426,
+    //页面主标题色/重要文字/弹框标题色
+    titleColor: #08121c,
+    //默认字体色/二级信息字体色
+    infoColor: #545454,
+    //菜单列表背景色
+    menuBackgroundColor: #bc485014,
+    menuIconBackgroundColor: #bc48501f,
+    //默认字体色/二级信息字体/标签默认色
+    divInfoColor: #929aa2,
+    //控件不可用/禁用状态/不可点击
+    disabledColor: #eaeaea,
+    //整体页面背景色/图标底色/文字信息底色
+    bodyBackgroundColor: #f5f7f6,
+    //辅助警示提示作用
+    warningColor: #e7d62c,
+    //错误提示文字色/错误提示边框色
+    errorColor: #ff542c,
+    hoverColor: #fff
+  )
+);

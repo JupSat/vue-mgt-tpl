@@ -154,6 +154,8 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .register_content {
   width: 375px;
   padding: 40px;
@@ -161,7 +163,7 @@ export default {
   border-radius: 10px;
 
   .title {
-    color: #fff;
+    @include font_color("fontColor");
     margin-bottom: 20px;
   }
 

@@ -11,11 +11,10 @@
           <div class="logo" @click="navigateHome()">vue-mgt-tpl</div>
         </div>
 
-        <div>
+        <div class="header-select">
           <el-select @change="changeTheme" v-model="theme" popper-class="custom-select">
-            <el-option :label="$t('dark')" :value="0" />
-            <el-option :label="$t('light')" :value="90" />
-            <el-option :label="$t('cosmic')" :value="45" />
+            <el-option :label="$t('dark')" value="dark" />
+            <el-option :label="$t('light')" value="light" />
           </el-select>
         </div>
       </div>
@@ -35,8 +34,16 @@
             </el-badge>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="item in [1, 2, 3, 4, 5]">
+                <el-dropdown-item v-for="item in getShowList">
                   这是第{{ item }}个邮件
+                </el-dropdown-item>
+                <el-dropdown-item v-show="list.length > 4">
+                  <div class="view-more">
+                    查看更多
+                    <el-icon :size="14">
+                      <ArrowRight />
+                    </el-icon>
+                  </div>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -51,8 +58,16 @@
             </el-badge>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="item in [1, 2, 3, 4, 5]">
-                  这是第{{ item }}条消息
+                <el-dropdown-item v-for="item in getShowList">
+                  <span>这是第{{ item }}条消息</span>
+                </el-dropdown-item>
+                <el-dropdown-item v-show="list.length > 4">
+                  <div class="view-more">
+                    查看更多
+                    <el-icon :size="14">
+                      <ArrowRight />
+                    </el-icon>
+                  </div>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
@@ -106,31 +121,30 @@
 import {
   reactive,
   toRefs,
-  onBeforeMount,
-  onMounted,
-  watch
+  watch,
+  computed
 } from "vue";
 import { useI18n } from 'vue-i18n'
+// import { useCssVar } from '@vueuse/core'
 
 export default {
   name: "Header",
   components: {},
-  emits: ['changeCollapse'],
+  emits: ['changeCollapse', 'switchTheme'],
   setup(props, { emit }) {
     const state = reactive({
-      theme: 0,
+      theme: 'dark',
       language: 'zh',
-      color: '#8f9bb3'
+      color: '#8f9bb3',
+      list: [1, 2, 3, 4, 5, 6, 7, 8]
     });
-    onBeforeMount(() => { });
-    onMounted(() => { });
 
     const setCollapse = () => {
       emit("changeCollapse");
     };
 
     const changeTheme = () => {
-      // to-do: 切换主题
+      emit("switchTheme", state.theme);
     };
 
     const navigateHome = () => {
@@ -142,47 +156,32 @@ export default {
       locale.value = state.language
     })
 
+    const tempList = state.list
+    const getShowList = computed({
+      get() {
+        return tempList.splice(0, 4)
+      },
+    })
+
     return {
       ...toRefs(state),
       setCollapse,
       changeTheme,
       navigateHome,
+      getShowList
     };
   },
 };
 </script>
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .el-header {
   position: fixed;
   width: 100%;
   height: 76px;
   padding: 0;
   z-index: 100;
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-  width: auto;
-  margin-left: 20px;
-
-  .el-select {
-    width: 105px;
-    margin-left: 30px;
-    background-color: #192038;
-  }
-
-  .sidebar-toggle {
-    text-decoration: none;
-  }
-
-  .logo {
-    padding: 0 2.25rem;
-    font-size: 1.75rem;
-    white-space: nowrap;
-    text-decoration: none;
-    color: #fff;
-  }
 }
 
 .header-layout {
@@ -194,9 +193,48 @@ export default {
   height: 100%;
   font-size: 12px;
   text-align: right;
-  background-color: #222b45;
+  @include bg_color("secondaryColor");
   color: var(--el-text-color-primary);
   box-shadow: 0 0.5rem 1rem 0 #1a1f33;
+
+  :deep(.el-input__wrapper) {
+    padding: 0;
+
+    .el-input__inner {
+      border-radius: 3px;
+      border-color: #101426;
+      @include font_color("fontColor");
+      @include bg_color("mainColor");
+      font-size: 0.9375rem;
+      font-weight: 600;
+      line-height: 1.5rem;
+    }
+  }
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    width: auto;
+    margin-left: 20px;
+
+    .el-select {
+      width: 105px;
+      margin-left: 30px;
+      @include bg_color("mainColor");
+    }
+
+    .sidebar-toggle {
+      text-decoration: none;
+    }
+
+    .logo {
+      padding: 0 2.25rem;
+      font-size: 1.75rem;
+      white-space: nowrap;
+      text-decoration: none;
+      @include font_color("fontColor");
+    }
+  }
 }
 
 .header-container-right {
@@ -215,7 +253,8 @@ export default {
   }
 
   .language {
-    width: 102px;
+    width: 128px;
+    padding-left: 22px;
 
     .el-select {
       height: 45px;
@@ -228,12 +267,13 @@ export default {
     margin-left: 20px;
 
     .el-dropdown {
+      margin-left: 20px;
       margin-right: 0
     }
 
     .user-info {
       font-size: 18px;
-      color: #fff;
+      @include font_color("fontColor");
 
       >div {
         display: flex;
@@ -246,7 +286,19 @@ export default {
       }
     }
   }
+}
 
+.view-more {
+  position: relative;
+  width: 100%;
+  margin-left: -4px;
+  text-align: center;
+
+  .el-icon {
+    position: absolute;
+    top: 11px;
+    right: -4px;
+  }
 }
 
 .logo-container {
@@ -254,22 +306,8 @@ export default {
   align-items: center;
 }
 
-:deep(.el-input__wrapper) {
-  padding: 0;
-
-  .el-input__inner {
-    border-color: #36f;
-    border-radius: 3px;
-    color: #fff;
-    background-color: #192038;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    line-height: 1.5rem;
-  }
-}
-
 .el-popper {
-  background-color: #222b45;
+  @include bg_color("secondaryColor");
 }
 
 .user-img {
@@ -278,16 +316,13 @@ export default {
   border-radius: 50%;
 }
 
-.el-dropdown {
-  // margin-left: 50px;
-}
-
 .el-dropdown__popper .el-dropdown-menu {
-  background-color: #222b45;
+  @include bg_color("secondaryColor");
 
   :deep(.el-dropdown-menu__item) {
     border: 1px solid #151a30;
-    color: #fff !important
+    @include border_color("borderColor");
+    @include font_color("fontColor");
   }
 
   :deep(.el-dropdown-menu__item:not(.is-disabled):hover) {

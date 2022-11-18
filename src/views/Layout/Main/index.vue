@@ -31,6 +31,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .main-layout {
   padding: 0;
 
@@ -39,9 +41,8 @@ export default {
     flex: 1;
     flex-direction: column;
     min-width: 0;
-
-    background-color: #151a30;
-    color: #fff;
+    @include bg_color("mainBodyColor");
+    @include font_color("fontColor");
     font-family: Open Sans, sans-serif;
     font-size: 0.9375rem;
     font-weight: 400;
@@ -69,8 +70,8 @@ export default {
     .el-input__inner {
       border-radius: 3px;
       border-color: #101426;
-      color: #fff;
-      background-color: #192038;
+      @include font_color("fontColor");
+      @include bg_color("mainColor");
       font-size: 0.9375rem;
       font-weight: 600;
       line-height: 1.5rem;

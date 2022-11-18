@@ -3,6 +3,8 @@
 </template>
 
 <style lang="scss">
+@import "@/styles/switchTheme.scss";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -25,6 +27,6 @@ nav {
 }
 
 .custom-select {
-  background-color: #222b45 !important;
+  @include bg_color("secondaryColor");
 }
 </style>

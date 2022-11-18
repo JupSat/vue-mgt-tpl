@@ -181,9 +181,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .earning-card {
   height: 216px;
-  background-color: #222b45;
+  @include bg_color("secondaryColor");
   border-radius: 4px;
 
   .card-body {
@@ -199,7 +201,7 @@ export default {
         border-bottom: 1px solid #151a30;
         border-top-left-radius: 0.25rem;
         border-top-right-radius: 0.25rem;
-        color: #fff;
+        @include font_color("fontColor");
         font-family: Open Sans, sans-serif;
         font-size: 0.9375rem;
         font-weight: 600;
@@ -213,7 +215,7 @@ export default {
           .el-select {
             width: 105px;
             border-radius: 4px;
-            background-color: #192038;
+            @include bg_color("mainColor");
           }
         }
 

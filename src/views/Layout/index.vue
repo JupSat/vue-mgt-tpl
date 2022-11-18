@@ -1,6 +1,6 @@
 <template>
   <el-container class="layout-container">
-    <Header @changeCollapse="setCollapse"></Header>
+    <Header @changeCollapse="setCollapse" @switchTheme="switchTheme"></Header>
     <Settings></Settings>
     <el-container class="body-container">
       <Aside @goView="switchView" ref="asideRef"></Aside>
@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import Header from "./Header";
 import Aside from "./Aside";
 import Main from "./Main";
@@ -35,25 +35,35 @@ export default {
       asideRef.value.setCollapse()
     }
 
+    const switchTheme = (theme) => {
+      window.document.documentElement.setAttribute("data-theme", theme);
+    }
+
+    onMounted(async () => {
+      switchTheme('dark')
+    });
+
     return {
       mainRef,
       asideRef,
       switchView,
-      setCollapse
+      setCollapse,
+      switchTheme
     }
   },
 };
 </script>
 
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .layout-container {
   text-align: left;
-  background: #151a30;
+  @include bg_color("mainColor");
 
   .body-container {
     height: 100vh;
     padding-top: 76px;
   }
-
 }
 </style>

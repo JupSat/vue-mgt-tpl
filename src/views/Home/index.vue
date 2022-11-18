@@ -47,7 +47,6 @@ export default {
     position: absolute;
     width: 100vw;
     height: 100vh;
-    // background-color: #151a30;
 
     .home-left {
       width: 37%;

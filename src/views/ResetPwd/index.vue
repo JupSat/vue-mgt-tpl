@@ -105,6 +105,8 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "@/styles/switchTheme.scss";
+
 .reset-pwd {
   width: 375px;
   background-color: #13152C;
@@ -112,7 +114,7 @@ export default {
   border-radius: 10px;
 
   .title {
-    color: #fff;
+    @include font_color("fontColor");
     margin-bottom: 20px;
   }
 

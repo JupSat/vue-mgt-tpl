@@ -88,41 +88,50 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .el-aside {
-  background-color: #151a30;
+  @include bg_color("mainColor");
   box-shadow: 0 0.5rem 1rem 0 #1a1f33;
-  color: #fff;
+  @include font_color("fontColor");
   font-family: Open Sans, sans-serif;
   font-size: 0.9375rem;
   font-weight: 400;
   line-height: 1.25rem;
   width: auto;
+
+  :deep(.el-menu-item) {
+    min-width: 217.37px;
+    @include font_color("fontColor");
+  }
+
+  :deep(.el-sub-menu__title) {
+    @include bg_color("secondaryColor");
+    border-bottom: 1px solid #151a30 !important;
+    @include font_color("fontColor");
+
+    span {
+      padding-right: 25px;
+    }
+  }
+
+  :deep(.el-scrollbar__thumb) {
+    @include bg_color("scrollbarColor");
+    opacity: 1;
+  }
 }
 
 .el-menu {
   border-right: none;
-}
-
-:deep(.el-sub-menu__title) {
-  background-color: #222b45;
-  border-bottom: 1px solid #151a30 !important;
-  color: #fff;
-
-  span {
-    padding-right: 25px;
-  }
+  @include bg_color("secondaryColor");
 }
 
 :deep(.el-sub-menu__title:hover) {
   color: #598bff;
 }
 
-:deep(.el-menu-item) {
-  min-width: 217.37px;
-}
-
 .el-menu-item-group {
-  background-color: #222b45;
+  @include bg_color("secondaryColor");
 
   ul>.is-active {
     color: #598bff;
@@ -134,9 +143,9 @@ export default {
 }
 
 .el-menu-item {
-  background-color: #222b45;
+  @include font_color("fontColor");
+  @include bg_color("secondaryColor");
   border-bottom: 1px solid #151a30;
-  color: #fff;
 }
 
 .el-menu-item:hover {
@@ -150,10 +159,5 @@ export default {
 :deep(.el-scrollbar__bar.is-vertical > div) {
   width: 65%;
   margin-left: 4px;
-}
-
-:deep(.el-scrollbar__thumb) {
-  background-color: #101426;
-  opacity: 1;
 }
 </style>

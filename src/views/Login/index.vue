@@ -145,6 +145,8 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .login_content {
   width: 375px;
   background-color: #13152C;
@@ -152,7 +154,7 @@ export default {
   border-radius: 10px;
 
   .title {
-    color: #fff;
+    @include font_color("fontColor");
     margin-bottom: 20px;
   }
 

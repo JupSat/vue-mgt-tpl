@@ -101,6 +101,6 @@ export default {
   today: '今天',
   page401: '401',
   page404: '404',
-  profile: '个人信息',
+  profile: '个人中心',
   settings: '设置',
 };
