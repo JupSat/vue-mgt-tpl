@@ -21,6 +21,7 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(res => {
   removePendingRequest(res.config);
   console.log('resp', res)
+  return res.data
 },
   error => {
     removePendingRequest(error.config || {});

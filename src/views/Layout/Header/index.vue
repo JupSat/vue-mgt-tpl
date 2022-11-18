@@ -20,10 +20,11 @@
       </div>
 
       <div class="header-container-right">
-        <div>
-          <el-icon :size="23" :color="color">
-            <Search />
-          </el-icon>
+        <div class="search">
+          <el-select v-model="menuValue" filterable remote reserve-keyword :remote-method="remoteMethod"
+            :placeholder="$t('plzEnterKeyword')" :loading="loading">
+            <el-option v-for="item in menuList" :key="item.id" :label="$t(item.id)" :value="item.id" />
+          </el-select>
         </div>
         <div>
           <el-dropdown trigger="click">
@@ -105,7 +106,7 @@
                 <el-dropdown-item>
                   {{ $t('settings') }}
                 </el-dropdown-item>
-                <el-dropdown-item>
+                <el-dropdown-item @click="signOut">
                   {{ $t('signOut') }}
                 </el-dropdown-item>
               </el-dropdown-menu>
@@ -126,6 +127,8 @@ import {
 } from "vue";
 import { useI18n } from 'vue-i18n'
 // import { useCssVar } from '@vueuse/core'
+import request from "@/utils/http/request";
+import { useRouter } from 'vue-router'
 
 export default {
   name: "Header",
@@ -136,9 +139,13 @@ export default {
       theme: 'dark',
       language: 'zh',
       color: '#8f9bb3',
-      list: [1, 2, 3, 4, 5, 6, 7, 8]
+      list: [1, 2, 3, 4, 5, 6, 7, 8],
+      menuList: [],
+      menuValue: '',
+      loading: false
     });
 
+    // 菜单展开(或折叠)
     const setCollapse = () => {
       emit("changeCollapse");
     };
@@ -147,10 +154,18 @@ export default {
       emit("switchTheme", state.theme);
     };
 
+    const router = useRouter()
+    // 回到首页
     const navigateHome = () => {
-      // to-do: 首页导航
+      router.push({ path: '/' })
     };
 
+    // 退出
+    const signOut = () => {
+      navigateHome()
+    };
+
+    // 语言切换
     const { locale } = useI18n()
     watch(() => state.language, () => {
       locale.value = state.language
@@ -163,12 +178,36 @@ export default {
       },
     })
 
+    // 搜索菜单
+    const remoteMethod = (query) => {
+      if (query) {
+        state.loading = true
+        request({
+          url: "/menu/getMenu",
+          method: "post",
+          data: {},
+        }).then(res => {
+          const subMenuList = res.data.subMenuList.map(list => list.menuItemGroup.map(group => group.menuItem).flat()).flat()
+          const menuList = [...res.data.menuList, ...subMenuList]
+
+          state.loading = false
+          state.menuList = menuList.filter((item) => {
+            return item.id.toLowerCase().includes(query.toLowerCase())
+          })
+        });
+      } else {
+        state.menuList = []
+      }
+    }
+
     return {
       ...toRefs(state),
       setCollapse,
       changeTheme,
       navigateHome,
-      getShowList
+      getShowList,
+      remoteMethod,
+      signOut
     };
   },
 };
@@ -193,9 +232,9 @@ export default {
   height: 100%;
   font-size: 12px;
   text-align: right;
-  @include bg_color("secondaryColor");
   color: var(--el-text-color-primary);
-  box-shadow: 0 0.5rem 1rem 0 #1a1f33;
+  @include bg_color("secondaryColor");
+  @include box_shadow("boxShadowColor");
 
   :deep(.el-input__wrapper) {
     padding: 0;
@@ -205,9 +244,8 @@ export default {
       border-color: #101426;
       @include font_color("fontColor");
       @include bg_color("mainColor");
-      font-size: 0.9375rem;
-      font-weight: 600;
-      line-height: 1.5rem;
+      font-size: 14px;
+      font-weight: 400;
     }
   }
 
@@ -235,58 +273,71 @@ export default {
       @include font_color("fontColor");
     }
   }
-}
 
-.header-container-right {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-right: 25px;
-
-  >div {
+  .header-container-right {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 60px;
-    margin: 0px 2px;
-    border-left: 1px solid #151a30;
-  }
+    justify-content: space-evenly;
+    margin-right: 25px;
 
-  .language {
-    width: 128px;
-    padding-left: 22px;
 
-    .el-select {
-      height: 45px;
-      padding-top: 4px;
+    >div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      margin: 0px 2px;
+      border-left: 1px solid #151a30;
     }
-  }
 
-  .user-info-dropdown {
-    width: 120px;
-    margin-left: 20px;
+    .search {
+      width: 128px;
 
-    .el-dropdown {
+      .el-select {
+        height: 45px;
+        padding-top: 4px;
+      }
+    }
+
+
+    .language {
+      width: 128px;
+      padding-left: 22px;
+
+      .el-select {
+        height: 45px;
+        padding-top: 4px;
+      }
+    }
+
+    .user-info-dropdown {
+      width: 120px;
       margin-left: 20px;
-      margin-right: 0
-    }
 
-    .user-info {
-      font-size: 18px;
-      @include font_color("fontColor");
-
-      >div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      .el-dropdown {
+        margin-left: 20px;
+        margin-right: 0
       }
 
-      span {
-        margin-left: 6px;
+      .user-info {
+        font-size: 18px;
+        @include font_color("fontColor");
+
+        >div {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        span {
+          margin-left: 6px;
+        }
       }
     }
   }
 }
+
+
 
 .view-more {
   position: relative;

@@ -42,7 +42,7 @@ export default {
           itemWidth: 15,
           itemGap: 20,
           textStyle: {
-            color: "white",
+            color: "#8f9bb3",
             fontFamily: "sans-serif",
             fontSize: 15,
             lineHeight: 20,

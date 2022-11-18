@@ -30,7 +30,7 @@
 
 <script>
 import { reactive, toRefs } from "vue";
-import axios from 'axios'
+import request from "@/utils/http/request";
 export default {
   name: "Aside",
   emits: ['goView'],
@@ -66,11 +66,14 @@ export default {
     };
 
     const getMenu = () => {
-      axios.post('/menu/getMenu')
-        .then(res => {
-          state.menuList = res.data.data.menuList
-          state.subMenuList = res.data.data.subMenuList
-        })
+      request({
+        url: "/menu/getMenu",
+        method: "post",
+        data: {},
+      }).then(res => {
+        state.menuList = res.data.menuList
+        state.subMenuList = res.data.subMenuList
+      });
     }
     getMenu()
 

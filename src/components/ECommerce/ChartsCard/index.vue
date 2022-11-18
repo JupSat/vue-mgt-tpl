@@ -174,7 +174,7 @@ export default {
         position: absolute;
         right: 57px;
         top: 115px;
-        z-index: 1000;
+        z-index: 2;
 
         .el-select {
           width: 105px;

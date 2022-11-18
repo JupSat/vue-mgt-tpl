@@ -103,4 +103,5 @@ export default {
   page404: '404',
   profile: 'Profile',
   settings: 'Settings',
+  plzEnterKeyword: 'Enter a keyword'
 };

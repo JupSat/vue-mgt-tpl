@@ -38,6 +38,13 @@
   }
 }
 
+//获取盒子阴影颜色
+@mixin box_shadow($color) {
+  @include themeify {
+    box-shadow: 0 0.5rem 1rem 0 themed($color) !important;
+  }
+}
+
 // 获取主题颜色
 @function get-color($color, $shade: 'mainColor', $map: $themes) {
   // check color exists
