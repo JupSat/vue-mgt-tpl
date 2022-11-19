@@ -1,15 +1,9 @@
 <template>
   <el-aside>
     <el-scrollbar always>
-      <el-menu :default-openeds="defaultExpand" default-active="1" :collapse="isCollapse" collapse-transition
-        @open="handleOpen" @close="handleClose">
-        <el-menu-item v-for="{ id, icon } in menuList" :key="id" :index="id" @click="clickMenu(id)">
-          <el-icon>
-            <component :is="icon" />
-          </el-icon>
-          <template #title>{{ $t(id) }}</template>
-        </el-menu-item>
-        <el-sub-menu v-for="{ id, icon, menuItemGroup } in subMenuList" :key="id" :index="id" @select="clickMenu"
+      <el-menu :default-openeds="defaultExpand" :router="true" :default-active="route.path" :collapse="isCollapse"
+        collapse-transition @open="handleOpen" @close="handleClose">
+        <el-sub-menu v-for="{ id, icon, menuItemGroup } in menuList" :key="id" :index="id" @select="clickMenu"
           @open="handleOpen" @close="handleClose">
           <template #title>
             <el-icon>
@@ -19,7 +13,8 @@
           </template>
           <el-menu-item-group v-for="group in  menuItemGroup" :key="group.id" @select="selectMenuItem">
             <template #title>{{ group.title }}</template>
-            <el-menu-item v-for="item in group.menuItem" :key="item.index" @click="clickMenu(item.id)">{{ $t(item.id) }}
+            <el-menu-item v-for="item in group.menuItem" :key="item.id" :index="item.id" :route="item.id">
+              {{ $t(item.id) }}
             </el-menu-item>
           </el-menu-item-group>
         </el-sub-menu>
@@ -29,8 +24,10 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs, watch } from "vue";
+import { useRoute } from 'vue-router'
 import request from "@/utils/http/request";
+
 export default {
   name: "Aside",
   emits: ['goView'],
@@ -39,7 +36,6 @@ export default {
       defaultExpand: ["1"],
       isCollapse: false,
       menuList: null,
-      subMenuList: null
     });
 
     const handleOpen = (key, keyPath) => {
@@ -72,10 +68,11 @@ export default {
         data: {},
       }).then(res => {
         state.menuList = res.data.menuList
-        state.subMenuList = res.data.subMenuList
       });
     }
     getMenu()
+
+    const route = useRoute();
 
     return {
       ...toRefs(state),
@@ -84,7 +81,8 @@ export default {
       clickMenu,
       selectMenu,
       selectMenuItem,
-      setCollapse
+      setCollapse,
+      route,
     };
   },
 };
@@ -103,7 +101,7 @@ export default {
   line-height: 1.25rem;
   width: auto;
 
-  :deep(.el-menu-item) {
+  :deep(.el-sub-menu) {
     min-width: 217.37px;
     @include font_color("fontColor");
   }

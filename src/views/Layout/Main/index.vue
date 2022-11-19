@@ -3,6 +3,7 @@
     <el-main class="main-layout">
       <el-scrollbar>
         <div class="main-body">
+          <Breadcrumb class="main-breadcrumb"></Breadcrumb>
           <div class="main-container">
             <div class="main-content">
               <router-view />
@@ -16,15 +17,20 @@
 
 <script>
 import { useRouter } from 'vue-router'
+import Breadcrumb from "@/views/Layout/Breadcrumb";
+
 export default {
   name: "Main",
+  components: {
+    Breadcrumb
+  },
   setup() {
     const router = useRouter()
     const switchView = (path) => {
       router.push({ path: path })
     }
     return {
-      switchView
+      switchView,
     };
   },
 };
@@ -49,6 +55,11 @@ export default {
     line-height: 1.25rem;
     min-height: 100vh;
 
+    .main-breadcrumb {
+      width: 100%;
+      height: 30px;
+    }
+
     .main-container {
       display: flex;
       flex: 1;
@@ -72,9 +83,8 @@ export default {
       border-color: #101426;
       @include font_color("fontColor");
       @include bg_color("mainColor");
-      font-size: 0.9375rem;
-      font-weight: 600;
-      line-height: 1.5rem;
+      font-size: 14px;
+      font-weight: 400;
     }
   }
 }

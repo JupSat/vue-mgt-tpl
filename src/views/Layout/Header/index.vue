@@ -187,8 +187,7 @@ export default {
           method: "post",
           data: {},
         }).then(res => {
-          const subMenuList = res.data.subMenuList.map(list => list.menuItemGroup.map(group => group.menuItem).flat()).flat()
-          const menuList = [...res.data.menuList, ...subMenuList]
+          const menuList = res.data.menuList.map(list => list.menuItemGroup.map(group => group.menuItem).flat()).flat()
 
           state.loading = false
           state.menuList = menuList.filter((item) => {
@@ -280,7 +279,6 @@ export default {
     justify-content: space-evenly;
     margin-right: 25px;
 
-
     >div {
       display: flex;
       align-items: center;
@@ -288,6 +286,10 @@ export default {
       width: 60px;
       margin: 0px 2px;
       border-left: 1px solid #151a30;
+    }
+
+    >div:nth-child(1) {
+      border-left: none;
     }
 
     .search {

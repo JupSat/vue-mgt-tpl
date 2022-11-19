@@ -16,6 +16,8 @@ $themes: (
     borderColor: #fff,
     //盒子阴影
     boxShadowColor: rgb(44 51 73 / 10%),
+    // 悬浮
+    hoverColor: #409eff,
     //页面主标题色/重要文字/弹框标题色
     titleColor: #08121c,
     //默认字体色/二级信息字体色
@@ -32,8 +34,7 @@ $themes: (
     //辅助警示提示作用
     warningColor: #e7d62c,
     //错误提示文字色/错误提示边框色
-    errorColor: #ff542c,
-    hoverColor: #fff
+    errorColor: #ff542c
   ),
   'dark': (
     //整体主色调/菜单栏背景
@@ -50,6 +51,8 @@ $themes: (
     scrollbarColor: #101426,
     //盒子阴影
     boxShadowColor: #1a1f33,
+    // 悬浮
+    hoverColor: #409eff,
     //页面主标题色/重要文字/弹框标题色
     titleColor: #08121c,
     //默认字体色/二级信息字体色
@@ -66,7 +69,6 @@ $themes: (
     //辅助警示提示作用
     warningColor: #e7d62c,
     //错误提示文字色/错误提示边框色
-    errorColor: #ff542c,
-    hoverColor: #fff
+    errorColor: #ff542c
   )
 );

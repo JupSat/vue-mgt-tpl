@@ -126,7 +126,7 @@ export default {
 
     const router = useRouter();
     const goOtherPage = () => {
-      router.push({ path: 'eCommerce' });
+      router.push({ path: '/eCommerce' });
     };
 
     return {

@@ -9,16 +9,42 @@ Mock.setup({
 Mock.mock('/menu/getMenu', 'post', () => ({
   status: 0,
   data: {
-    menuList: [{
-      id: "eCommerce",
-      name: "E-commerce",
-      icon: 'Monitor'
-    }, {
-      id: "dashboard",
-      name: "IoT Dashboard",
-      icon: 'HomeFilled'
-    }],
-    subMenuList: [
+    menuList: [
+      {
+        id: "eCommerce",
+        name: "E-commerce",
+        icon: 'Monitor',
+        menuItemGroup: [
+          {
+            id: "1",
+            title: "Group1",
+            menuItem: [
+              { id: "overview", name: "Overview", index: "1" },
+            ],
+          }
+        ],
+      },
+      {
+        id: "dashboard",
+        name: "IoT Dashboard",
+        icon: 'HomeFilled',
+        menuItemGroup: [
+          {
+            id: "1",
+            title: "Group1",
+            menuItem: [
+              { id: "workplace", name: "workplace", index: "1" },
+            ],
+          },
+          {
+            id: "1",
+            title: "Group1",
+            menuItem: [
+              { id: "workflow", name: "Workflow", index: "1" },
+            ],
+          },
+        ],
+      },
       {
         seq: 1,
         id: "layout",
