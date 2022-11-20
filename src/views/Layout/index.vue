@@ -28,8 +28,8 @@ export default {
     const mainRef = ref(null)
     const asideRef = ref(null)
 
-    const switchView = (path) => {
-      mainRef.value.switchView(path)
+    const switchView = (name) => {
+      mainRef.value.switchView(name)
     }
     const setCollapse = () => {
       asideRef.value.setCollapse()

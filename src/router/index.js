@@ -1,10 +1,11 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/views/Layout'
+import { useMenuStore } from "@/pinia/modules/menu";
 
-const routes = [
+let routes = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/home',
   },
   {
     path: '/home',
@@ -13,73 +14,54 @@ const routes = [
     meta: {
       title: '首页',
       id: 'home'
-    }
-  },
-  // {
-  //   path: '/layout',
-  //   name: 'Layout',
-  //   component: Layout,
-  //   meta: {
-  //     title: '布局',
-  //     id: 'layout'
-  //   },
-  // },
-  {
-    path: '/eCommerce',
-    name: 'ECommerce',
-    // component: () => import(/* webpackChunkName: "eCommerce" */ '@/components/ECommerce'),
-    component: Layout,
-    redirect: '/eCommerce/overview',
-    meta: {
-      title: '概览',
-      id: 'ECommerce'
     },
-    children: [
-      {
-        path: '/eCommerce/overview',
-        name: 'Overview',
-        component: () => import(/* webpackChunkName: "eCommerce" */ '@/components/ECommerce'),
-        meta: {
-          title: '概览',
-          id: 'ECommerce'
-        },
-      }]
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Layout,
-    redirect: '/dashboard/workplace',
-    meta: {
-      title: '仪表盘',
-      id: 'dashboard'
-    },
-    children: [
-      {
-        path: '/dashboard/workplace',
-        name: 'workplace',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/components/Dashboard'),
-        meta: {
-          title: '工作台',
-          id: 'workplace'
-        },
-      },
-      {
-        path: '/dashboard/workflow',
-        name: 'Workflow',
-        component: () => import(/* webpackChunkName: "workflow" */ '@/components/Dashboard/Workflow'),
-        meta: {
-          title: '工作流',
-          id: 'workflow'
-        },
-      },
-    ]
   },
 ]
+
+async function getDynamicRoutes() {
+  const menuStore = useMenuStore()
+  await menuStore.loadMenu()
+  const menuList = menuStore.menuList
+  const iterator = (list, parent) => {
+    const menus = []
+    list.forEach(el => {
+      let path = parent.id ? `/${parent.id}/${el.id}` : `/${el.id}`
+      const item = {
+        path,
+        name: el.name,
+        icon: el.icon,
+        component: Layout,
+        meta: {
+          title: el.id,
+          id: el.id
+        },
+      }
+
+      if (parent && parent.name && (!el.children || el.children.length === 0)) {
+        item.component = () => import(`@/components/${parent.name}/${el.name}`)
+      }
+      if (el.children && el.children.length > 0) {
+        item.children = iterator(el.children, el)
+        el.id && (item.redirect = `/${el.id}/${el.children[0].id}`)
+      }
+      menus.push(item)
+    });
+    return menus
+  }
+  iterator(menuList, '').forEach(v => {
+    router.addRoute(v)
+  })
+}
+
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach(async (to, from, next) => {
+  await getDynamicRoutes()
+  next()
 })
 
 export default router

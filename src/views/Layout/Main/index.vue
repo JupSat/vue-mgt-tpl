@@ -26,8 +26,8 @@ export default {
   },
   setup() {
     const router = useRouter()
-    const switchView = (path) => {
-      router.push({ path: path })
+    const switchView = (name) => {
+      router.push({ name })
     }
     return {
       switchView,

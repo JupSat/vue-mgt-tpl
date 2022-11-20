@@ -1,22 +1,26 @@
 <template>
   <el-aside>
     <el-scrollbar always>
-      <el-menu :default-openeds="defaultExpand" :router="true" :default-active="route.path" :collapse="isCollapse"
-        collapse-transition @open="handleOpen" @close="handleClose">
-        <el-sub-menu v-for="{ id, icon, menuItemGroup } in menuList" :key="id" :index="id" @select="clickMenu"
-          @open="handleOpen" @close="handleClose">
+      <el-menu :default-active="route.path" :collapse="isCollapse" collapse-transition @open="handleOpen"
+        @close="handleClose">
+        <el-menu-item v-for="{ id, icon, name } in menuNoChild" :key="id" :index="id" @click="clickMenu(name)">
+          <el-icon>
+            <component :is="icon" />
+          </el-icon>
+          <template #title>{{ $t(id) }}</template>
+        </el-menu-item>
+        <el-sub-menu v-for="{ id, icon, children } in menuHasChild" :key="id" :index="id" @open="handleOpen"
+          @close="handleClose">
           <template #title>
             <el-icon>
               <component :is="icon" />
             </el-icon>
             <span>{{ $t(id) }}</span>
           </template>
-          <el-menu-item-group v-for="group in  menuItemGroup" :key="group.id" @select="selectMenuItem">
-            <template #title>{{ group.title }}</template>
-            <el-menu-item v-for="item in group.menuItem" :key="item.id" :index="item.id" :route="item.id">
-              {{ $t(item.id) }}
-            </el-menu-item>
-          </el-menu-item-group>
+
+          <el-menu-item v-for="item in children" :key="item.id" :index="item.id" @click="clickMenu(item.name)">
+            {{ $t(item.id) }}
+          </el-menu-item>
         </el-sub-menu>
       </el-menu>
     </el-scrollbar>
@@ -24,18 +28,18 @@
 </template>
 
 <script>
-import { reactive, toRefs, watch } from "vue";
+import { reactive, toRefs } from "vue";
 import { useRoute } from 'vue-router'
-import request from "@/utils/http/request";
+import { useMenuStore } from "@/pinia/modules/menu";
 
 export default {
   name: "Aside",
   emits: ['goView'],
   setup(props, { emit }) {
     const state = reactive({
-      defaultExpand: ["1"],
       isCollapse: false,
-      menuList: null,
+      menuNoChild: [],
+      menuHasChild: []
     });
 
     const handleOpen = (key, keyPath) => {
@@ -45,8 +49,8 @@ export default {
       console.log(key, keyPath);
     };
 
-    const clickMenu = (path) => {
-      emit('goView', path)
+    const clickMenu = (name) => {
+      emit('goView', name)
     };
 
     const selectMenu = (key, keyPath) => {
@@ -61,14 +65,11 @@ export default {
       state.isCollapse = !state.isCollapse;
     };
 
-    const getMenu = () => {
-      request({
-        url: "/menu/getMenu",
-        method: "post",
-        data: {},
-      }).then(res => {
-        state.menuList = res.data.menuList
-      });
+    const getMenu = async () => {
+      const menuStore = useMenuStore()
+      const menuList = menuStore.menuList
+      state.menuNoChild = menuList.filter(item => !item.children || item.children.some(v => v.hidden))
+      state.menuHasChild = menuList.filter(item => item.children && item.children.some(v => !v.hidden))
     }
     getMenu()
 
