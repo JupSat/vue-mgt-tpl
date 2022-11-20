@@ -11,7 +11,7 @@ const service = axios.create({
 service.interceptors.request.use(config => {
   removePendingRequest(config);
   addPendingRequest(config);
-  console.log('req', config)
+  // console.log('req', config)
   return config
 }, error => {
   Promise.reject(error)
@@ -20,7 +20,7 @@ service.interceptors.request.use(config => {
 // 响应拦截器
 service.interceptors.response.use(res => {
   removePendingRequest(res.config);
-  console.log('resp', res)
+  // console.log('resp', res)
   return res.data
 },
   error => {

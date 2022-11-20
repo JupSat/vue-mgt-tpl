@@ -103,5 +103,8 @@ export default {
   page404: '404',
   profile: 'Profile',
   settings: 'Settings',
-  plzEnterKeyword: 'Enter a keyword'
-};
+  plzEnterKeyword: 'Enter a keyword',
+  workplace: 'Workplace',
+  workflow: 'Workflow',
+  overview: 'Overview'
+}

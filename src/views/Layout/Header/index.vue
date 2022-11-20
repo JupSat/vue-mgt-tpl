@@ -38,14 +38,16 @@
                 <el-dropdown-item v-for="item in getShowList">
                   这是第{{ item }}个邮件
                 </el-dropdown-item>
-                <el-dropdown-item v-show="list.length > 4">
-                  <div class="view-more">
-                    查看更多
-                    <el-icon :size="14">
-                      <ArrowRight />
-                    </el-icon>
-                  </div>
-                </el-dropdown-item>
+                <template v-show="list.length > 4">
+                  <el-dropdown-item>
+                    <div class="view-more">
+                      查看更多
+                      <el-icon :size="14">
+                        <ArrowRight />
+                      </el-icon>
+                    </div>
+                  </el-dropdown-item>
+                </template>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -62,14 +64,16 @@
                 <el-dropdown-item v-for="item in getShowList">
                   <span>这是第{{ item }}条消息</span>
                 </el-dropdown-item>
-                <el-dropdown-item v-show="list.length > 4">
-                  <div class="view-more">
-                    查看更多
-                    <el-icon :size="14">
-                      <ArrowRight />
-                    </el-icon>
-                  </div>
-                </el-dropdown-item>
+                <template v-show="list.length > 4">
+                  <el-dropdown-item>
+                    <div class="view-more">
+                      查看更多
+                      <el-icon :size="14">
+                        <ArrowRight />
+                      </el-icon>
+                    </div>
+                  </el-dropdown-item>
+                </template>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -117,11 +121,11 @@
     </div>
   </el-header>
 </template>
-
 <script>
 import {
   reactive,
   toRefs,
+  ref,
   watch,
   computed
 } from "vue";
@@ -129,6 +133,7 @@ import { useI18n } from 'vue-i18n'
 // import { useCssVar } from '@vueuse/core'
 import request from "@/utils/http/request";
 import { useRouter } from 'vue-router'
+import { useMenuStore } from "@/pinia/modules/menu";
 
 export default {
   name: "Header",
@@ -182,18 +187,12 @@ export default {
     const remoteMethod = (query) => {
       if (query) {
         state.loading = true
-        request({
-          url: "/menu/getMenu",
-          method: "post",
-          data: {},
-        }).then(res => {
-          const menuList = res.data.menuList.map(list => list.menuItemGroup.map(group => group.menuItem).flat()).flat()
-
-          state.loading = false
-          state.menuList = menuList.filter((item) => {
-            return item.id.toLowerCase().includes(query.toLowerCase())
-          })
-        });
+        const menuStore = useMenuStore()
+        const menuList = menuStore.menuList.map(list => list.children.flat()).flat()
+        state.loading = false
+        state.menuList = menuList.filter((item) => {
+          return item.id.toLowerCase().includes(query.toLowerCase())
+        })
       } else {
         state.menuList = []
       }
@@ -206,7 +205,7 @@ export default {
       navigateHome,
       getShowList,
       remoteMethod,
-      signOut
+      signOut,
     };
   },
 };

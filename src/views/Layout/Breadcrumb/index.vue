@@ -1,7 +1,8 @@
 <template>
   <div class="bread-crumb">
     <el-breadcrumb :separator-icon="ArrowRight">
-      <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index" :to="{ path: item.path }">{{ $t(item.name)
+      <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index" :to="{ path: item.path }">{{
+          $t(translate(item))
       }}
       </el-breadcrumb-item>
     </el-breadcrumb>
@@ -17,21 +18,18 @@ export default {
   name: "Breadcrumb",
   setup() {
     const dataList = reactive({
-      breadcrumbs: [{
-        name: "eCommerce",
-        path: "/eCommerce"
-      }, {
-        name: "测试路径一",
-        path: "/test1"
-      }, {
-        name: "测试路径二",
-        path: "/test2"
-      }]
+      breadcrumbs: []
     })
 
     const route = useRoute()
     const getBreadcrumb = () => {
+      const matched = route.matched.filter((item) => item.meta.title)
+      dataList.breadcrumbs = matched.filter((item) => item.meta && item.meta.title)
+    }
 
+    const translate = (item) => {
+      let name = item.name
+      return name.replace(name[0], name[0].toLowerCase());
     }
 
     onMounted(() => {
@@ -44,7 +42,8 @@ export default {
 
     return {
       ArrowRight,
-      ...toRefs(dataList)
+      ...toRefs(dataList),
+      translate
     };
   },
 };

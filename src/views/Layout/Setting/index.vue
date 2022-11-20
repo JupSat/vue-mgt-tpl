@@ -5,10 +5,7 @@
         <Setting />
       </el-icon>
     </el-button>
-    <el-drawer v-model="drawer" :direction="direction">
-      <template #title>
-        <h4>功能待完善</h4>
-      </template>
+    <el-drawer v-model="drawer" :direction="direction" title="功能待完善">
       <template #default>
         <div>
           <el-radio v-model="radio1" label="Option 1" size="large">功能待完善</el-radio>

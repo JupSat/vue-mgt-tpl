@@ -103,5 +103,8 @@ export default {
   page404: '404',
   profile: '个人中心',
   settings: '设置',
-  plzEnterKeyword: '输入关键字'
+  plzEnterKeyword: '输入关键字',
+  workplace: '工作台',
+  workflow: '工作流',
+  overview: '概览'
 };

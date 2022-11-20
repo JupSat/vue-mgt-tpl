@@ -53,15 +53,24 @@ async function getDynamicRoutes() {
   })
 }
 
-
 const router = createRouter({
   history: createWebHashHistory(),
   routes
 })
 
 router.beforeEach(async (to, from, next) => {
-  await getDynamicRoutes()
-  next()
+  const menuStore = useMenuStore()
+  if (menuStore.menuList.length === 0) {
+    await getDynamicRoutes()
+
+    // matched为空时，防止找不到路由
+    if (to.matched.length == 0) {
+      router.push(to.path);
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
