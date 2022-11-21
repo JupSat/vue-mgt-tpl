@@ -25,9 +25,8 @@ async function getDynamicRoutes() {
   const iterator = (list, parent) => {
     const menus = []
     list.forEach(el => {
-      let path = parent.id ? `/${parent.id}/${el.id}` : `/${el.id}`
       const item = {
-        path,
+        path: el.path,
         name: el.name,
         icon: el.icon,
         component: Layout,
@@ -66,6 +65,8 @@ router.beforeEach(async (to, from, next) => {
     // matched为空时，防止找不到路由
     if (to.matched.length == 0) {
       router.push(to.path);
+      return
+    } else {
       next()
     }
   } else {

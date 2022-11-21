@@ -4,6 +4,7 @@
       <el-scrollbar>
         <div class="main-body">
           <Breadcrumb class="main-breadcrumb"></Breadcrumb>
+          <Tabs></Tabs>
           <div class="main-container">
             <div class="main-content">
               <router-view />
@@ -18,11 +19,13 @@
 <script>
 import { useRouter } from 'vue-router'
 import Breadcrumb from "@/views/Layout/Breadcrumb";
+import Tabs from "@/views/Layout/Tabs";
 
 export default {
   name: "Main",
   components: {
-    Breadcrumb
+    Breadcrumb,
+    Tabs
   },
   setup() {
     const router = useRouter()
@@ -70,7 +73,7 @@ export default {
         order: 1;
         flex: 1 0;
         min-width: 0;
-        padding: 2.25rem 2.25rem 0.75rem;
+        padding: 0 35px;
       }
     }
   }

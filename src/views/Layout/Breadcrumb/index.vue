@@ -28,8 +28,8 @@ export default {
     }
 
     const translate = (item) => {
-      let name = item.name
-      return name.replace(name[0], name[0].toLowerCase());
+      const [char] = item.name
+      return item.name.replace(char, char.toLowerCase());
     }
 
     onMounted(() => {
@@ -54,8 +54,7 @@ export default {
 
 .bread-crumb {
   width: 30px;
-  height: 100px;
-  padding: 25px 0 0px 34px;
+  padding: 12px 0 0px 8px;
 
   :deep(.el-breadcrumb__inner) {
     @include font_color("fontColor");
