@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import router from '@/router'
 import Breadcrumb from "@/views/Layout/Breadcrumb";
 import Tabs from "@/views/Layout/Tabs";
 
@@ -28,7 +28,6 @@ export default {
     Tabs
   },
   setup() {
-    const router = useRouter()
     const switchView = (name) => {
       router.push({ name })
     }

@@ -53,7 +53,7 @@
 <script>
 import { reactive, ref, toRefs } from "vue";
 import Register from "./../Register";
-import { useRouter } from "vue-router";
+import router from '@/router'
 import { useI18n } from 'vue-i18n'
 
 export default {
@@ -124,7 +124,6 @@ export default {
       emit("toResetPwd");
     };
 
-    const router = useRouter();
     const goOtherPage = () => {
       router.push({ path: '/eCommerce' });
     };

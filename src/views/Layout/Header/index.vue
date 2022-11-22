@@ -130,9 +130,7 @@ import {
   computed
 } from "vue";
 import { useI18n } from 'vue-i18n'
-// import { useCssVar } from '@vueuse/core'
-import request from "@/utils/http/request";
-import { useRouter } from 'vue-router'
+import router from '@/router'
 import { useMenuStore } from "@/pinia/modules/menu";
 
 export default {
@@ -159,7 +157,6 @@ export default {
       emit("switchTheme", state.theme);
     };
 
-    const router = useRouter()
     // 回到首页
     const navigateHome = () => {
       router.push({ path: '/' })

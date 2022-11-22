@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import router from '@/router'
 
 export const useTabsStore = defineStore('tabs', {
   state: () => {
@@ -23,6 +24,28 @@ export const useTabsStore = defineStore('tabs', {
     },
     setTabs(tabs) {
       this.tabs = tabs
+    },
+    removeTab(targetName) {
+      const tabs = this.tabs
+      const activeName = this.getNextTab(targetName)
+      this.setActiveTab(activeName)
+      this.setTabs(tabs.filter((tab) => tab.name !== targetName))
+      router.push({ name: activeName })
+    },
+    getNextTab(targetName) {
+      const tabs = this.tabs
+      let activeName = this.activeTab
+      if (activeName === targetName) {
+        tabs.forEach((tab, index) => {
+          if (tab.name === targetName) {
+            const nextTab = tabs[index + 1] || tabs[index - 1]
+            if (nextTab) {
+              activeName = nextTab.name
+            }
+          }
+        })
+      }
+      return activeName
     }
   },
 })

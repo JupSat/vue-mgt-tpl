@@ -2,7 +2,7 @@
   <div class="bread-crumb">
     <el-breadcrumb :separator-icon="ArrowRight">
       <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index" :to="{ path: item.path }">{{
-          $t(translate(item))
+          $t(firstCharChange(item))
       }}
       </el-breadcrumb-item>
     </el-breadcrumb>
@@ -27,7 +27,7 @@ export default {
       dataList.breadcrumbs = matched.filter((item) => item.meta && item.meta.title)
     }
 
-    const translate = (item) => {
+    const firstCharChange = (item) => {
       const [char] = item.name
       return item.name.replace(char, char.toLowerCase());
     }
@@ -43,7 +43,7 @@ export default {
     return {
       ArrowRight,
       ...toRefs(dataList),
-      translate
+      firstCharChange
     };
   },
 };
