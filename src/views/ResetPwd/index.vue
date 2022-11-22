@@ -62,7 +62,7 @@ export default {
       if (!value) {
         callback(new Error(t("plzEnterPwdAgain")));
       } else if (value !== state.formData.password) {
-        callback(new Error(t("psdInconsistent")));
+        callback(new Error(t("pwdInconsistent")));
       } else {
         callback();
       }
@@ -82,7 +82,7 @@ export default {
     const rules = {
       password: [
         { validator: validatePwd, trigger: "blur" },
-        { min: 6, max: 10, message: t("psdLenIn6To10"), trigger: "blur" },
+        { min: 6, max: 10, message: t("pwdLenIn6To10"), trigger: "blur" },
       ],
       checkPass: [{ validator: validatePwdAgain, trigger: "blur" }],
       email: [

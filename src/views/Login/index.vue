@@ -28,7 +28,7 @@
       </el-form-item>
       <el-form-item prop="captcha">
         <div class="captcha-item">
-          <el-input v-model="formData.captcha" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
+          <el-input v-model="formData.captcha" maxlength="6" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
           <div class="img">
             <img v-if="picPath" :src="picPath" :alt="$t('plzEnterCaptcha')" />
           </div>

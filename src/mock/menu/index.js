@@ -4,7 +4,7 @@ Mock.setup({
   timeout: "200-600",
 });
 
-Mock.mock("/menu/getMenu", "post", () => ({
+Mock.mock("api/menu/getMenu", "post", () => ({
   status: 0,
   data: {
     menuList: [

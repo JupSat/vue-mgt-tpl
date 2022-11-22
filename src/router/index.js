@@ -41,7 +41,7 @@ async function getDynamicRoutes() {
       }
       if (el.children && el.children.length > 0) {
         item.children = iterator(el.children, el)
-        el.id && (item.redirect = `/${el.id}/${el.children[0].id}`)
+        item.redirect = el.redirect
       }
       menus.push(item)
     });
@@ -67,7 +67,7 @@ router.beforeEach(async (to, from, next) => {
       router.push(to.path);
       return
     } else {
-      next()
+      next({ ...to, replace: true })
     }
   } else {
     next()
