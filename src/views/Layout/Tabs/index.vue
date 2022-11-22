@@ -165,6 +165,20 @@ export default {
 
 .el-tabs {
   --el-tabs-header-height: none;
+
+  :deep(.el-tabs--card>.el-tabs__header) {
+    border-bottom: none
+  }
+
+  :deep(.el-tabs__header) {
+    @include bg_color("secondaryColor");
+    border-radius: 4px;
+    border-bottom: none;
+
+    .el-tabs__item {
+      border-bottom: 1px solid #fff;
+    }
+  }
 }
 
 .tabs {
@@ -193,8 +207,18 @@ export default {
   .operate {
     display: inline-block;
     position: absolute;
-    right: 38px;
-    top: 26px;
+    right: 45px;
+    top: 20px;
+
+    .el-icon {
+      color: #fff;
+
+      &:hover {
+        cursor: pointer;
+        color: #409eff;
+      }
+    }
+
   }
 }
 
