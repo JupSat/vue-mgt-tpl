@@ -108,6 +108,6 @@ export default {
   workplace: 'Workplace',
   workflow: 'Workflow',
   overview: 'Overview',
-  confirmReset: 'Confirm reset'
-
+  confirmReset: 'Confirm reset',
+  purple: 'Purple'
 }

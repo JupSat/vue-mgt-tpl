@@ -39,10 +39,6 @@ export default {
       window.document.documentElement.setAttribute("data-theme", theme);
     }
 
-    onMounted(async () => {
-      switchTheme('dark')
-    });
-
     return {
       mainRef,
       asideRef,

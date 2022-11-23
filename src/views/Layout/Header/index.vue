@@ -16,6 +16,7 @@
           <el-select @change="changeTheme" v-model="theme" popper-class="custom-select">
             <el-option :label="$t('dark')" value="dark" />
             <el-option :label="$t('light')" value="light" />
+            <el-option :label="$t('purple')" value="purple" />
           </el-select>
         </div>
       </div>
@@ -142,7 +143,7 @@ export default {
   emits: ['changeCollapse', 'switchTheme'],
   setup(props, { emit }) {
     const state = reactive({
-      theme: 'dark',
+      theme: 'light',
       language: 'zh',
       color: '#8f9bb3',
       list: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -154,10 +155,6 @@ export default {
     // 菜单展开(或折叠)
     const setCollapse = () => {
       emit("changeCollapse");
-    };
-
-    const changeTheme = () => {
-      emit("switchTheme", state.theme);
     };
 
     // 回到首页
@@ -178,6 +175,11 @@ export default {
       locale.value = state.language
       commonStore.setLanguage(state.language)
     })
+
+    const changeTheme = () => {
+      commonStore.setTheme(state.theme)
+      emit("switchTheme", state.theme);
+    };
 
     const tempList = state.list
     const getShowList = computed({
@@ -203,6 +205,7 @@ export default {
 
     onMounted(() => {
       state.language = commonStore.language
+      changeTheme()
     })
 
     return {

@@ -76,7 +76,7 @@ export default {
   miscellaneous: '杂项',
   auth: '权限',
   dark: '黑色',
-  light: '浅色',
+  light: '白色',
   cosmic: '紫色',
   systemCustomization: '系统自定义',
   contactUS: '联系我们',
@@ -108,5 +108,6 @@ export default {
   workplace: '工作台',
   workflow: '工作流',
   overview: '概览',
-  confirmReset: '确认重置'
+  confirmReset: '确认重置',
+  purple: '紫色'
 };

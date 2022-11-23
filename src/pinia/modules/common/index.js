@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 export const useCommonStore = defineStore('common', {
   state: () => {
     return {
-      language: ''
+      language: 'zh',
+      theme: 'light'
     }
   },
   getters: {
@@ -12,6 +13,9 @@ export const useCommonStore = defineStore('common', {
   actions: {
     setLanguage(language) {
       this.language = language
+    },
+    setTheme(theme) {
+      this.theme = theme
     }
   }
 })

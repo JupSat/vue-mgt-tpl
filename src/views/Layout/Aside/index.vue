@@ -112,6 +112,10 @@ export default {
     border-bottom: 1px solid #151a30 !important;
     @include font_color("fontColor");
 
+    &:hover {
+      color: #598bff !important;
+    }
+
     span {
       padding-right: 25px;
     }
@@ -126,10 +130,6 @@ export default {
 .el-menu {
   border-right: none;
   @include bg_color("secondaryColor");
-}
-
-:deep(.el-sub-menu__title:hover) {
-  color: #598bff;
 }
 
 .el-menu-item-group {
@@ -148,10 +148,10 @@ export default {
   @include font_color("fontColor");
   @include bg_color("secondaryColor");
   border-bottom: 1px solid #151a30;
-}
 
-.el-menu-item:hover {
-  color: #598bff;
+  &:hover {
+    color: #598bff !important;
+  }
 }
 
 .el-menu>.is-active {
