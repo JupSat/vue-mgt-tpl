@@ -8,7 +8,8 @@
               <Fold />
             </el-icon>
           </div>
-          <div class="logo" @click="navigateHome()">vue-mgt-tpl</div>
+          <div class="logo" @click="navigateHome()">
+          </div>
         </div>
 
         <div class="header-select">
@@ -127,11 +128,13 @@ import {
   toRefs,
   ref,
   watch,
-  computed
+  computed,
+  onMounted
 } from "vue";
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import { useMenuStore } from "@/pinia/modules/menu";
+import { useCommonStore } from "@/pinia/modules/common";
 
 export default {
   name: "Header",
@@ -169,8 +172,11 @@ export default {
 
     // 语言切换
     const { locale } = useI18n()
+
+    const commonStore = useCommonStore()
     watch(() => state.language, () => {
       locale.value = state.language
+      commonStore.setLanguage(state.language)
     })
 
     const tempList = state.list
@@ -195,6 +201,10 @@ export default {
       }
     }
 
+    onMounted(() => {
+      state.language = commonStore.language
+    })
+
     return {
       ...toRefs(state),
       setCollapse,
@@ -203,6 +213,7 @@ export default {
       getShowList,
       remoteMethod,
       signOut,
+      commonStore
     };
   },
 };
@@ -261,11 +272,14 @@ export default {
     }
 
     .logo {
-      padding: 0 2.25rem;
+      // padding: 0 2.25rem;
+      width: 208px;
+      height: 76px;
       font-size: 1.75rem;
       white-space: nowrap;
       text-decoration: none;
       @include font_color("fontColor");
+      background: url("~@/assets/img/jupiter.png") no-repeat center;
     }
   }
 
