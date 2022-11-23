@@ -30,7 +30,7 @@
         <div class="captcha-item">
           <el-input v-model="formData.captcha" maxlength="6" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
           <div class="img">
-            <img v-if="picPath" :src="picPath" :alt="$t('plzEnterCaptcha')" />
+            <img v-if="captchaPicPath" :src="captchaPicPath" :alt="$t('plzEnterCaptcha')" />
           </div>
         </div>
       </el-form-item>
@@ -41,7 +41,7 @@
         <div class="operation">
           <span class="free-register" @click="showLogin = !showLogin">{{ $t('freeRegister') }}</span>
           <span class="forget-password" @click="forgetPsw">{{ $t('forgotPassword') }}</span>
-          <span class="to-other-page" @click="goOtherPage">{{ $t('test') }}</span>
+          <!-- <span class="to-other-page" @click="goOtherPage">{{ $t('test') }}</span> -->
         </div>
       </el-form-item>
     </el-form>
@@ -51,10 +51,12 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs } from "vue";
+import { reactive, ref, toRefs, onMounted } from "vue";
 import Register from "./../Register";
 import router from '@/router'
 import { useI18n } from 'vue-i18n'
+import { loginApi, getGraphCaptchaApi } from "@/api/user";
+import { ElMessage } from 'element-plus'
 
 export default {
   name: "Login",
@@ -65,15 +67,13 @@ export default {
   setup(props, { emit }) {
     const state = reactive({
       showLogin: true,
-      sendingCode: false,
     });
-    const picPath = ref("");
 
-    const loginRef = ref(null);
     const formData = reactive({
       username: "admin",
       password: "123456",
-      captcha: "",
+      captcha: "123456",
+      captchaId: ''
     });
 
     const { t } = useI18n();
@@ -109,16 +109,66 @@ export default {
       if (!value) {
         callback(new Error(t("plzEnterPwd")));
       } else {
-        if (registerFormData.checkPass) {
-          registerForm.value.validateField("checkPass");
-        }
         callback();
       }
     };
 
-    const getVerificationCode = () => { };
+    const captchaPicPath = ref("");
+    const getGraphCaptcha = async () => {
+      const res = await getGraphCaptchaApi({})
+      rules.captcha.push({
+        max: res.data.captchaLength,
+        min: res.data.captchaLength,
+        message: `请输入${res.data.captchaLength}位验证码`,
+        trigger: "blur",
+      });
+      captchaPicPath.value = res.data.picPath;
+      formData.captchaId = res.data.captchaId
+    };
 
-    const submitForm = () => { };
+    const loginRef = ref(null);
+    const submitForm = () => {
+      if (!loginRef) return
+      loginRef.value.validate(async (valid) => {
+        if (valid) {
+          console.log('submit!')
+          const res = await loginApi(formData)
+          if (res && res.success) {
+            ElMessage({
+              message: '登录成功！正在跳转.....',
+              grouping: true,
+              type: 'success',
+              duration: 2000
+            })
+            setTimeout(() => {
+              router.push({ path: '/eCommerce' });
+            }, 3000);
+          } else if (res && res.status === 1) {
+            ElMessage({
+              message: '密码或账号错误！',
+              grouping: true,
+              type: 'warning',
+              duration: 2000
+            })
+            getGraphCaptcha()
+            return false
+          } else if (res && res.status === 2) {
+            ElMessage({
+              message: '验证码错误！',
+              grouping: true,
+              type: 'warning',
+              duration: 2000
+            })
+            getGraphCaptcha()
+            return false
+          }
+        } else {
+          console.log('error submit!')
+          getGraphCaptcha()
+          return false
+        }
+      })
+    };
 
     const forgetPsw = () => {
       emit("toResetPwd");
@@ -128,13 +178,17 @@ export default {
       router.push({ path: '/eCommerce' });
     };
 
+    onMounted(() => {
+      getGraphCaptcha()
+    })
+
     return {
       loginRef,
       formData,
       submitForm,
       rules,
-      picPath,
-      getVerificationCode,
+      captchaPicPath,
+      getGraphCaptcha,
       ...toRefs(state),
       validatePsd,
       forgetPsw,
@@ -153,7 +207,8 @@ export default {
   border-radius: 10px;
 
   .title {
-    @include font_color("fontColor");
+    // @include font_color("fontColor");
+    color: #fff;
     margin-bottom: 20px;
   }
 

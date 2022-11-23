@@ -10,6 +10,7 @@ export default {
   haveAccount: '已有账户，去登录',
   freeRegister: '免费注册',
   forgotPassword: '忘记密码',
+  resetPassword: '重置密码',
   requestPassword: '找回密码',
   plzEnterCaptcha: '请输入验证码',
   plzEnterUsrNam: '请输入用户名',
@@ -106,5 +107,6 @@ export default {
   plzEnterKeyword: '输入关键字',
   workplace: '工作台',
   workflow: '工作流',
-  overview: '概览'
+  overview: '概览',
+  confirmReset: '确认重置'
 };

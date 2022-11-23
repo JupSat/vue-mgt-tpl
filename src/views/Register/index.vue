@@ -7,7 +7,7 @@
       <el-form-item prop="email">
         <el-input v-model="formData.email" :placeholder="$t('plzEnterEmail')">
           <template #append>
-            <el-button :disabled="sendingCode" :loading="loading" @click="requestCaptcha" type="primary"
+            <el-button :disabled="sendingCode" :loading="loading" @click="sendCodeToEmail" type="primary"
               class="captcha">{{
                   $t('getCaptcha')
               }}
@@ -60,7 +60,7 @@
 <script>
 import { reactive, ref, toRefs } from "vue";
 import { useI18n } from 'vue-i18n'
-import { registerApi, requestCaptchaApi } from "@/api/user";
+import { registerApi, sendCodeToEmailApi } from "@/api/user";
 import { ElMessage } from 'element-plus'
 
 export default {
@@ -145,7 +145,7 @@ export default {
           const res = await registerApi(formData)
           if (res && res.success) {
             ElMessage({
-              message: '注册成功！将跳转到登录界面',
+              message: '注册成功！即将跳转到登录界面',
               grouping: true,
               type: 'success',
               duration: 3000
@@ -159,17 +159,17 @@ export default {
       })
     };
 
-    const requestCaptcha = async () => {
+    const sendCodeToEmail = async () => {
       state.sendingCode = true
       state.loading = true
 
-      const res = await requestCaptchaApi(formData.email)
+      const res = await sendCodeToEmailApi(formData.email)
       if (res && res.success) {
         state.sendingCode = false
         state.loading = false
         // formData.validCod = res.data.code
         ElMessage({
-          message: '验证码已发送到手机，请查收！',
+          message: '验证码已发送到邮箱，请查收！',
           grouping: true,
           type: 'success',
           duration: 3000
@@ -190,7 +190,7 @@ export default {
       rules,
       submitForm,
       goLogin,
-      requestCaptcha
+      sendCodeToEmail
     };
   },
 };
@@ -205,7 +205,7 @@ export default {
   border-radius: 10px;
 
   .title {
-    @include font_color("fontColor");
+    color: #fff;
     margin-bottom: 20px;
   }
 

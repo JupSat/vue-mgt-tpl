@@ -10,6 +10,7 @@ export default {
   haveAccount: 'Already have an account? ',
   freeRegister: 'Free register',
   forgotPassword: 'Forgot password',
+  resetPassword: 'Reset password',
   requestPassword: 'Request Password',
   plzEnterCaptcha: 'Please enter captcha',
   plzEnterUsrNam: 'Please enter username',
@@ -106,5 +107,7 @@ export default {
   plzEnterKeyword: 'Enter a keyword',
   workplace: 'Workplace',
   workflow: 'Workflow',
-  overview: 'Overview'
+  overview: 'Overview',
+  confirmReset: 'Confirm reset'
+
 }

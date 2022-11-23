@@ -105,7 +105,7 @@
                   {{ $t('profile') }}
                 </el-dropdown-item>
                 <el-dropdown-item>
-                  {{ $t('forgotPassword') }}
+                  {{ $t('resetPassword') }}
                 </el-dropdown-item>
                 <el-dropdown-item>
                   {{ $t('settings') }}

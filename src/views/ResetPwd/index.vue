@@ -1,13 +1,17 @@
 <template>
   <div class="reset-pwd">
     <div class="title">
-      <h3>{{ $t('forgotPassword') }}</h3>
+      <h3>{{ $t('resetPassword') }}</h3>
     </div>
-    <el-form ref="resetPwdRef" :model="formData" status-icon :hide-required-asterisk="true" :rules="rules">
+    <el-form ref="resetPwdRef" :model="formData" status-icon :hide-required-asterisk="true" :rules="rules"
+      @keyup.enter="submitForm">
       <el-form-item prop="email">
         <el-input v-model="formData.email" autocomplete="off" :placeholder="$t('plzEnterEmail')">
           <template #append>
-            <el-button :disabled="sendingCode">{{ $t('getCaptcha') }}</el-button>
+            <el-button :disabled="sendingCode" :loading="loading" @click="sendCodeToEmail" class="captcha">{{
+                $t('getCaptcha')
+            }}
+            </el-button>
           </template>
         </el-input>
       </el-form-item>
@@ -26,7 +30,7 @@
 
       <el-form-item>
         <div class="btn-reset">
-          <el-button type="primary" style="width: 100%">{{ $t('confirm') }}</el-button>
+          <el-button type="primary" style="width: 100%" @click="submitForm">{{ $t('confirmReset') }}</el-button>
         </div>
         <div class="go-login">
           <span class="to-login" @click="toLogin"><em>{{ $t('signIn') }}</em></span>
@@ -38,6 +42,8 @@
 <script>
 import { reactive, toRefs, ref } from "vue";
 import { useI18n } from 'vue-i18n'
+import { resetPwdApi, sendCodeToEmailApi } from "@/api/user";
+import { ElMessage } from 'element-plus'
 
 export default {
   name: "ResetPassword",
@@ -45,23 +51,23 @@ export default {
   setup(props, { emit }) {
     const resetPwdRef = ref();
     const state = reactive({
-      formData: {
-        email: "",
-        validCod: "",
-        password: "",
-        checkPass: "",
-      },
+      loading: false,
+      sendingCode: false,
     });
-    const sendingCode = ref(false);
-    const toLogin = () => {
-      emit("toLogin");
-    };
+
+    const formData = reactive({
+      email: "12@163.com",
+      validCod: "222222",
+      password: "111111",
+      checkPass: "111111",
+    });
+
     const { t } = useI18n();
 
     const validatePwdAgain = (rule, value, callback) => {
       if (!value) {
         callback(new Error(t("plzEnterPwdAgain")));
-      } else if (value !== state.formData.password) {
+      } else if (value !== formData.password) {
         callback(new Error(t("pwdInconsistent")));
       } else {
         callback();
@@ -72,7 +78,7 @@ export default {
       if (!value) {
         callback(new Error(t("plzEnterPwd")));
       } else {
-        if (!state.formData.checkPass) {
+        if (!formData.checkPass) {
           resetPwdRef.value.validateField("checkPass");
         }
         callback();
@@ -95,11 +101,71 @@ export default {
       ],
       validCod: [{ required: true, message: t('plzEnterCaptcha'), trigger: "blur" }],
     };
+
+    const sendingCode = ref(false);
+    const sendCodeToEmail = async () => {
+      if (!formData.email) {
+        ElMessage({
+          message: t("plzEnterEmail"),
+          grouping: true,
+          type: 'warning',
+          duration: 3000
+        })
+        return
+      }
+
+      state.sendingCode = true
+      state.loading = true
+
+      const res = await sendCodeToEmailApi(formData.email)
+      if (res && res.success) {
+        state.sendingCode = false
+        state.loading = false
+        // formData.validCod = res.data.code
+        ElMessage({
+          message: '验证码已发送到邮箱，请查收！',
+          grouping: true,
+          type: 'success',
+          duration: 3000
+        })
+      }
+    }
+
+    const submitForm = () => {
+      if (!resetPwdRef) return
+      resetPwdRef.value.validate(async (valid) => {
+        if (valid) {
+          console.log('submit!')
+          const res = await resetPwdApi(formData)
+          if (res && res.success) {
+            ElMessage({
+              message: '重置密码成功！即将跳转到登录界面',
+              grouping: true,
+              type: 'success',
+              duration: 3000
+            })
+            toLogin()
+          }
+        } else {
+          console.log('error submit!')
+          return false
+        }
+      })
+    };
+
+    const toLogin = () => {
+      emit("toLogin");
+    };
+
     return {
       ...toRefs(state),
       rules,
       sendingCode,
       toLogin,
+      sendCodeToEmail,
+      submitForm,
+      formData,
+      resetPwdRef
     };
   },
 };
@@ -114,9 +180,16 @@ export default {
   border-radius: 10px;
 
   .title {
-    @include font_color("fontColor");
+    color: #fff;
     margin-bottom: 20px;
   }
+
+  .captcha {
+    background: #409EFF;
+    color: #fff;
+    margin-right: -21px;
+  }
+
 
   :deep(.el-input__wrapper) {
     all: unset;
