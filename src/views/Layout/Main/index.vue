@@ -81,7 +81,7 @@ export default {
     padding: 0;
 
     .el-input__inner {
-      border-radius: 3px;
+      border-radius: 2px;
       border-color: #101426;
       @include font_color("fontColor");
       @include bg_color("mainColor");

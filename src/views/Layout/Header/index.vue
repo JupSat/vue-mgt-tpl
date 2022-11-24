@@ -4,9 +4,12 @@
       <div class="header-container">
         <div class="logo-container">
           <div @click="setCollapse()" class="sidebar-toggle">
-            <el-icon :size="22" :color="color">
-              <Fold />
-            </el-icon>
+            <el-tooltip :content="expand ? $t('fold') : $t('expand')" placement="top" effect="light">
+              <el-icon :size="22" :color="color">
+                <Fold v-if="expand" />
+                <Expand v-else />
+              </el-icon>
+            </el-tooltip>
           </div>
           <div class="logo" @click="navigateHome()">
           </div>
@@ -14,9 +17,7 @@
 
         <div class="header-select">
           <el-select @change="changeTheme" v-model="theme" popper-class="custom-select">
-            <el-option :label="$t('dark')" value="dark" />
-            <el-option :label="$t('light')" value="light" />
-            <el-option :label="$t('purple')" value="purple" />
+            <el-option v-for="color in colorList" :label="$t(color)" :value="color" />
           </el-select>
         </div>
       </div>
@@ -147,13 +148,16 @@ export default {
       language: 'zh',
       color: '#8f9bb3',
       list: [1, 2, 3, 4, 5, 6, 7, 8],
+      colorList: ['dark', 'light', 'purple', 'yellow'],
       menuList: [],
       menuValue: '',
-      loading: false
+      loading: false,
+      expand: true
     });
 
     // 菜单展开(或折叠)
     const setCollapse = () => {
+      state.expand = !state.expand
       emit("changeCollapse");
     };
 
@@ -249,7 +253,7 @@ export default {
     padding: 0;
 
     .el-input__inner {
-      border-radius: 3px;
+      border-radius: 2px;
       border-color: #101426;
       @include font_color("fontColor");
       @include bg_color("mainColor");
@@ -267,11 +271,19 @@ export default {
     .el-select {
       width: 105px;
       margin-left: 30px;
+      border-radius: 3px;
       @include bg_color("mainColor");
     }
 
     .sidebar-toggle {
       text-decoration: none;
+      cursor: pointer;
+
+      .el-icon {
+        &:hover {
+          color: #598bff;
+        }
+      }
     }
 
     .logo {

@@ -109,5 +109,8 @@ export default {
   workflow: '工作流',
   overview: '概览',
   confirmReset: '确认重置',
-  purple: '紫色'
+  purple: '紫色',
+  yellow: '黄色',
+  expand: '展开',
+  fold: '收起'
 };

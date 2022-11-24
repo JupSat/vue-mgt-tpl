@@ -109,5 +109,8 @@ export default {
   workflow: 'Workflow',
   overview: 'Overview',
   confirmReset: 'Confirm reset',
-  purple: 'Purple'
+  purple: 'Purple',
+  yellow: 'Yellow',
+  expand: 'Expand',
+  fold: 'Fold'
 }
