@@ -14,6 +14,15 @@ export const useMenuStore = defineStore('menu', {
     async loadMenu() {
       const res = await asyncMenu()
       this.menuList = res.data.menuList
+    },
+    addMenu(menu) {
+      if (Array.isArray(menu)) {
+        menu.forEach((item) => {
+          this.menuList.push(item)
+        })
+      } else {
+        this.menuList.push(menu)
+      }
     }
   }
 })

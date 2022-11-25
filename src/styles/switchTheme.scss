@@ -45,6 +45,20 @@
   }
 }
 
+//获取border-left颜色
+@mixin borderLeft($color) {
+  @include themeify {
+    border-left: 1px solid themed($color) !important;
+  }
+}
+
+//获取border-right颜色
+@mixin borderRight($color) {
+  @include themeify {
+    border-right: 1px solid themed($color) !important;
+  }
+}
+
 // 获取主题颜色
 @function get-color($color, $shade: 'mainColor', $map: $themes) {
   // check color exists

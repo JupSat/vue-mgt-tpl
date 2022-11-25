@@ -175,8 +175,14 @@ export default {
     border-radius: 4px;
     border-bottom: none;
 
+    .el-tabs__nav {
+      border: none;
+      border-radius: unset;
+    }
+
     .el-tabs__item {
-      border-bottom: 1px solid #fff;
+      border: none;
+      @include borderRight("borderRightColor");
     }
   }
 }

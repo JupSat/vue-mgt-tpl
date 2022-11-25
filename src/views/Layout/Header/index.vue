@@ -318,7 +318,7 @@ export default {
     }
 
     .search {
-      width: 128px;
+      width: 148px;
 
       .el-select {
         height: 45px;
@@ -354,6 +354,11 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
+
+          &:hover {
+            cursor: pointer;
+            color: #598bff;
+          }
         }
 
         span {
@@ -363,8 +368,6 @@ export default {
     }
   }
 }
-
-
 
 .view-more {
   position: relative;
