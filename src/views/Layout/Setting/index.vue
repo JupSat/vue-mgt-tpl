@@ -5,7 +5,7 @@
         <Setting />
       </el-icon>
     </el-button>
-    <el-drawer v-model="drawer" :direction="direction" title="功能待完善">
+    <el-drawer v-model="drawer" :direction="direction" title="设置">
       <template #default>
         <div>
           <el-radio v-model="radio1" label="Option 1" size="large">功能待完善</el-radio>
@@ -48,13 +48,16 @@ export default {
       drawer,
       direction,
       cancelClick,
-      confirmClick
+      confirmClick,
+      radio1
     }
   },
 };
 </script>
 
 <style scoped lang="scss">
+@import "@/styles/switchTheme.scss";
+
 .toggle-settings {
   position: fixed;
   top: 50%;
@@ -65,7 +68,7 @@ export default {
   z-index: 998;
 
   >.el-button {
-    background: #fff;
+    @include bg_color("secondaryColor");
     box-shadow: none;
     border: none;
     height: 3rem;
@@ -73,5 +76,14 @@ export default {
     padding: 0;
     text-align: center;
   }
+
+
+  :deep(.el-overlay) {
+    .el-drawer {
+      @include bg_color("mainBodyColor");
+
+    }
+  }
+
 }
 </style>

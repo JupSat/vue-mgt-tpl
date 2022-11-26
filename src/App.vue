@@ -1,6 +1,36 @@
 <template>
-  <router-view />
+  <el-config-provider :locale="language === 'zh' ? zh : en">
+    <router-view />
+  </el-config-provider>
 </template>
+
+<script>
+import { ref, watch } from "vue";
+import { useCommonStore } from "@/pinia/modules/common";
+import { ElConfigProvider } from 'element-plus'
+import zh from 'element-plus/lib/locale/lang/zh-cn'
+import en from 'element-plus/lib/locale/lang/en'
+export default {
+  name: 'App',
+  components: {
+    ElConfigProvider,
+  },
+  setup() {
+    const language = ref('zh')
+    const commonStore = useCommonStore()
+
+    watch(() => commonStore.language, () => {
+      language.value = commonStore.language
+    })
+    return {
+      commonStore,
+      language,
+      zh,
+      en
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 @import "@/styles/switchTheme.scss";
