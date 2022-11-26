@@ -125,14 +125,7 @@
   </el-header>
 </template>
 <script>
-import {
-  reactive,
-  toRefs,
-  ref,
-  watch,
-  computed,
-  onMounted
-} from "vue";
+import { reactive, toRefs, watch, computed, onMounted } from "vue";
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import { useMenuStore } from "@/pinia/modules/menu";
@@ -173,7 +166,6 @@ export default {
 
     // 语言切换
     const { locale } = useI18n()
-
     const commonStore = useCommonStore()
     watch(() => state.language, () => {
       locale.value = state.language
@@ -182,7 +174,7 @@ export default {
 
     const changeTheme = () => {
       commonStore.setTheme(state.theme)
-      emit("switchTheme", state.theme);
+      window.document.documentElement.setAttribute("data-theme", state.theme);
     };
 
     const tempList = state.list
@@ -209,6 +201,7 @@ export default {
 
     onMounted(() => {
       state.language = commonStore.language
+      state.theme = commonStore.theme
       changeTheme()
     })
 

@@ -1,6 +1,6 @@
 <template>
   <el-container class="layout-container">
-    <Header @changeCollapse="setCollapse" @switchTheme="switchTheme"></Header>
+    <Header @changeCollapse="setCollapse"></Header>
     <Settings></Settings>
     <el-container class="body-container">
       <Aside @goView="switchView" ref="asideRef"></Aside>
@@ -35,16 +35,11 @@ export default {
       asideRef.value.setCollapse()
     }
 
-    const switchTheme = (theme) => {
-      window.document.documentElement.setAttribute("data-theme", theme);
-    }
-
     return {
       mainRef,
       asideRef,
       switchView,
       setCollapse,
-      switchTheme
     }
   },
 };
