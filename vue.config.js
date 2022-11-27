@@ -1,6 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  lintOnSave: false,
+  lintOnSave: true,
   devServer: {
     open: true,
     host: 'localhost',

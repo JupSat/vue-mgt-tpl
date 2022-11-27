@@ -3,110 +3,143 @@
     <div class="title">
       <h3>{{ $t('resetPassword') }}</h3>
     </div>
-    <el-form ref="resetPwdRef" :model="formData" status-icon :hide-required-asterisk="true" :rules="rules"
-      @keyup.enter="submitForm">
+    <el-form
+      ref="resetPwdRef"
+      :model="formData"
+      status-icon
+      :hide-required-asterisk="true"
+      :rules="rules"
+      @keyup.enter="submitForm"
+    >
       <el-form-item prop="email">
-        <el-input v-model="formData.email" autocomplete="off" :placeholder="$t('plzEnterEmail')">
+        <el-input
+          v-model="formData.email"
+          autocomplete="off"
+          :placeholder="$t('plzEnterEmail')"
+        >
           <template #append>
-            <el-button :disabled="sendingCode" :loading="loading" @click="sendCodeToEmail" class="captcha">{{
-                $t('getCaptcha')
-            }}
+            <el-button
+              :disabled="sendingCode"
+              :loading="loading"
+              @click="sendCodeToEmail"
+              class="captcha"
+              >{{ $t('getCaptcha') }}
             </el-button>
           </template>
         </el-input>
       </el-form-item>
       <el-form-item prop="validCod">
-        <el-input v-model.number="formData.validCod" maxlength="6" autocomplete="off"
-          :placeholder="$t('plzEnterCaptcha')"></el-input>
+        <el-input
+          v-model.number="formData.validCod"
+          maxlength="6"
+          autocomplete="off"
+          :placeholder="$t('plzEnterCaptcha')"
+        ></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" type="password" autocomplete="off" :placeholder="$t('plzEnterPwd')">
+        <el-input
+          v-model="formData.password"
+          type="password"
+          autocomplete="off"
+          :placeholder="$t('plzEnterPwd')"
+        >
         </el-input>
       </el-form-item>
       <el-form-item prop="checkPass">
-        <el-input v-model="formData.checkPass" type="password" autocomplete="off" :placeholder="$t('plzEnterPwdAgain')">
+        <el-input
+          v-model="formData.checkPass"
+          type="password"
+          autocomplete="off"
+          :placeholder="$t('plzEnterPwdAgain')"
+        >
         </el-input>
       </el-form-item>
 
       <el-form-item>
         <div class="btn-reset">
-          <el-button type="primary" style="width: 100%" @click="submitForm">{{ $t('confirmReset') }}</el-button>
+          <el-button type="primary" style="width: 100%" @click="submitForm">{{
+            $t('confirmReset')
+          }}</el-button>
         </div>
         <div class="go-login">
-          <span class="to-login" @click="toLogin"><em>{{ $t('signIn') }}</em></span>
+          <span class="to-login" @click="toLogin"
+            ><em>{{ $t('signIn') }}</em></span
+          >
         </div>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
-import { reactive, toRefs, ref } from "vue";
+import { reactive, toRefs, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { resetPwdApi, sendCodeToEmailApi } from "@/api/user";
+import { resetPwdApi, sendCodeToEmailApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 
 export default {
-  name: "ResetPassword",
-  emits: ["toLogin"],
+  name: 'ResetPassword',
+  emits: ['toLogin'],
   setup(props, { emit }) {
-    const resetPwdRef = ref();
+    const resetPwdRef = ref()
     const state = reactive({
       loading: false,
-      sendingCode: false,
-    });
+      sendingCode: false
+    })
 
     const formData = reactive({
-      email: "12@163.com",
-      validCod: "222222",
-      password: "111111",
-      checkPass: "111111",
-    });
+      email: '12@163.com',
+      validCod: '222222',
+      password: '111111',
+      checkPass: '111111'
+    })
 
-    const { t } = useI18n();
+    const { t } = useI18n()
 
     const validatePwdAgain = (rule, value, callback) => {
       if (!value) {
-        callback(new Error(t("plzEnterPwdAgain")));
+        callback(new Error(t('plzEnterPwdAgain')))
       } else if (value !== formData.password) {
-        callback(new Error(t("pwdInconsistent")));
+        callback(new Error(t('pwdInconsistent')))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     const validatePwd = (rule, value, callback) => {
       if (!value) {
-        callback(new Error(t("plzEnterPwd")));
+        callback(new Error(t('plzEnterPwd')))
       } else {
         if (!formData.checkPass) {
-          resetPwdRef.value.validateField("checkPass");
+          resetPwdRef.value.validateField('checkPass')
         }
-        callback();
+        callback()
       }
-    };
+    }
 
     const rules = {
       password: [
-        { validator: validatePwd, trigger: "blur" },
-        { min: 6, max: 10, message: t("pwdLenIn6To10"), trigger: "blur" },
+        { validator: validatePwd, trigger: 'blur' },
+        { min: 6, max: 10, message: t('pwdLenIn6To10'), trigger: 'blur' }
       ],
-      checkPass: [{ validator: validatePwdAgain, trigger: "blur" }],
+      checkPass: [{ validator: validatePwdAgain, trigger: 'blur' }],
       email: [
-        { required: true, message: t("plzEnterEmail"), trigger: "change" },
+        { required: true, message: t('plzEnterEmail'), trigger: 'change' },
         {
-          type: "email",
-          message: t("plzEnterCorrectEmail"),
-          trigger: ["blur", "change"],
-        },
+          type: 'email',
+          message: t('plzEnterCorrectEmail'),
+          trigger: ['blur', 'change']
+        }
       ],
-      validCod: [{ required: true, message: t('plzEnterCaptcha'), trigger: "blur" }],
-    };
+      validCod: [
+        { required: true, message: t('plzEnterCaptcha'), trigger: 'blur' }
+      ]
+    }
 
-    const sendingCode = ref(false);
+    const sendingCode = ref(false)
     const sendCodeToEmail = async () => {
       if (!formData.email) {
         ElMessage({
-          message: t("plzEnterEmail"),
+          message: t('plzEnterEmail'),
           grouping: true,
           type: 'warning',
           duration: 3000
@@ -132,7 +165,7 @@ export default {
     }
 
     const submitForm = () => {
-      if (!resetPwdRef) return
+      if (!resetPwdRef.value) return
       resetPwdRef.value.validate(async (valid) => {
         if (valid) {
           console.log('submit!')
@@ -151,11 +184,11 @@ export default {
           return false
         }
       })
-    };
+    }
 
     const toLogin = () => {
-      emit("toLogin");
-    };
+      emit('toLogin')
+    }
 
     return {
       ...toRefs(state),
@@ -166,16 +199,16 @@ export default {
       submitForm,
       formData,
       resetPwdRef
-    };
-  },
-};
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .reset-pwd {
   width: 375px;
-  background-color: #13152C;
+  background-color: #13152c;
   padding: 40px;
   border-radius: 10px;
 
@@ -185,11 +218,10 @@ export default {
   }
 
   .captcha {
-    background: #409EFF;
+    background: #409eff;
     color: #fff;
     margin-right: -21px;
   }
-
 
   :deep(.el-input__wrapper) {
     all: unset;

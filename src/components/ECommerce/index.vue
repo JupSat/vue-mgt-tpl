@@ -1,20 +1,20 @@
 <template>
-  <div></div>
+  <div>
+    <Overview></Overview>
+  </div>
 </template>
 
 <script>
 import Overview from './Overview'
 export default {
-  name: "ECommerce",
+  name: 'ECommerce',
   components: {
     Overview
   },
   setup() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

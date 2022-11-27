@@ -1,8 +1,8 @@
-import Mock from "mockjs";
+import Mock from 'mockjs'
 
 Mock.setup({
-  timeout: "200-600",
-});
+  timeout: '200-600'
+})
 
 Mock.mock('/api/user/register', 'post', () => ({
   status: 0,
@@ -10,7 +10,6 @@ Mock.mock('/api/user/register', 'post', () => ({
   success: true,
   message: '注册成功'
 }))
-
 
 Mock.mock('/api/user/sendCodeToEmail', 'post', () => ({
   status: 0,

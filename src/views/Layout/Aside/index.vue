@@ -28,52 +28,56 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "vue";
+import { reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
-import { useMenuStore } from "@/pinia/modules/menu";
+import { useMenuStore } from '@/pinia/modules/menu'
 
 export default {
-  name: "Aside",
+  name: 'Aside',
   emits: ['goView'],
   setup(props, { emit }) {
     const state = reactive({
       isCollapse: false,
       menuNoChild: [],
       menuHasChild: []
-    });
+    })
 
     const handleOpen = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
+      console.log(key, keyPath)
+    }
     const handleClose = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
+      console.log(key, keyPath)
+    }
 
     const clickMenu = (name) => {
       emit('goView', name)
-    };
+    }
 
     const selectMenu = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
+      console.log(key, keyPath)
+    }
 
     const selectMenuItem = (key, keyPath) => {
-      console.log(key, keyPath);
-    };
+      console.log(key, keyPath)
+    }
 
     const setCollapse = () => {
-      state.isCollapse = !state.isCollapse;
-    };
+      state.isCollapse = !state.isCollapse
+    }
 
     const getMenu = async () => {
       const menuStore = useMenuStore()
       const menuList = menuStore.menuList
-      state.menuNoChild = menuList.filter(item => !item.children || item.children.some(v => v.hidden))
-      state.menuHasChild = menuList.filter(item => item.children && item.children.some(v => !v.hidden))
+      state.menuNoChild = menuList.filter(
+        (item) => !item.children || item.children.some((v) => v.hidden)
+      )
+      state.menuHasChild = menuList.filter(
+        (item) => item.children && item.children.some((v) => !v.hidden)
+      )
     }
     getMenu()
 
-    const route = useRoute();
+    const route = useRoute()
 
     return {
       ...toRefs(state),
@@ -83,19 +87,19 @@ export default {
       selectMenu,
       selectMenuItem,
       setCollapse,
-      route,
-    };
-  },
-};
+      route
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .el-aside {
-  @include bg_color("mainColor");
+  @include bg_color('mainColor');
   box-shadow: 0 0.5rem 1rem 0 #1a1f33;
-  @include font_color("fontColor");
+  @include font_color('fontColor');
   font-family: Open Sans, sans-serif;
   font-size: 0.9375rem;
   font-weight: 400;
@@ -104,13 +108,13 @@ export default {
 
   :deep(.el-sub-menu) {
     min-width: 217.37px;
-    @include font_color("fontColor");
+    @include font_color('fontColor');
   }
 
   :deep(.el-sub-menu__title) {
-    @include bg_color("secondaryColor");
+    @include bg_color('secondaryColor');
     border-bottom: 1px solid #151a30 !important;
-    @include font_color("fontColor");
+    @include font_color('fontColor');
 
     &:hover {
       color: #598bff !important;
@@ -122,18 +126,18 @@ export default {
   }
 
   :deep(.el-scrollbar__thumb) {
-    @include bg_color("scrollbarColor");
+    @include bg_color('scrollbarColor');
     opacity: 1;
   }
 }
 
 .el-menu {
   border-right: none;
-  @include bg_color("secondaryColor");
+  @include bg_color('secondaryColor');
 }
 
 .el-menu-item-group {
-  @include bg_color("secondaryColor");
+  @include bg_color('secondaryColor');
 
   ul>.is-active {
     color: #598bff;
@@ -145,8 +149,8 @@ export default {
 }
 
 .el-menu-item {
-  @include font_color("fontColor");
-  @include bg_color("secondaryColor");
+  @include font_color('fontColor');
+  @include bg_color('secondaryColor');
   border-bottom: 1px solid #151a30;
 
   &:hover {

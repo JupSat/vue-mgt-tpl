@@ -4,29 +4,53 @@
       <div class="header-container">
         <div class="logo-container">
           <div @click="setCollapse()" class="sidebar-toggle">
-            <el-tooltip :content="expand ? $t('fold') : $t('expand')" placement="top" effect="light">
+            <el-tooltip
+              :content="expand ? $t('fold') : $t('expand')"
+              placement="top"
+              effect="light"
+            >
               <el-icon :size="22" :color="color">
                 <Fold v-if="expand" />
                 <Expand v-else />
               </el-icon>
             </el-tooltip>
           </div>
-          <div class="logo" @click="navigateHome()">
-          </div>
+          <div class="logo" @click="navigateHome()"></div>
         </div>
 
         <div class="header-select">
-          <el-select @change="changeTheme" v-model="theme" popper-class="custom-select">
-            <el-option v-for="color in colorList" :label="$t(color)" :value="color" />
+          <el-select
+            @change="changeTheme"
+            v-model="theme"
+            popper-class="custom-select"
+          >
+            <el-option
+              v-for="(color, index) in colorList"
+              :label="$t(color)"
+              :value="color"
+              :key="index"
+            />
           </el-select>
         </div>
       </div>
 
       <div class="header-container-right">
         <div class="search">
-          <el-select v-model="menuValue" filterable remote reserve-keyword :remote-method="remoteMethod"
-            :placeholder="$t('plzEnterKeyword')" :loading="loading">
-            <el-option v-for="item in menuList" :key="item.id" :label="$t(item.id)" :value="item.id" />
+          <el-select
+            v-model="menuValue"
+            filterable
+            remote
+            reserve-keyword
+            :remote-method="remoteMethod"
+            :placeholder="$t('plzEnterKeyword')"
+            :loading="loading"
+          >
+            <el-option
+              v-for="item in menuList"
+              :key="item.id"
+              :label="$t(item.id)"
+              :value="item.id"
+            />
           </el-select>
         </div>
         <div>
@@ -38,10 +62,13 @@
             </el-badge>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="item in getShowList">
+                <el-dropdown-item
+                  v-for="(item, index) in messagesList.splice(0, 4)"
+                  :key="index"
+                >
                   这是第{{ item }}个邮件
                 </el-dropdown-item>
-                <template v-show="list.length > 4">
+                <template v-if="list.length > 4">
                   <el-dropdown-item>
                     <div class="view-more">
                       查看更多
@@ -64,10 +91,13 @@
             </el-badge>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item v-for="item in getShowList">
+                <el-dropdown-item
+                  v-for="(item, index) in emailsList.splice(0, 4)"
+                  :key="index"
+                >
                   <span>这是第{{ item }}条消息</span>
                 </el-dropdown-item>
-                <template v-show="list.length > 4">
+                <template v-if="list.length > 4">
                   <el-dropdown-item>
                     <div class="view-more">
                       查看更多
@@ -125,17 +155,18 @@
   </el-header>
 </template>
 <script>
-import { reactive, toRefs, watch, computed, onMounted } from "vue";
+import { reactive, toRefs, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
-import { useMenuStore } from "@/pinia/modules/menu";
-import { useCommonStore } from "@/pinia/modules/common";
+import { useMenuStore } from '@/pinia/modules/menu'
+import { useCommonStore } from '@/pinia/modules/common'
 
 export default {
-  name: "Header",
+  name: 'Header',
   components: {},
   emits: ['changeCollapse', 'switchTheme'],
   setup(props, { emit }) {
+    const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
     const state = reactive({
       theme: 'light',
       language: 'zh',
@@ -145,51 +176,51 @@ export default {
       menuList: [],
       menuValue: '',
       loading: false,
-      expand: true
-    });
+      expand: true,
+      messagesList: tempList,
+      emailsList: tempList
+    })
 
     // 菜单展开(或折叠)
     const setCollapse = () => {
       state.expand = !state.expand
-      emit("changeCollapse");
-    };
+      emit('changeCollapse')
+    }
 
     // 回到首页
     const navigateHome = () => {
       router.push({ path: '/' })
-    };
+    }
 
     // 退出
     const signOut = () => {
       navigateHome()
-    };
+    }
 
     // 语言切换
     const { locale } = useI18n()
     const commonStore = useCommonStore()
-    watch(() => state.language, () => {
-      locale.value = state.language
-      commonStore.setLanguage(state.language)
-    })
+    watch(
+      () => state.language,
+      () => {
+        locale.value = state.language
+        commonStore.setLanguage(state.language)
+      }
+    )
 
     const changeTheme = () => {
       commonStore.setTheme(state.theme)
-      window.document.documentElement.setAttribute("data-theme", state.theme);
-    };
-
-    const tempList = state.list
-    const getShowList = computed({
-      get() {
-        return tempList.splice(0, 4)
-      },
-    })
+      window.document.documentElement.setAttribute('data-theme', state.theme)
+    }
 
     // 搜索菜单
     const remoteMethod = (query) => {
       if (query) {
         state.loading = true
         const menuStore = useMenuStore()
-        const menuList = menuStore.menuList.map(list => list.children.flat()).flat()
+        const menuList = menuStore.menuList
+          .map((list) => list.children.flat())
+          .flat()
         state.loading = false
         state.menuList = menuList.filter((item) => {
           return item.id.toLowerCase().includes(query.toLowerCase())
@@ -210,16 +241,15 @@ export default {
       setCollapse,
       changeTheme,
       navigateHome,
-      getShowList,
       remoteMethod,
       signOut,
       commonStore
-    };
-  },
-};
+    }
+  }
+}
 </script>
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .el-header {
   position: fixed;
@@ -239,8 +269,8 @@ export default {
   font-size: 12px;
   text-align: right;
   color: var(--el-text-color-primary);
-  @include bg_color("secondaryColor");
-  @include box_shadow("boxShadowColor");
+  @include bg_color('secondaryColor');
+  @include box_shadow('boxShadowColor');
 
   :deep(.el-input__wrapper) {
     padding: 0;
@@ -248,8 +278,8 @@ export default {
     .el-input__inner {
       border-radius: 2px;
       border-color: #101426;
-      @include font_color("fontColor");
-      @include bg_color("mainColor");
+      @include font_color('fontColor');
+      @include bg_color('mainColor');
       font-size: 14px;
       font-weight: 400;
     }
@@ -265,7 +295,7 @@ export default {
       width: 105px;
       margin-left: 30px;
       border-radius: 3px;
-      @include bg_color("mainColor");
+      @include bg_color('mainColor');
     }
 
     .sidebar-toggle {
@@ -280,14 +310,13 @@ export default {
     }
 
     .logo {
-      // padding: 0 2.25rem;
       width: 208px;
       height: 76px;
       font-size: 1.75rem;
       white-space: nowrap;
       text-decoration: none;
-      @include font_color("fontColor");
-      background: url("~@/assets/img/jupiter.png") no-repeat center;
+      @include font_color('fontColor');
+      background: url('~@/assets/img/jupiter.png') no-repeat center;
     }
   }
 
@@ -297,7 +326,7 @@ export default {
     justify-content: space-evenly;
     margin-right: 25px;
 
-    >div {
+    > div {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -306,7 +335,7 @@ export default {
       border-left: 1px solid #151a30;
     }
 
-    >div:nth-child(1) {
+    > div:nth-child(1) {
       border-left: none;
     }
 
@@ -318,7 +347,6 @@ export default {
         padding-top: 4px;
       }
     }
-
 
     .language {
       width: 128px;
@@ -336,14 +364,14 @@ export default {
 
       .el-dropdown {
         margin-left: 20px;
-        margin-right: 0
+        margin-right: 0;
       }
 
       .user-info {
         font-size: 18px;
-        @include font_color("fontColor");
+        @include font_color('fontColor');
 
-        >div {
+        > div {
           display: flex;
           justify-content: center;
           align-items: center;
@@ -381,7 +409,7 @@ export default {
 }
 
 .el-popper {
-  @include bg_color("secondaryColor");
+  @include bg_color('secondaryColor');
 }
 
 .user-img {
@@ -391,12 +419,12 @@ export default {
 }
 
 .el-dropdown__popper .el-dropdown-menu {
-  @include bg_color("secondaryColor");
+  @include bg_color('secondaryColor');
 
   :deep(.el-dropdown-menu__item) {
     border: 1px solid #151a30;
-    @include border_color("borderColor");
-    @include font_color("fontColor");
+    @include border_color('borderColor');
+    @include font_color('fontColor');
   }
 
   :deep(.el-dropdown-menu__item:not(.is-disabled):hover) {

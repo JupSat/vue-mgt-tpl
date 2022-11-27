@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { asyncMenu } from "@/api/menu";
+import { asyncMenu } from '@/api/menu'
 
 export const useMenuStore = defineStore('menu', {
   state: () => {
@@ -7,9 +7,7 @@ export const useMenuStore = defineStore('menu', {
       menuList: []
     }
   },
-  getters: {
-
-  },
+  getters: {},
   actions: {
     async loadMenu() {
       const res = await asyncMenu()

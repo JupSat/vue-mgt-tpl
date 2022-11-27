@@ -5,23 +5,26 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
-import { useCommonStore } from "@/pinia/modules/common";
+import { ref, watch } from 'vue'
+import { useCommonStore } from '@/pinia/modules/common'
 import { ElConfigProvider } from 'element-plus'
 import zh from 'element-plus/lib/locale/lang/zh-cn'
 import en from 'element-plus/lib/locale/lang/en'
 export default {
   name: 'App',
   components: {
-    ElConfigProvider,
+    ElConfigProvider
   },
   setup() {
     const language = ref('zh')
     const commonStore = useCommonStore()
 
-    watch(() => commonStore.language, () => {
-      language.value = commonStore.language
-    })
+    watch(
+      () => commonStore.language,
+      () => {
+        language.value = commonStore.language
+      }
+    )
     return {
       commonStore,
       language,
@@ -33,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -57,6 +60,6 @@ nav {
 }
 
 .custom-select {
-  @include bg_color("secondaryColor");
+  @include bg_color('secondaryColor');
 }
 </style>

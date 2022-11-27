@@ -11,33 +11,33 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "vue";
-import Login from "./../Login";
-import ResetPassword from "./../ResetPwd";
+import { reactive, toRefs } from 'vue'
+import Login from './../Login'
+import ResetPassword from './../ResetPwd'
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     ResetPassword,
-    Login,
+    Login
   },
   setup() {
     const state = reactive({
-      showLogin: true,
-    });
+      showLogin: true
+    })
 
     return {
-      ...toRefs(state),
-    };
-  },
-};
+      ...toRefs(state)
+    }
+  }
+}
 </script>
 <style lang="scss">
 .home {
   height: 100vh;
   width: 100vw;
   // background: url("~@/assets/background.jpg") no-repeat center;
-  background: url("~@/assets/img/hero-bg.webp") no-repeat center;
+  background: url('~@/assets/img/hero-bg.webp') no-repeat center;
   background-size: cover;
 
   .home-container {
@@ -54,7 +54,7 @@ export default {
       margin-top: 104px;
       float: right !important;
       border-radius: 8px;
-      background: url("~@/assets/img/astrocat.webp") no-repeat center;
+      background: url('~@/assets/img/astrocat.webp') no-repeat center;
       background-size: cover;
     }
   }

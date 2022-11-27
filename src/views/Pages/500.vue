@@ -10,12 +10,11 @@ export default {
     onBeforeMount(() => { })
     onMounted(() => { })
     return {
-      ...toRefs(state),
+      ...toRefs(state)
     }
-  },
+  }
 }
-
 </script>
-<style scoped lang='scss'>
+<style scoped lang="scss">
 
 </style>

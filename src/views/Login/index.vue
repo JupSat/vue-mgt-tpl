@@ -3,9 +3,17 @@
     <div class="title">
       <h1>vue-mgt-tpl</h1>
     </div>
-    <el-form ref="loginRef" :model="formData" :rules="rules" @keyup.enter="submitForm">
+    <el-form
+      ref="loginRef"
+      :model="formData"
+      :rules="rules"
+      @keyup.enter="submitForm"
+    >
       <el-form-item prop="username">
-        <el-input v-model="formData.username" :placeholder="$t('plzEnterUsrNam')">
+        <el-input
+          v-model="formData.username"
+          :placeholder="$t('plzEnterUsrNam')"
+        >
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -16,7 +24,11 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" :type="'password'" :placeholder="$t('plzEnterPwd')">
+        <el-input
+          v-model="formData.password"
+          :type="'password'"
+          :placeholder="$t('plzEnterPwd')"
+        >
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -28,19 +40,34 @@
       </el-form-item>
       <el-form-item prop="captcha">
         <div class="captcha-item">
-          <el-input v-model="formData.captcha" maxlength="6" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
+          <el-input
+            v-model="formData.captcha"
+            maxlength="6"
+            :placeholder="$t('plzEnterCaptcha')"
+            style="width: 60%"
+          />
           <div class="img">
-            <img v-if="captchaPicPath" :src="captchaPicPath" :alt="$t('plzEnterCaptcha')" />
+            <img
+              v-if="captchaPicPath"
+              :src="captchaPicPath"
+              :alt="$t('plzEnterCaptcha')"
+            />
           </div>
         </div>
       </el-form-item>
       <el-form-item>
         <div class="btn-login">
-          <el-button type="primary" style="width: 100%" @click="submitForm">{{ $t('signIn') }}</el-button>
+          <el-button type="primary" style="width: 100%" @click="submitForm">{{
+            $t('signIn')
+          }}</el-button>
         </div>
         <div class="operation">
-          <span class="free-register" @click="showLogin = !showLogin">{{ $t('freeRegister') }}</span>
-          <span class="forget-password" @click="forgetPsw">{{ $t('forgotPassword') }}</span>
+          <span class="free-register" @click="showLogin = !showLogin">{{
+            $t('freeRegister')
+          }}</span>
+          <span class="forget-password" @click="forgetPsw">{{
+            $t('forgotPassword')
+          }}</span>
           <!-- <span class="to-other-page" @click="goOtherPage">{{ $t('test') }}</span> -->
         </div>
       </el-form-item>
@@ -51,84 +78,84 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs, onMounted } from "vue";
-import Register from "./../Register";
+import { reactive, ref, toRefs, onMounted } from 'vue'
+import Register from './../Register'
 import router from '@/router'
 import { useI18n } from 'vue-i18n'
-import { loginApi, getGraphCaptchaApi } from "@/api/user";
+import { loginApi, getGraphCaptchaApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 
 export default {
-  name: "Login",
-  emits: ["toResetPwd"],
+  name: 'Login',
+  emits: ['toResetPwd'],
   components: {
     Register
   },
   setup(props, { emit }) {
     const state = reactive({
-      showLogin: true,
-    });
+      showLogin: true
+    })
 
     const formData = reactive({
-      username: "admin",
-      password: "123456",
-      captcha: "123456",
+      username: 'admin',
+      password: '123456',
+      captcha: '123456',
       captchaId: ''
-    });
+    })
 
-    const { t } = useI18n();
+    const { t } = useI18n()
     const checkUsername = (rule, value, callback) => {
       if (value.length < 5) {
-        return callback(new Error(t("plzEnterCorrectUerNam")));
+        return callback(new Error(t('plzEnterCorrectUerNam')))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     const checkPassword = (rule, value, callback) => {
       if (value.length < 6) {
-        return callback(new Error(t("plzEnterCorrectPwd")));
+        return callback(new Error(t('plzEnterCorrectPwd')))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     const rules = reactive({
-      username: [{ validator: checkUsername, trigger: "blur" }],
-      password: [{ validator: checkPassword, trigger: "blur" }],
+      username: [{ validator: checkUsername, trigger: 'blur' }],
+      password: [{ validator: checkPassword, trigger: 'blur' }],
       captcha: [
         {
           required: true,
-          message: t("verificationCodeError"),
-          trigger: "blur",
-        },
-      ],
-    });
+          message: t('verificationCodeError'),
+          trigger: 'blur'
+        }
+      ]
+    })
 
     const validatePsd = (rule, value, callback) => {
       if (!value) {
-        callback(new Error(t("plzEnterPwd")));
+        callback(new Error(t('plzEnterPwd')))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
-    const captchaPicPath = ref("");
+    const captchaPicPath = ref('')
     const getGraphCaptcha = async () => {
       const res = await getGraphCaptchaApi({})
       rules.captcha.push({
         max: res.data.captchaLength,
         min: res.data.captchaLength,
         message: `请输入${res.data.captchaLength}位验证码`,
-        trigger: "blur",
-      });
-      captchaPicPath.value = res.data.picPath;
+        trigger: 'blur'
+      })
+      captchaPicPath.value = res.data.picPath
       formData.captchaId = res.data.captchaId
-    };
+    }
 
-    const loginRef = ref(null);
+    const loginRef = ref(null)
     const submitForm = () => {
-      if (!loginRef) return
+      if (!loginRef.value) return
       loginRef.value.validate(async (valid) => {
         if (valid) {
           console.log('submit!')
@@ -141,8 +168,8 @@ export default {
               duration: 2000
             })
             setTimeout(() => {
-              router.push({ path: '/eCommerce' });
-            }, 3000);
+              router.push({ path: '/eCommerce' })
+            }, 3000)
           } else if (res && res.status === 1) {
             ElMessage({
               message: '密码或账号错误！',
@@ -168,15 +195,15 @@ export default {
           return false
         }
       })
-    };
+    }
 
     const forgetPsw = () => {
-      emit("toResetPwd");
-    };
+      emit('toResetPwd')
+    }
 
     const goOtherPage = () => {
-      router.push({ path: '/eCommerce' });
-    };
+      router.push({ path: '/eCommerce' })
+    }
 
     onMounted(() => {
       getGraphCaptcha()
@@ -193,16 +220,16 @@ export default {
       validatePsd,
       forgetPsw,
       goOtherPage
-    };
-  },
-};
+    }
+  }
+}
 </script>
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .login_content {
   width: 375px;
-  background-color: #13152C;
+  background-color: #13152c;
   padding: 40px;
   border-radius: 10px;
 

@@ -8,13 +8,11 @@ export const useTabsStore = defineStore('tabs', {
       tabs: []
     }
   },
-  getters: {
-
-  },
+  getters: {},
   actions: {
     routeChange(route) {
       if (route) {
-        const hasOne = this.tabs.find(t => t.name === route.name)
+        const hasOne = this.tabs.find((t) => t.name === route.name)
         !hasOne && this.tabs.push({ name: route.name, path: route.path })
         this.activeTab = route.name
       }
@@ -47,5 +45,5 @@ export const useTabsStore = defineStore('tabs', {
       }
       return activeName
     }
-  },
+  }
 })

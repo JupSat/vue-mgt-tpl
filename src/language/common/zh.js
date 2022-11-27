@@ -113,4 +113,4 @@ export default {
   yellow: '黄色',
   expand: '展开',
   fold: '收起'
-};
+}

@@ -18,126 +18,126 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
-import * as echarts from "echarts";
+import { onMounted } from 'vue'
+import * as echarts from 'echarts'
 import { useI18n } from 'vue-i18n'
 
 export default {
-  name: "StatusCard",
+  name: 'StatusCard',
   setup() {
-    const { t } = useI18n();
+    const { t } = useI18n()
     const setEChartsLine = () => {
-      let chart1 = document.getElementById("statusCardId");
-      let myChart = echarts.init(chart1);
-      let option = null;
-      let xAxisData = [];
-      let data1 = [];
-      let data2 = [];
+      const chart1 = document.getElementById('statusCardId')
+      const myChart = echarts.init(chart1)
+      let option = null
+      const xAxisData = []
+      const data1 = []
+      const data2 = []
       for (let i = 0; i < 80; i++) {
-        xAxisData.push("A" + i);
-        data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 10);
-        data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 10);
+        xAxisData.push('A' + i)
+        data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 10)
+        data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 10)
       }
       option = {
         // title: {
         //   text: "Bar Animation Delay",
         // },
         legend: {
-          data: [t("transactions"), t("orders")],
+          data: [t('transactions'), t('orders')],
           itemWidth: 15,
           textStyle: {
-            color: "white",
-          },
+            color: 'white'
+          }
         },
         grid: {
           show: false,
-          top: "0%",
-          left: "0%",
-          right: "0%",
+          top: '0%',
+          left: '0%',
+          right: '0%'
         },
         tooltip: {},
         xAxis: {
           data: xAxisData,
           splitLine: {
-            show: false,
+            show: false
           },
           axisTick: {
-            show: false,
+            show: false
           },
           axisLabel: {
-            show: false,
-          },
+            show: false
+          }
         },
         yAxis: {
           splitLine: {
             show: true,
             lineStyle: {
-              color: ["#151a30"],
-              width: "0.5",
-            },
+              color: ['#151a30'],
+              width: '0.5'
+            }
           },
           axisTick: {
-            show: false,
+            show: false
           },
           axisLabel: {
-            show: false,
-          },
+            show: false
+          }
         },
         series: [
           {
-            name: t("transactions"),
-            type: "bar",
+            name: t('transactions'),
+            type: 'bar',
             data: data1,
             emphasis: {
-              focus: "series",
+              focus: 'series'
             },
             animationDelay: function (idx) {
-              return idx * 10;
-            },
+              return idx * 10
+            }
           },
           {
-            name: t("orders"),
-            type: "bar",
+            name: t('orders'),
+            type: 'bar',
             data: data2,
             emphasis: {
-              focus: "series",
+              focus: 'series'
             },
             animationDelay: function (idx) {
-              return idx * 10 + 100;
-            },
-          },
+              return idx * 10 + 100
+            }
+          }
         ],
-        animationEasing: "elasticOut",
+        animationEasing: 'elasticOut',
         animationDelayUpdate: function (idx) {
-          return idx * 5;
-        },
-      };
+          return idx * 5
+        }
+      }
 
-      option && myChart.setOption(option);
-    };
+      option && myChart.setOption(option)
+    }
 
     const initECharts = () => {
-      setEChartsLine();
-    };
+      setEChartsLine()
+    }
 
     onMounted(() => {
-      initECharts();
-    });
+      initECharts()
+    })
 
     return {
       setEChartsLine,
-      initECharts,
-    };
-  },
-};
+      initECharts
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .status-card {
   height: 216px;
-  @include bg_color("secondaryColor");
+  @include bg_color('secondaryColor');
   border-radius: 4px;
 
   .card-body {
@@ -154,14 +154,14 @@ export default {
         border-bottom: 1px solid #151a30;
         border-top-left-radius: 0.25rem;
         border-top-right-radius: 0.25rem;
-        @include font_color("fontColor");
+        @include font_color('fontColor');
         font-family: Open Sans, sans-serif;
         font-size: 0.9375rem;
         font-weight: 600;
         line-height: 1.5rem;
 
         .header-title::before {
-          content: "$";
+          content: '$';
           margin-right: 10px;
         }
 

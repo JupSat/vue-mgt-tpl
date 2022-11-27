@@ -16,7 +16,7 @@
             <div class="total">654</div>
           </div>
           <div>
-            <div> {{ $t('today') }}</div>
+            <div>{{ $t('today') }}</div>
             <div class="total">230</div>
           </div>
         </div>
@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "vue";
-import OrderChart from "@/components/ECommerce/ChartsCard/OrderChart";
-import ProfitChart from "@/components/ECommerce/ChartsCard/ProfitChart";
+import { reactive, toRefs } from 'vue'
+import OrderChart from '@/components/ECommerce/ChartsCard/OrderChart'
+import ProfitChart from '@/components/ECommerce/ChartsCard/ProfitChart'
 
 export default {
-  name: "ChartsCard",
+  name: 'ChartsCard',
   components: {
     OrderChart,
     ProfitChart
@@ -59,18 +59,18 @@ export default {
   setup() {
     const state = reactive({
       dataType: 0,
-      activeName: 'Orders',
-    });
+      activeName: 'Orders'
+    })
 
     return {
-      ...toRefs(state),
-    };
-  },
-};
+      ...toRefs(state)
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .chart-card {
   width: 100%;
@@ -80,12 +80,12 @@ export default {
   .tab-set {
     height: 100%;
     margin-bottom: 1.875rem;
-    @include bg_color("secondaryColor");
+    @include bg_color('secondaryColor');
     border-radius: 0.25rem;
     box-shadow: none;
-    @include font_color("fontColor");
+    @include font_color('fontColor');
     font-family: Open Sans, sans-serif;
-    font-size: .9375rem;
+    font-size: 0.9375rem;
     font-weight: 400;
     line-height: 1.25rem;
 
@@ -95,14 +95,14 @@ export default {
       padding: 1rem 7rem;
       color: #8f9bb3;
       font-family: Open Sans, sans-serif;
-      font-size: .875rem;
+      font-size: 0.875rem;
       font-weight: 700;
       line-height: 1rem;
       text-transform: uppercase;
     }
 
     :deep(.el-tabs__item:hover) {
-      color: #409EFF;
+      color: #409eff;
     }
 
     .tabs-body {
@@ -120,13 +120,11 @@ export default {
         padding: 10px;
       }
 
-
       :deep(.el-tabs__nav-scroll) {
         display: flex;
         align-items: center;
         justify-content: space-around;
       }
-
 
       :deep(.el-tabs__active-bar) {
         min-width: 180px !important;
@@ -155,7 +153,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         flex: 1;
-        @include bg_color("mainColor");
+        @include bg_color('mainColor');
         justify-content: space-between;
         padding: 2rem 4rem 1rem;
         border: 1px solid #151a30;
@@ -179,7 +177,7 @@ export default {
         .el-select {
           width: 105px;
           border-radius: 4px;
-          @include bg_color("mainColor");
+          @include bg_color('mainColor');
         }
       }
 

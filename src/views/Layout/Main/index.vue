@@ -18,11 +18,11 @@
 
 <script>
 import router from '@/router'
-import Breadcrumb from "@/views/Layout/Breadcrumb";
-import Tabs from "@/views/Layout/Tabs";
+import Breadcrumb from '@/views/Layout/Breadcrumb'
+import Tabs from '@/views/Layout/Tabs'
 
 export default {
-  name: "Main",
+  name: 'Main',
   components: {
     Breadcrumb,
     Tabs
@@ -32,14 +32,14 @@ export default {
       router.push({ name })
     }
     return {
-      switchView,
-    };
-  },
-};
+      switchView
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .main-layout {
   padding: 0;
@@ -49,8 +49,8 @@ export default {
     flex: 1;
     flex-direction: column;
     min-width: 0;
-    @include bg_color("mainBodyColor");
-    @include font_color("fontColor");
+    @include bg_color('mainBodyColor');
+    @include font_color('fontColor');
     font-family: Open Sans, sans-serif;
     font-size: 0.9375rem;
     font-weight: 400;
@@ -83,8 +83,8 @@ export default {
     .el-input__inner {
       border-radius: 2px;
       border-color: #101426;
-      @include font_color("fontColor");
-      @include bg_color("mainColor");
+      @include font_color('fontColor');
+      @include bg_color('mainColor');
       font-size: 14px;
       font-weight: 400;
     }

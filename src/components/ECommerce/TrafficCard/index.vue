@@ -17,7 +17,11 @@
     </div>
     <div class="card-body">
       <div class="body-list">
-        <div class="list-item item" v-for="(item, index) in trafficList" :key="index">
+        <div
+          class="list-item item"
+          v-for="(item, index) in trafficList"
+          :key="index"
+        >
           <span class="">{{ item.year }}</span>
           <span class="">{{ item.number }}</span>
           <span :class="item.flag === 0 ? 'number-tip-up' : 'number-tip-down'">
@@ -28,12 +32,16 @@
           </span>
           <div class="item-bar">
             <span class="year">{{ item.year - 1 }}</span>
-            <div class="bar-container" style="height: 76%;">
+            <div class="bar-container" style="height: 76%">
               <div class="bar-prev"></div>
             </div>
-            <div class="bar-container" style="height: 88%;">
-              <div class="bar-now" :class="{ 'now-status': item.flag === 1 }"></div>
-            </div><span class="year">{{ item.year }}</span>
+            <div class="bar-container" style="height: 88%">
+              <div
+                class="bar-now"
+                :class="{ 'now-status': item.flag === 1 }"
+              ></div>
+            </div>
+            <span class="year">{{ item.year }}</span>
           </div>
         </div>
       </div>
@@ -42,14 +50,14 @@
 </template>
 
 <script>
-import { reactive, toRefs } from "vue"
+import { reactive, toRefs } from 'vue'
 export default {
-  name: "TrafficCard",
+  name: 'TrafficCard',
   setup() {
     const state = reactive({
       dataType: 0,
-      trafficList:
-        [{ year: 2015, number: 19, percent: 12, flag: 0 },
+      trafficList: [
+        { year: 2015, number: 19, percent: 12, flag: 0 },
         { year: 2016, number: 943, percent: 0, flag: 0 },
         { year: 2017, number: 215, percent: 12, flag: 0 },
         { year: 2018, number: 237, percent: 36, flag: 1 },
@@ -57,24 +65,25 @@ export default {
         { year: 2020, number: 246, percent: 56, flag: 1 },
         { year: 2021, number: 645, percent: 62, flag: 1 },
         { year: 2022, number: 375, percent: 43, flag: 0 },
-        { year: 2023, number: 0, percent: 0, flag: 0 }],
-    });
+        { year: 2023, number: 0, percent: 0, flag: 0 }
+      ]
+    })
 
     return {
-      ...toRefs(state),
-    };
-  },
-};
+      ...toRefs(state)
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .traffic-card {
   width: 100%;
   height: 339px;
   text-align: left;
-  @include bg_color("secondaryColor");
+  @include bg_color('secondaryColor');
   border-radius: 4px;
   overflow: hidden;
 
@@ -83,9 +92,9 @@ export default {
     border-bottom: 1px solid #151a30;
     border-top-left-radius: 0.25rem;
     border-top-right-radius: 0.25rem;
-    @include font_color("fontColor");
+    @include font_color('fontColor');
     font-family: Open Sans, sans-serif;
-    font-size: .9375rem;
+    font-size: 0.9375rem;
     font-weight: 600;
     line-height: 1.5rem;
 
@@ -102,7 +111,7 @@ export default {
         .el-select {
           width: 105px;
           border-radius: 4px;
-          @include bg_color("mainColor");
+          @include bg_color('mainColor');
         }
       }
     }
@@ -125,9 +134,9 @@ export default {
         align-items: center;
 
         border-bottom: 1px solid #151a30;
-        @include font_color("fontColor");
+        @include font_color('fontColor');
         font-family: Open Sans, sans-serif;
-        font-size: .9375rem;
+        font-size: 0.9375rem;
         font-weight: 400;
         line-height: 1.25rem;
         padding: 1rem;
@@ -149,7 +158,7 @@ export default {
 
           .year {
             font-family: Open Sans, sans-serif;
-            font-size: .75rem;
+            font-size: 0.75rem;
             line-height: 1rem;
             color: #8f9bb3;
           }
@@ -160,10 +169,10 @@ export default {
 
             .bar-prev {
               height: 100%;
-              width: .7rem;
+              width: 0.7rem;
               margin-left: auto;
               margin-right: 0.25rem;
-              @include bg_color("mainColor");
+              @include bg_color('mainColor');
             }
 
             .bar-now {
@@ -181,7 +190,7 @@ export default {
         }
       }
 
-      .item>* {
+      .item > * {
         flex: 1;
       }
     }

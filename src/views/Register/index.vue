@@ -3,23 +3,38 @@
     <div class="title">
       <h1>vue-mgt-tpl</h1>
     </div>
-    <el-form ref="registerRef" :model="formData" :rules="rules" @keyup.enter="submitForm">
+    <el-form
+      ref="registerRef"
+      :model="formData"
+      :rules="rules"
+      @keyup.enter="submitForm"
+    >
       <el-form-item prop="email">
         <el-input v-model="formData.email" :placeholder="$t('plzEnterEmail')">
           <template #append>
-            <el-button :disabled="sendingCode" :loading="loading" @click="sendCodeToEmail" type="primary"
-              class="captcha">{{
-                  $t('getCaptcha')
-              }}
+            <el-button
+              :disabled="sendingCode"
+              :loading="loading"
+              @click="sendCodeToEmail"
+              type="primary"
+              class="captcha"
+              >{{ $t('getCaptcha') }}
             </el-button>
           </template>
         </el-input>
       </el-form-item>
       <el-form-item prop="validCod">
-        <el-input maxlength="6" v-model="formData.validCod" :placeholder="$t('plzEnterCaptcha')" />
+        <el-input
+          maxlength="6"
+          v-model="formData.validCod"
+          :placeholder="$t('plzEnterCaptcha')"
+        />
       </el-form-item>
       <el-form-item prop="regUsrNam">
-        <el-input v-model="formData.regUsrNam" :placeholder="$t('plzEnterUsrNam')">
+        <el-input
+          v-model="formData.regUsrNam"
+          :placeholder="$t('plzEnterUsrNam')"
+        >
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -30,7 +45,11 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model="formData.password" :type="'password'" :placeholder="$t('plzEnterPwd')">
+        <el-input
+          v-model="formData.password"
+          :type="'password'"
+          :placeholder="$t('plzEnterPwd')"
+        >
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -41,16 +60,25 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="checkPass">
-        <el-input v-model="formData.checkPass" :type="'password'" :placeholder="$t('plzEnterPwdAgain')">
+        <el-input
+          v-model="formData.checkPass"
+          :type="'password'"
+          :placeholder="$t('plzEnterPwdAgain')"
+        >
         </el-input>
       </el-form-item>
 
       <el-form-item>
         <div class="btn-register">
-          <el-button type="primary" style="width: 100%" @click="submitForm">{{ $t('signUp') }}</el-button>
+          <el-button type="primary" style="width: 100%" @click="submitForm">{{
+            $t('signUp')
+          }}</el-button>
         </div>
         <div class="go-login">
-          <span class="to-login">{{ $t('haveAccount') }}<em @click="goLogin">{{ $t('signIn') }}</em></span>
+          <span class="to-login"
+            >{{ $t('haveAccount')
+            }}<em @click="goLogin">{{ $t('signIn') }}</em></span
+          >
         </div>
       </el-form-item>
     </el-form>
@@ -58,87 +86,91 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs } from "vue";
+import { reactive, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { registerApi, sendCodeToEmailApi } from "@/api/user";
+import { registerApi, sendCodeToEmailApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 
 export default {
-  name: "Register",
-  emits: ["toLogin"],
+  name: 'Register',
+  emits: ['toLogin'],
   setup(props, { emit }) {
     const state = reactive({
       sendingCode: false,
       loading: false
-    });
+    })
 
-    const registerRef = ref(null);
+    const registerRef = ref(null)
     const formData = reactive({
-      email: "12@163.com",
-      validCod: "222222",
-      regUsrNam: "dddd",
-      password: "111111",
-      checkPass: "111111",
-    });
+      email: '12@163.com',
+      validCod: '222222',
+      regUsrNam: 'dddd',
+      password: '111111',
+      checkPass: '111111'
+    })
 
-    const { t } = useI18n();
+    const { t } = useI18n()
     const checkUsername = (rule, value, callback) => {
       if (value.length < 5) {
-        return callback(new Error(t("usrNamDonLessLen5")));
+        return callback(new Error(t('usrNamDonLessLen5')))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     const checkPassword = (rule, value, callback) => {
       if (value.length < 6) {
-        return callback(new Error(t("pwdDonLessLen6")));
+        return callback(new Error(t('pwdDonLessLen6')))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     const validatePwdAgain = (rule, value, callback) => {
       if (!value) {
-        callback(new Error(t("plzEnterPwdAgain")));
+        callback(new Error(t('plzEnterPwdAgain')))
       } else if (value !== formData.password) {
-        callback(new Error(t("pwdInconsistent")));
+        callback(new Error(t('pwdInconsistent')))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
 
     const validatePwd = (rule, value, callback) => {
       if (!value) {
-        callback(new Error(t("plzEnterPwd")));
+        callback(new Error(t('plzEnterPwd')))
       } else {
         if (formData.checkPass) {
-          registerRef.value.validateField("checkPass");
+          registerRef.value.validateField('checkPass')
         }
-        callback();
+        callback()
       }
-    };
+    }
 
     const rules = {
       email: [
-        { required: true, message: t("plzEnterEmail"), trigger: "change" },
+        { required: true, message: t('plzEnterEmail'), trigger: 'change' },
         {
-          type: "email",
-          message: t("plzEnterCorrectEmail"),
-          trigger: ["blur", "change"],
-        },
+          type: 'email',
+          message: t('plzEnterCorrectEmail'),
+          trigger: ['blur', 'change']
+        }
       ],
-      validCod: [{ required: true, message: t('plzEnterCaptcha'), trigger: "blur" }],
-      regUsrNam: [{ required: true, message: t('plzEnterUsrNam'), trigger: "blur" }],
+      validCod: [
+        { required: true, message: t('plzEnterCaptcha'), trigger: 'blur' }
+      ],
+      regUsrNam: [
+        { required: true, message: t('plzEnterUsrNam'), trigger: 'blur' }
+      ],
       password: [
-        { validator: validatePwd, trigger: "blur" },
-        { min: 6, max: 10, message: t('pwdLenIn6To10'), trigger: "blur" },
+        { validator: validatePwd, trigger: 'blur' },
+        { min: 6, max: 10, message: t('pwdLenIn6To10'), trigger: 'blur' }
       ],
-      checkPass: [{ validator: validatePwdAgain, trigger: "blur" }],
-    };
+      checkPass: [{ validator: validatePwdAgain, trigger: 'blur' }]
+    }
 
     const submitForm = () => {
-      if (!registerRef) return
+      if (!registerRef.value) return
       registerRef.value.validate(async (valid) => {
         if (valid) {
           console.log('submit!')
@@ -157,7 +189,7 @@ export default {
           return false
         }
       })
-    };
+    }
 
     const sendCodeToEmail = async () => {
       state.sendingCode = true
@@ -167,7 +199,6 @@ export default {
       if (res && res.success) {
         state.sendingCode = false
         state.loading = false
-        // formData.validCod = res.data.code
         ElMessage({
           message: '验证码已发送到邮箱，请查收！',
           grouping: true,
@@ -178,8 +209,8 @@ export default {
     }
 
     const goLogin = () => {
-      emit("toLogin");
-    };
+      emit('toLogin')
+    }
 
     return {
       ...toRefs(state),
@@ -191,17 +222,17 @@ export default {
       submitForm,
       goLogin,
       sendCodeToEmail
-    };
-  },
-};
+    }
+  }
+}
 </script>
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .register_content {
   width: 375px;
   padding: 40px;
-  background-color: #13152C;
+  background-color: #13152c;
   border-radius: 10px;
 
   .title {
@@ -210,7 +241,7 @@ export default {
   }
 
   .captcha {
-    background: #409EFF;
+    background: #409eff;
     color: #fff;
     margin-right: -21px;
   }

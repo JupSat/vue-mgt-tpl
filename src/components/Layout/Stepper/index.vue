@@ -1,8 +1,17 @@
 <template>
   <div>
-    <el-pagination v-model:current-page="currentPage4" v-model:page-size="pageSize4" :page-sizes="[100, 200, 300, 400]"
-      :small="small" :disabled="disabled" :background="background" layout="total, sizes, prev, pager, next, jumper"
-      :total="400" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+    <el-pagination
+      v-model:current-page="currentPage4"
+      v-model:page-size="pageSize4"
+      :page-sizes="[100, 200, 300, 400]"
+      :small="small"
+      :disabled="disabled"
+      :background="background"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="400"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
   </div>
 </template>
 
@@ -12,8 +21,8 @@ export default {
   name: 'Stepper',
   setup() {
     const state = reactive({})
-    onBeforeMount(() => { })
-    onMounted(() => { })
+    onBeforeMount(() => {})
+    onMounted(() => {})
 
     const currentPage1 = ref(5)
     const currentPage2 = ref(5)
@@ -45,12 +54,9 @@ export default {
       small,
       background,
       disabled,
-      ...toRefs(state),
+      ...toRefs(state)
     }
-  },
+  }
 }
-
 </script>
-<style scoped lang='scss'>
-
-</style>
+<style scoped lang="scss"></style>

@@ -20,35 +20,35 @@
 
 <script>
 export default {
-  name: "ActionCard",
+  name: 'ActionCard',
   props: {
     iconName: {
       type: String,
-      default: '',
+      default: ''
     },
     title: {
       type: String,
-      default: '',
+      default: ''
     },
     tip: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   setup() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>
 <style lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .action-card {
   display: flex;
   align-items: center;
   border-radius: 4px;
   min-height: 94px;
-  @include bg_color("secondaryColor");
+  @include bg_color('secondaryColor');
 
   .icon-container {
     height: 100%;

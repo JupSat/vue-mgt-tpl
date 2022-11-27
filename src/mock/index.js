@@ -1,2 +1,2 @@
-import '@/mock/menu';
-import '@/mock/user';
+import '@/mock/menu'
+import '@/mock/user'

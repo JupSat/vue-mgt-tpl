@@ -10,14 +10,14 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import Header from "./Header";
-import Aside from "./Aside";
-import Main from "./Main";
-import Settings from "./Setting";
+import { ref } from 'vue'
+import Header from './Header'
+import Aside from './Aside'
+import Main from './Main'
+import Settings from './Setting'
 
 export default {
-  name: "Layout",
+  name: 'Layout',
   components: {
     Header,
     Aside,
@@ -39,18 +39,18 @@ export default {
       mainRef,
       asideRef,
       switchView,
-      setCollapse,
+      setCollapse
     }
-  },
-};
+  }
+}
 </script>
 
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .layout-container {
   text-align: left;
-  @include bg_color("mainColor");
+  @include bg_color('mainColor');
 
   .body-container {
     height: 100vh;

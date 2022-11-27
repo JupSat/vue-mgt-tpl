@@ -26,7 +26,7 @@
 import { ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
 export default {
-  name: "Settings",
+  name: 'Settings',
   setup() {
     const drawer = ref(false)
     const direction = ref('rtl')
@@ -51,12 +51,12 @@ export default {
       confirmClick,
       radio1
     }
-  },
-};
+  }
+}
 </script>
 
 <style scoped lang="scss">
-@import "@/styles/switchTheme.scss";
+@import '@/styles/switchTheme.scss';
 
 .toggle-settings {
   position: fixed;
@@ -64,11 +64,11 @@ export default {
   right: 0;
   border-radius: 0.25rem;
   box-shadow: none;
-  transition: transform .3s ease;
+  transition: transform 0.3s ease;
   z-index: 998;
 
   >.el-button {
-    @include bg_color("secondaryColor");
+    @include bg_color('secondaryColor');
     box-shadow: none;
     border: none;
     height: 3rem;
@@ -77,13 +77,10 @@ export default {
     text-align: center;
   }
 
-
   :deep(.el-overlay) {
     .el-drawer {
-      @include bg_color("mainBodyColor");
-
+      @include bg_color('mainBodyColor');
     }
   }
-
 }
 </style>
