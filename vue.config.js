@@ -1,7 +1,6 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   publicPath: './',
-  outputDir: 'vue-mgt-tpl',
   assetsDir: 'static',
   indexPath: 'index.html',
   filenameHashing: true,
