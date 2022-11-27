@@ -15,14 +15,14 @@ module.exports = defineConfig({
       //   changeOrigin: true,
       //   secure: false
       // },
-      ['/api']: {
-        target: "https://demo.gin-vue-admin.com",  //  此处借用flipped-aurora/gin-vue-admin 的url来获取验证码图片
+      '/api': {
+        target: 'https://demo.gin-vue-admin.com', //  此处借用flipped-aurora/gin-vue-admin 的url来获取验证码图片
         changeOrigin: true, // 允许跨域
         logLevel: 'debug',
         ws: false,
         secure: false
       }
-    },
+    }
 
   },
   transpileDependencies: true

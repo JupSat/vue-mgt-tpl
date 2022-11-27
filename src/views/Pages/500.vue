@@ -7,14 +7,15 @@ import { reactive, toRefs, onBeforeMount, onMounted } from 'vue'
 export default {
   setup() {
     const state = reactive({})
-    onBeforeMount(() => { })
-    onMounted(() => { })
+    onBeforeMount(() => {})
+    onMounted(() => {})
+
+    const test = '222'
+
     return {
       ...toRefs(state)
     }
   }
 }
 </script>
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
