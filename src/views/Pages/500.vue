@@ -11,6 +11,7 @@ export default {
     onMounted(() => {})
 
     const test = '222'
+    const test2 = '222'
 
     return {
       ...toRefs(state)
