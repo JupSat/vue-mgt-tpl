@@ -1,6 +1,12 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  lintOnSave: true,
+  publicPath: './',
+  outputDir: 'vue-mgt-tpl',
+  assetsDir: 'static',
+  indexPath: 'index.html',
+  filenameHashing: true,
+  lintOnSave: process.env.NODE_ENV !== 'production',
+  runtimeCompiler: false,
   devServer: {
     open: true,
     host: 'localhost',
@@ -23,7 +29,6 @@ module.exports = defineConfig({
         secure: false
       }
     }
-
   },
   transpileDependencies: true
 })
