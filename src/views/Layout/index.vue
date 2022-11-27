@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Header from "./Header";
 import Aside from "./Aside";
 import Main from "./Main";
