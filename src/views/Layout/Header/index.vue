@@ -254,7 +254,6 @@ export default {
 .el-header {
   position: fixed;
   width: 100%;
-  height: 76px;
   padding: 0;
   z-index: 100;
 }
@@ -265,7 +264,7 @@ export default {
   align-items: center;
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 60px;
   font-size: 12px;
   text-align: right;
   color: var(--el-text-color-primary);
@@ -311,7 +310,7 @@ export default {
 
     .logo {
       width: 208px;
-      height: 76px;
+      height: 60px;
       font-size: 1.75rem;
       white-space: nowrap;
       text-decoration: none;

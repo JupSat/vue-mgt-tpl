@@ -54,7 +54,7 @@ export default {
 
   .body-container {
     height: 100vh;
-    padding-top: 76px;
+    padding-top: 60px;
   }
 }
 </style>
