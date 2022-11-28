@@ -179,8 +179,6 @@ export default {
 @import '@/styles/switchTheme.scss';
 
 .el-tabs {
-  --el-tabs-header-height: none;
-
   :deep(.el-tabs--card > .el-tabs__header) {
     border-bottom: none;
   }

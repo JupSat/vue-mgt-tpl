@@ -174,7 +174,7 @@ export default {
       }
 
       .front-card-body {
-        width: 225px;
+        width: 212px;
         height: 100%;
 
         .body-chart {

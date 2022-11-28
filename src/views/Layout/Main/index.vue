@@ -78,13 +78,12 @@ export default {
   }
 
   :deep(.el-input__wrapper) {
-    padding: 0;
+    @include bg_color('mainColor');
 
     .el-input__inner {
       border-radius: 2px;
       border-color: #101426;
       @include font_color('fontColor');
-      @include bg_color('mainColor');
       font-size: 14px;
       font-weight: 400;
     }

@@ -223,10 +223,6 @@ export default {
     margin-right: -21px;
   }
 
-  :deep(.el-input__wrapper) {
-    all: unset;
-  }
-
   .btn-reset {
     display: flex;
     flex-direction: row;

@@ -228,23 +228,15 @@ export default {
 @import '@/styles/switchTheme.scss';
 
 .login_content {
-  width: 375px;
+  width: 365px;
+  height: 385px;
   background-color: #13152c;
   padding: 40px;
   border-radius: 10px;
 
   .title {
-    // @include font_color("fontColor");
     color: #fff;
     margin-bottom: 20px;
-  }
-
-  .input-icon {
-    margin-right: 10px;
-  }
-
-  :deep(.el-input__wrapper) {
-    all: unset;
   }
 
   .operation {

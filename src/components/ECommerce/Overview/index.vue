@@ -68,8 +68,6 @@ export default {
   .inner-row {
     display: flex;
     justify-content: space-between;
-    margin-left: -15px;
-    margin-right: -15px;
   }
 }
 </style>

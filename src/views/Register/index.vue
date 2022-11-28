@@ -246,14 +246,6 @@ export default {
     margin-right: -21px;
   }
 
-  .input-icon {
-    margin-right: 10px;
-  }
-
-  :deep(.el-input__wrapper) {
-    all: unset;
-  }
-
   .btn-register {
     display: flex;
     flex-direction: row;
