@@ -4,14 +4,14 @@ Mock.setup({
   timeout: '200-600'
 })
 
-Mock.mock('/api/user/register', 'post', () => ({
+Mock.mock(/\/api\/user\/register/, 'post', () => ({
   status: 0,
   data: {},
   success: true,
   message: '注册成功'
 }))
 
-Mock.mock('/api/user/sendCodeToEmail', 'post', () => ({
+Mock.mock(/\/api\/user\/sendCodeToEmail/, 'post', () => ({
   status: 0,
   data: {
     code: '123456'
@@ -20,7 +20,7 @@ Mock.mock('/api/user/sendCodeToEmail', 'post', () => ({
   message: '发送验证码成功'
 }))
 
-Mock.mock('/api/user/login', 'post', () => ({
+Mock.mock(/\/api\/user\/login/, 'post', () => ({
   status: 0,
   data: {},
   success: true,
@@ -36,7 +36,7 @@ Mock.mock('/api/user/login', 'post', () => ({
 //   message: '成功'
 // }))
 
-Mock.mock('/api/user/resetPassword', 'post', () => ({
+Mock.mock(/\/api\/user\/resetPassword/, 'post', () => ({
   status: 0,
   data: {},
   success: true,

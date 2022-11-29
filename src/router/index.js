@@ -69,10 +69,9 @@ async function getDynamicRoutes() {
   const tempMenus = iterator(menuList, '')
   const menus = [...routes, ...tempMenus]
 
-  const currentRoutes = router.getRoutes()
-  menus.forEach((v) => {
-    if (!currentRoutes.find((r) => r.name === v.name)) {
-      router.addRoute(v)
+  menus.forEach((route) => {
+    if (!router.hasRoute(route.name)) {
+      router.addRoute(route)
     }
   })
 }
