@@ -9,12 +9,20 @@ const service = axios.create({
       : process.env.VUE_APP_PRODUCTION_API,
   timeout: 10000
 })
+
+// 请求头信息
+service.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
+
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
     removePendingRequest(config)
     addPendingRequest(config)
     // console.log('req', config)
+    config.headers = {
+      'Content-Type': 'application/json',
+      ...config.headers
+    }
     return config
   },
   (error) => {
