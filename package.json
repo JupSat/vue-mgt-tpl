@@ -18,6 +18,7 @@
     "qs": "^6.11.0",
     "vue": "^3.2.13",
     "vue-i18n": "^9.3.0-beta.7",
+    "vue-jsonp": "^2.0.0",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {

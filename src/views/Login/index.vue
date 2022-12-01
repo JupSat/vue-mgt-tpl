@@ -84,6 +84,7 @@ import router from '@/router'
 import { useI18n } from 'vue-i18n'
 import { loginApi, getGraphCaptchaApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
+import { jsonp } from 'vue-jsonp'
 
 export default {
   name: 'Login',
@@ -141,16 +142,31 @@ export default {
     }
 
     const captchaPicPath = ref('')
+
+    const jsonpFunc = () => {
+      console.log('jsonpFunc', 'test')
+    }
     const getGraphCaptcha = async () => {
       const res = await getGraphCaptchaApi({})
-      rules.captcha.push({
-        max: res.data.captchaLength,
-        min: res.data.captchaLength,
-        message: `请输入${res.data.captchaLength}位验证码`,
-        trigger: 'blur'
-      })
-      captchaPicPath.value = res.data.picPath
-      formData.captchaId = res.data.captchaId
+      if (res) {
+        rules.captcha.push({
+          max: res.data.captchaLength,
+          min: res.data.captchaLength,
+          message: `请输入${res.data.captchaLength}位验证码`,
+          trigger: 'blur'
+        })
+        captchaPicPath.value = res.data.picPath
+        formData.captchaId = res.data.captchaId
+      } else {
+        jsonp(
+          'https://api.map.baidu.com/geocoder/v2/?callback=renderReverse&output=json&pois=1',
+          {
+            ak: 'ZwTVu16RLXjhW7FHDjYt5HfMnR1dhFpR'
+          }
+        ).then((res) => {
+          console.log('jsonp', res)
+        })
+      }
     }
 
     const loginRef = ref(null)
@@ -219,7 +235,8 @@ export default {
       ...toRefs(state),
       validatePsd,
       forgetPsw,
-      goOtherPage
+      goOtherPage,
+      jsonpFunc
     }
   }
 }
