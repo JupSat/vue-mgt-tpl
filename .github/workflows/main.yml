@@ -30,7 +30,8 @@ jobs:
       - name: Deploy to server
         uses: easingthemes/ssh-deploy@v2.1.6
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.TOKEN }}
+          SSH_PRIVATE_KEY: ${{ secrets.REMOTE_ACCESS_TOKEN }}
+          ARGS: '-avzr --delete'
           SOURCE: 'dist/'
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
