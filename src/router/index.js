@@ -95,6 +95,11 @@ function checkPath(subPath) {
 router.beforeEach(async (to, from, next) => {
   const menuStore = useMenuStore()
 
+  /* 路由发生变化修改页面title */
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+
   if (menuStore.menuList.length === 0) {
     await getDynamicRoutes()
     // matched为空时，防止找不到路由
