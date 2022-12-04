@@ -1,16 +1,31 @@
 <template>
-  <el-aside>
+  <el-aside :width="isCollapse ? '64px' : '217.37px'">
     <el-scrollbar always>
-      <el-menu :default-active="route.path" :collapse="isCollapse" collapse-transition @open="handleOpen"
-        @close="handleClose">
-        <el-menu-item v-for="{ id, icon, name } in menuNoChild" :key="id" :index="id" @click="clickMenu(name)">
+      <el-menu
+        :default-active="route.path"
+        :collapse="isCollapse"
+        collapse-transition
+        @open="handleOpen"
+        @close="handleClose"
+      >
+        <el-menu-item
+          v-for="{ id, icon, name } in menuNoChild"
+          :key="id"
+          :index="id"
+          @click="clickMenu(name)"
+        >
           <el-icon>
             <component :is="icon" />
           </el-icon>
           <template #title>{{ $t(id) }}</template>
         </el-menu-item>
-        <el-sub-menu v-for="{ id, icon, children } in menuHasChild" :key="id" :index="id" @open="handleOpen"
-          @close="handleClose">
+        <el-sub-menu
+          v-for="{ id, icon, children } in menuHasChild"
+          :key="id"
+          :index="id"
+          @open="handleOpen"
+          @close="handleClose"
+        >
           <template #title>
             <el-icon>
               <component :is="icon" />
@@ -18,7 +33,12 @@
             <span>{{ $t(id) }}</span>
           </template>
 
-          <el-menu-item v-for="item in children" :key="item.id" :index="item.id" @click="clickMenu(item.name)">
+          <el-menu-item
+            v-for="item in children"
+            :key="item.id"
+            :index="item.id"
+            @click="clickMenu(item.name)"
+          >
             {{ $t(item.id) }}
           </el-menu-item>
         </el-sub-menu>
@@ -104,10 +124,7 @@ export default {
   font-size: 0.9375rem;
   font-weight: 400;
   line-height: 1.25rem;
-  width: auto;
-
   :deep(.el-sub-menu) {
-    min-width: 217.37px;
     @include font_color('fontColor');
   }
 
@@ -139,7 +156,7 @@ export default {
 .el-menu-item-group {
   @include bg_color('secondaryColor');
 
-  ul>.is-active {
+  ul > .is-active {
     color: #598bff;
   }
 }
@@ -158,7 +175,7 @@ export default {
   }
 }
 
-.el-menu>.is-active {
+.el-menu > .is-active {
   color: #598bff;
 }
 
