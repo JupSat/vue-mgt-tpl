@@ -29,5 +29,15 @@ module.exports = defineConfig({
       }
     }
   },
-  transpileDependencies: true
+  chainWebpack: (config) => {
+    if (process.env.OPEN_ANALYZER && process.env.NODE_ENV === 'production') {
+      config
+        .plugin('webpack-bundle-analyzer')
+        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin)
+        .end()
+
+      // 移除 prefetch 插件
+      config.plugins.delete('prefetch')
+    }
+  }
 })

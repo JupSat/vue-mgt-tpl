@@ -3,10 +3,6 @@ import Qs from 'qs'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL:
-    process.env.NODE_ENV === 'dev'
-      ? process.env.VUE_APP_DEV_API
-      : process.env.VUE_APP_PRODUCTION_API,
   timeout: 10000
 })
 

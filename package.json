@@ -6,6 +6,7 @@
     "prepare": "husky install",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "analyz": "cross-env OPEN_ANALYZER=true vue-cli-service build --mode production",
     "lint": "lint-staged"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-standard": "^6.1.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-node": "^11.1.0",
@@ -38,7 +40,8 @@
     "lint-staged": "^13.0.4",
     "mockjs": "^1.1.0",
     "sass": "^1.32.7",
-    "sass-loader": "^12.0.0"
+    "sass-loader": "^12.0.0",
+    "webpack-bundle-analyzer": "^4.7.0"
   },
   "husky": {
     "hooks": {
