@@ -1,5 +1,5 @@
 <template>
-  <div class="login_content" v-if="showLogin">
+  <div class="login-content" v-if="showLogin">
     <div class="title">
       <h1>vue-mgt-tpl</h1>
     </div>
@@ -62,13 +62,15 @@
           }}</el-button>
         </div>
         <div class="operation">
-          <span class="free-register" @click="showLogin = !showLogin">{{
-            $t('freeRegister')
-          }}</span>
-          <span class="forget-password" @click="forgetPsw">{{
-            $t('forgotPassword')
-          }}</span>
-          <!-- <span class="to-other-page" @click="goOtherPage">{{ $t('test') }}</span> -->
+          <div>
+            <span class="free-register" @click="showLogin = !showLogin">{{
+              $t('freeRegister')
+            }}</span>
+            <span class="forget-password" @click="forgetPwd">{{
+              $t('forgotPassword')
+            }}</span>
+          </div>
+          <Language />
         </div>
       </el-form-item>
     </el-form>
@@ -85,16 +87,22 @@ import { useI18n } from 'vue-i18n'
 import { loginApi, getGraphCaptchaApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import { jsonp } from 'vue-jsonp'
+import Language from '@/components/Language'
 
 export default {
   name: 'Login',
   emits: ['toResetPwd'],
   components: {
-    Register
+    Register,
+    Language
   },
   setup(props, { emit }) {
     const state = reactive({
       showLogin: true
+    })
+
+    const data = reactive({
+      language: 'zh'
     })
 
     const formData = reactive({
@@ -133,7 +141,7 @@ export default {
       ]
     })
 
-    const validatePsd = (rule, value, callback) => {
+    const validatePwd = (rule, value, callback) => {
       if (!value) {
         callback(new Error(t('plzEnterPwd')))
       } else {
@@ -213,12 +221,8 @@ export default {
       })
     }
 
-    const forgetPsw = () => {
+    const forgetPwd = () => {
       emit('toResetPwd')
-    }
-
-    const goOtherPage = () => {
-      router.push({ path: '/eCommerce' })
     }
 
     onMounted(() => {
@@ -233,9 +237,9 @@ export default {
       captchaPicPath,
       getGraphCaptcha,
       ...toRefs(state),
-      validatePsd,
-      forgetPsw,
-      goOtherPage,
+      ...toRefs(data),
+      validatePwd,
+      forgetPwd,
       jsonpFunc
     }
   }
@@ -244,7 +248,7 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
 
-.login_content {
+.login-content {
   width: 365px;
   height: 385px;
   background-color: #13152c;
@@ -262,6 +266,7 @@ export default {
     justify-content: space-between;
     align-items: center;
 
+    width: 100%;
     font-size: 12px;
     cursor: pointer;
 
@@ -272,10 +277,9 @@ export default {
 
     .forget-password {
       color: #9fa2a8;
-    }
-
-    .to-other-page {
-      margin-left: 5px;
+      &:hover {
+        color: #2878ff;
+      }
     }
   }
 

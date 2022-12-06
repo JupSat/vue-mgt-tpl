@@ -1,5 +1,5 @@
 <template>
-  <div class="register_content">
+  <div class="register-content">
     <div class="title">
       <h1>vue-mgt-tpl</h1>
     </div>
@@ -79,6 +79,7 @@
             >{{ $t('haveAccount')
             }}<em @click="goLogin">{{ $t('signIn') }}</em></span
           >
+          <Language />
         </div>
       </el-form-item>
     </el-form>
@@ -90,9 +91,13 @@ import { reactive, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { registerApi, sendCodeToEmailApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
+import Language from '@/components/Language'
 
 export default {
   name: 'Register',
+  components: {
+    Language
+  },
   emits: ['toLogin'],
   setup(props, { emit }) {
     const state = reactive({
@@ -229,8 +234,8 @@ export default {
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
 
-.register_content {
-  width: 375px;
+.register-content {
+  width: 365px;
   padding: 40px;
   background-color: #13152c;
   border-radius: 10px;
@@ -257,10 +262,10 @@ export default {
   .go-login {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    width: 100%;
     font-size: 12px;
-
     .to-login {
       color: #9fa2a8;
 

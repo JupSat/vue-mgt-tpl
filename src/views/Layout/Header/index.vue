@@ -167,7 +167,7 @@ export default {
   emits: ['changeCollapse', 'switchTheme'],
   setup(props, { emit }) {
     const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
-    const state = reactive({
+    const data = reactive({
       theme: 'light',
       language: 'zh',
       color: '#8f9bb3',
@@ -183,7 +183,7 @@ export default {
 
     // 菜单展开(或折叠)
     const setCollapse = () => {
-      state.expand = !state.expand
+      data.expand = !data.expand
       emit('changeCollapse')
     }
 
@@ -201,43 +201,43 @@ export default {
     const { locale } = useI18n()
     const commonStore = useCommonStore()
     watch(
-      () => state.language,
+      () => data.language,
       () => {
-        locale.value = state.language
-        commonStore.setLanguage(state.language)
+        locale.value = data.language
+        commonStore.setLanguage(data.language)
       }
     )
 
     const changeTheme = () => {
-      commonStore.setTheme(state.theme)
-      window.document.documentElement.setAttribute('data-theme', state.theme)
+      commonStore.setTheme(data.theme)
+      window.document.documentElement.setAttribute('data-theme', data.theme)
     }
 
     // 搜索菜单
     const remoteMethod = (query) => {
       if (query) {
-        state.loading = true
+        data.loading = true
         const menuStore = useMenuStore()
         const menuList = menuStore.menuList
           .map((list) => list.children.flat())
           .flat()
-        state.loading = false
-        state.menuList = menuList.filter((item) => {
+        data.loading = false
+        data.menuList = menuList.filter((item) => {
           return item.id.toLowerCase().includes(query.toLowerCase())
         })
       } else {
-        state.menuList = []
+        data.menuList = []
       }
     }
 
     onMounted(() => {
-      state.language = commonStore.language
-      state.theme = commonStore.theme
+      data.language = commonStore.language
+      data.theme = commonStore.theme
       changeTheme()
     })
 
     return {
-      ...toRefs(state),
+      ...toRefs(data),
       setCollapse,
       changeTheme,
       navigateHome,

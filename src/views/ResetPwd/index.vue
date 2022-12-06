@@ -65,6 +65,7 @@
           <span class="to-login" @click="toLogin"
             ><em>{{ $t('signIn') }}</em></span
           >
+          <Language />
         </div>
       </el-form-item>
     </el-form>
@@ -75,9 +76,13 @@ import { reactive, toRefs, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { resetPwdApi, sendCodeToEmailApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
+import Language from '@/components/Language'
 
 export default {
   name: 'ResetPassword',
+  components: {
+    Language
+  },
   emits: ['toLogin'],
   setup(props, { emit }) {
     const resetPwdRef = ref()
@@ -234,8 +239,9 @@ export default {
   .go-login {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    width: 100%;
     font-size: 12px;
     cursor: pointer;
 
