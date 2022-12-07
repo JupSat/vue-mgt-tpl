@@ -330,10 +330,18 @@ export default {
       justify-content: center;
       width: 50px;
       margin: 0px 2px;
-    }
 
-    > div:nth-child(1) {
-      border-left: none;
+      &:hover .el-dropdown {
+        padding: 4px;
+        border-radius: 50px;
+        background: rgba(2, 123, 190, 0.2);
+        cursor: pointer;
+        .el-icon {
+          &:hover {
+            color: #598bff;
+          }
+        }
+      }
     }
 
     .search {
@@ -360,8 +368,10 @@ export default {
       margin-left: 12px;
 
       .el-dropdown {
-        margin-left: 20px;
-        margin-right: 0;
+        margin-left: 15px;
+        border-radius: 50px;
+        padding: 4px;
+        background: rgba(2, 123, 190, 0.2);
       }
 
       .user-info {

@@ -6,7 +6,7 @@
     "prepare": "husky install",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "analyz": "cross-env OPEN_ANALYZER=true vue-cli-service build --mode production",
+    "analyze": "cross-env OPEN_ANALYZER=true vue-cli-service build --mode production",
     "lint": "lint-staged"
   },
   "dependencies": {
