@@ -112,5 +112,8 @@ export default {
   purple: 'Purple',
   yellow: 'Yellow',
   expand: 'Expand',
-  fold: 'Fold'
+  fold: 'Fold',
+  whoops: 'Whoops!',
+  notFoundTip: 'It seems like we could not find the page you were looking for',
+  goBack: 'Go back'
 }

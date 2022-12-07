@@ -112,5 +112,8 @@ export default {
   purple: '紫色',
   yellow: '黄色',
   expand: '展开',
-  fold: '收起'
+  fold: '收起',
+  whoops: '哎哟！',
+  notFoundTip: '好像找不到你要查找页面~',
+  goBack: '返回'
 }

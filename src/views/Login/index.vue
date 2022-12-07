@@ -1,7 +1,7 @@
 <template>
   <div class="login-content" v-if="showLogin">
     <div class="title">
-      <h1>vue-mgt-tpl</h1>
+      <h1>{{ $t('signIn') }}</h1>
     </div>
     <el-form
       ref="loginRef"

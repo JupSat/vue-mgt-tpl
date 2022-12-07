@@ -328,9 +328,8 @@ export default {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 60px;
+      width: 50px;
       margin: 0px 2px;
-      border-left: 1px solid #151a30;
     }
 
     > div:nth-child(1) {
@@ -347,8 +346,8 @@ export default {
     }
 
     .language {
-      width: 128px;
-      padding-left: 22px;
+      width: 105px;
+      padding-left: 15px;
 
       .el-select {
         height: 45px;
@@ -358,7 +357,7 @@ export default {
 
     .user-info-dropdown {
       width: 120px;
-      margin-left: 20px;
+      margin-left: 12px;
 
       .el-dropdown {
         margin-left: 20px;
@@ -366,7 +365,7 @@ export default {
       }
 
       .user-info {
-        font-size: 18px;
+        font-size: 16px;
         @include font_color('fontColor');
 
         > div {
@@ -389,14 +388,12 @@ export default {
 }
 
 .view-more {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
-  margin-left: -4px;
-  text-align: center;
 
   .el-icon {
-    position: absolute;
-    top: 11px;
     right: -4px;
   }
 }

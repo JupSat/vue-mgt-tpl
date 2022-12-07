@@ -1,7 +1,7 @@
 <template>
   <div class="register-content">
     <div class="title">
-      <h1>vue-mgt-tpl</h1>
+      <h1>{{ $t('signUp') }}</h1>
     </div>
     <el-form
       ref="registerRef"
