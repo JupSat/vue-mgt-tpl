@@ -1,6 +1,6 @@
 <template>
   <div class="e-commerce">
-    <el-row :gutter="32">
+    <!-- <el-row :gutter="32">
       <el-col :span="12">
         <ActionCard
           :iconName="'Platform'"
@@ -12,7 +12,7 @@
         <ActionCard :iconName="'Management'" title="docArticle" tip="learnMore">
         </ActionCard>
       </el-col>
-    </el-row>
+    </el-row> -->
     <el-row :gutter="32">
       <el-col :span="10">
         <el-row class="inner-row">
@@ -37,16 +37,16 @@
 </template>
 
 <script>
-import ActionCard from '@/components/ECommerce/ActionCard'
+// import ActionCard from '@/components/ECommerce/ActionCard'
 import StatusCard from '@/components/ECommerce/StatusCard'
 import EarningCard from '@/components/ECommerce/EarningCard'
 import TrafficCard from '@/components/ECommerce/TrafficCard'
 import ChartsCard from '@/components/ECommerce/ChartsCard'
 
 export default {
-  name: 'Overview',
+  name: 'Analytics',
   components: {
-    ActionCard,
+    // ActionCard,
     StatusCard,
     EarningCard,
     TrafficCard,

@@ -1,16 +1,11 @@
 <template>
-  <div>
-    <Overview></Overview>
-  </div>
+  <div></div>
 </template>
 
 <script>
-import Overview from './Overview'
 export default {
   name: 'ECommerce',
-  components: {
-    Overview
-  },
+  components: {},
   setup() {
     return {}
   }

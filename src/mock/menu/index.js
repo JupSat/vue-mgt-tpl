@@ -9,27 +9,56 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
   data: {
     menuList: [
       {
+        key: 'overview',
+        id: 'overview',
+        path: '/overview',
+        name: 'Overview',
+        icon: 'Monitor',
+        component: '',
+        componentName: 'Overview',
+        hidden: false,
+        breadcrumb: false,
+        keepAlive: false,
+        fixed: false,
+        redirect: '/overview/summary',
+        children: [
+          {
+            key: 'summary',
+            id: 'summary',
+            path: '/overview/summary',
+            name: 'Summary',
+            icon: '',
+            component: 'Overview/Summary',
+            componentName: 'Analytics',
+            hidden: true,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          }
+        ]
+      },
+      {
         key: 'eCommerce',
-        id: 'eCommerce',
+        id: 'analytics',
         path: '/eCommerce',
         name: 'ECommerce',
-        icon: 'Monitor',
+        icon: 'TrendCharts',
         component: '',
         componentName: 'ECommerce',
         hidden: false,
         breadcrumb: false,
         keepAlive: false,
         fixed: false,
-        redirect: '/eCommerce/overview',
+        redirect: '/eCommerce/analytics',
         children: [
           {
             key: 'overview',
             id: 'overview',
-            path: '/eCommerce/overview',
-            name: 'Overview',
+            path: '/eCommerce/analytics',
+            name: 'Analytics',
             icon: '',
-            component: 'ECommerce/Overview',
-            componentName: 'Overview',
+            component: 'ECommerce/Analytics',
+            componentName: 'Analytics',
             hidden: true,
             breadcrumb: false,
             keepAlive: false,

@@ -297,12 +297,21 @@ export default {
     }
 
     .sidebar-toggle {
-      text-decoration: none;
-      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 30px;
 
-      .el-icon {
-        &:hover {
-          color: #598bff;
+      &:hover {
+        padding: 4px;
+        border-radius: 50px;
+        background: rgba(2, 123, 190, 0.2);
+        cursor: pointer;
+        .el-icon {
+          &:hover {
+            color: #598bff;
+          }
         }
       }
     }
@@ -330,6 +339,14 @@ export default {
       justify-content: center;
       width: 50px;
       margin: 0px 2px;
+
+      .el-dropdown > .el-badge {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 26px;
+        height: 26px;
+      }
 
       &:hover .el-dropdown {
         padding: 4px;

@@ -115,5 +115,7 @@ export default {
   fold: 'Fold',
   whoops: 'Whoops!',
   notFoundTip: 'It seems like we could not find the page you were looking for',
-  goBack: 'Go back'
+  goBack: 'Go back',
+  analytics: 'Analytics',
+  summary: 'Summary'
 }
