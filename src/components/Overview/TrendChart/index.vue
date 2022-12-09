@@ -143,9 +143,6 @@ export default {
               type: 'bar',
               animation: false,
               name: legendData[index + 1],
-              itemStyle: {
-                opacity: 0.5
-              },
               data: data
             }
           })

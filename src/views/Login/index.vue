@@ -192,7 +192,7 @@ export default {
               duration: 2000
             })
             setTimeout(() => {
-              router.push({ path: '/eCommerce' })
+              router.push({ path: '/overview' })
             }, 3000)
           } else if (res && res.status === 1) {
             ElMessage({
