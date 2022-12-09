@@ -5,12 +5,12 @@
 <script>
 import { ref, nextTick, onMounted, onUnmounted, shallowRef } from 'vue'
 import * as echarts from 'echarts'
-// import { useI18n } from 'vue-i18n'
+import { useI18n } from 'vue-i18n'
 
 export default {
   name: 'TrendChart',
   setup() {
-    // const { t } = useI18n()
+    const { t } = useI18n()
 
     const chart = shallowRef(null)
     const chartRef = ref(null)
@@ -25,7 +25,7 @@ export default {
       legendData.push('trend')
       const encodeY = []
       for (let i = 0; i < yearCount; i++) {
-        legendData.push(2010 + i + '')
+        legendData.push(2016 + i + '')
         dataList.push([])
         encodeY.push(1 + i)
       }
@@ -52,7 +52,14 @@ export default {
         tooltip: {
           trigger: 'axis'
         },
-
+        title: {
+          text: t('trendAnalytics'),
+          top: '4%',
+          left: '12px',
+          textStyle: {
+            color: '#8f9bb3'
+          }
+        },
         legend: {
           data: legendData,
           itemWidth: 15,
@@ -64,9 +71,12 @@ export default {
             lineHeight: 20,
             fontWeight: 'normal'
           },
-          top: '2%',
+          top: '7%',
           right: '12%',
           bottom: '30'
+        },
+        grid: {
+          top: '20%'
         },
         dataZoom: [
           {
@@ -169,6 +179,6 @@ export default {
 <style scoped lang="scss">
 .bar-chart {
   width: 100%;
-  height: 450px;
+  height: 480px;
 }
 </style>

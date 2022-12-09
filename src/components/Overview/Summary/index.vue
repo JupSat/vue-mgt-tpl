@@ -4,42 +4,54 @@
       <el-col :span="8">
         <div class="content-card">
           <div class="total">
-            <div>Total Revenue</div>
-            <div class="content-type">
-              <span>$ 666.66</span>
-              <div>
-                36% <el-icon><TopRight /></el-icon>
-              </div>
+            <div class="total-left">
+              <div>{{ $t('totalRevenue') }}</div>
+              <div class="content-type">$ 6666.66</div>
+              <div>{{ $t('closeTarget') }}</div>
             </div>
-            <div>Close target</div>
+            <div class="total-right">
+              <el-progress type="circle" :percentage="36">
+                <template #default="{ percentage }">
+                  <span class="percentage-value">{{ percentage }}%</span>
+                </template>
+              </el-progress>
+            </div>
           </div>
         </div>
       </el-col>
       <el-col :span="8">
         <div class="content-card">
           <div class="total">
-            <div>Invoice</div>
-            <div class="content-type">
-              <span>$ 888.88</span>
-              <div class="invoice">
-                36% <el-icon><BottomRight /></el-icon>
-              </div>
+            <div class="total-left">
+              <div>{{ $t('invoice') }}</div>
+              <div class="content-type">$ 888.88</div>
+              <div>{{ $t('average') }}</div>
             </div>
-            <div>Average</div>
+            <div class="total-right">
+              <el-progress type="circle" :percentage="46">
+                <template #default="{ percentage }">
+                  <span class="percentage-value">{{ percentage }}%</span>
+                </template>
+              </el-progress>
+            </div>
           </div>
         </div>
       </el-col>
       <el-col :span="8">
         <div class="content-card">
           <div class="total">
-            <div>Total Saves</div>
-            <div class="content-type">
-              <span>$ 999.99</span>
-              <div>
-                18% <el-icon><TopRight /></el-icon>
-              </div>
+            <div class="total-left">
+              <div>{{ $t('totalSaves') }}</div>
+              <div class="content-type">$ 999.99</div>
+              <div>{{ $t('inDraft') }}</div>
             </div>
-            <div>In Draft</div>
+            <div class="total-right">
+              <el-progress type="circle" :percentage="88">
+                <template #default="{ percentage }">
+                  <span class="percentage-value">{{ percentage }}%</span>
+                </template>
+              </el-progress>
+            </div>
           </div>
         </div>
       </el-col>
@@ -98,7 +110,7 @@ export default {
 
   .trend-chart {
     width: 100%;
-    height: 450px;
+    height: 520px;
     margin-right: 16px;
     margin-left: 16px;
     border-radius: 4px;
@@ -111,34 +123,30 @@ export default {
   @include bg_color('secondaryColor');
 
   .total {
+    display: flex;
+    justify-content: space-between;
     padding: 18px;
     color: #8f9bb3;
-    > div {
-      padding: 5px 0;
+    &-left > div {
+      padding: 10px 0;
+    }
+
+    &-right {
+      margin-right: 35px;
+
+      .percentage-value {
+        font-family: Open Sans, sans-serif;
+        font-size: 30px;
+        font-weight: 600;
+        color: #85ea8e;
+      }
     }
     .content-type {
       display: flex;
-      color: #409eff;
-
-      span:nth-child(1) {
-        font-family: Open Sans, sans-serif;
-        font-size: 20px;
-        font-weight: 600;
-      }
-
-      div:nth-child(2) {
-        display: flex;
-        align-items: center;
-        padding: 0 15px;
-        margin-left: 130px;
-        border-radius: 50px;
-        color: green;
-        background: #daf3eb;
-
-        > i {
-          margin-left: 5px;
-        }
-      }
+      color: #f8b13a;
+      font-family: Open Sans, sans-serif;
+      font-size: 20px;
+      font-weight: 600;
 
       .invoice {
         color: red !important;
