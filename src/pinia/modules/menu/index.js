@@ -22,5 +22,17 @@ export const useMenuStore = defineStore('menu', {
         this.menuList.push(menu)
       }
     }
+  },
+  persist: {
+    enabled: false,
+    strategies: [
+      {
+        // 自定义key
+        key: 'menu',
+        // 自定义存储方式，默认sessionStorage
+        storage: localStorage,
+        paths: ['menuList']
+      }
+    ]
   }
 })

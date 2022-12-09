@@ -67,13 +67,7 @@ async function getDynamicRoutes() {
     return menus
   }
   const tempMenus = iterator(menuList, '')
-  const menus = [...routes, ...tempMenus]
-
-  menus.forEach((route) => {
-    if (!router.hasRoute(route.name)) {
-      router.addRoute(route)
-    }
-  })
+  return [...tempMenus]
 }
 
 const router = createRouter({
@@ -82,32 +76,31 @@ const router = createRouter({
 })
 
 function checkPath(subPath) {
-  const filePaths = require.context('@/components/', true, /.vue$/).keys()
-  const filePaths2 = require.context('@/views/', true, /.vue$/).keys()
-  const paths = [...filePaths, ...filePaths2]
-  const flag = paths.some((path) => {
-    if (path.toLowerCase().includes(subPath.toLowerCase())) return true
-    return false
-  })
+  const componentPaths = require.context('@/components/', true, /.vue$/).keys()
+  const viewPaths = require.context('@/views/', true, /.vue$/).keys()
+  const paths = [...componentPaths, ...viewPaths]
+  const flag = paths.some((path) =>
+    path.toLowerCase().includes(subPath.toLowerCase())
+  )
   return flag
 }
 
 router.beforeEach(async (to, from, next) => {
   const menuStore = useMenuStore()
 
-  /* 路由发生变化修改页面title */
   if (to.meta.title) {
     document.title = to.meta.title
   }
 
-  if (menuStore.menuList.length === 0) {
-    await getDynamicRoutes()
-    // matched为空时，防止找不到路由
-    if (to.matched.length === 0) {
-      router.push(to.path)
-    } else {
-      next()
-    }
+  if (!menuStore.menuList.length) {
+    await getDynamicRoutes().then((menus) => {
+      menus.forEach((route) => {
+        if (!router.hasRoute(route.name)) {
+          router.addRoute(route)
+        }
+      })
+      next({ ...to, replace: true })
+    })
   } else {
     if (!checkPath(to.path) && to.path !== '/404') {
       next('/404')

@@ -28,7 +28,7 @@ export default {
   pwdInconsistent: 'The two times the password was entered inconsistently',
   pwdLenIn6To10: 'The password is 6 to 10 characters long',
   eCommerce: 'Overview',
-  dashboard: 'IoT dashboard',
+  dashboard: 'Dashboard',
   layout: 'Layout',
   stepper: 'Stepper',
   list: 'List',

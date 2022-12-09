@@ -29,7 +29,7 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
             name: 'Summary',
             icon: '',
             component: 'Overview/Summary',
-            componentName: 'Analytics',
+            componentName: 'Summary',
             hidden: true,
             breadcrumb: false,
             keepAlive: false,
