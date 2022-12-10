@@ -116,16 +116,16 @@ export default {
                   points.push(point)
                 }
               }
-              const style = api.style({
+              const style = {
                 stroke: api.visual('color'),
                 fill: 'none'
-              })
+              }
               return {
                 type: 'polyline',
                 shape: {
                   points: points
                 },
-                style: style
+                style
               }
             },
             itemStyle: {

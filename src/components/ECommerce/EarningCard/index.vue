@@ -121,24 +121,18 @@ export default {
             type: 'line',
             symbol: 'circle',
             sampling: 'average',
-            itemStyle: {
-              normal: {
-                opacity: 0
-              },
-              emphasis: {
+
+            emphasis: {
+              itemStyle: {
                 opacity: 0
               }
             },
             lineStyle: {
-              normal: {
-                width: 0
-              }
+              width: 0
             },
             areaStyle: {
-              normal: {
-                color: 'rgba(51, 102, 255)',
-                opacity: 1
-              }
+              color: 'rgba(51, 102, 255)',
+              opacity: 1
             }
           }
         ]
