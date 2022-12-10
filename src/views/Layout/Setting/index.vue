@@ -8,8 +8,12 @@
     <el-drawer v-model="drawer" :direction="direction" title="设置">
       <template #default>
         <div>
-          <el-radio v-model="radio1" label="Option 1" size="large">功能待完善</el-radio>
-          <el-radio v-model="radio1" label="Option 2" size="large">功能待完善</el-radio>
+          <el-radio v-model="radio1" label="Option 1" size="large"
+            >功能待完善</el-radio
+          >
+          <el-radio v-model="radio1" label="Option 2" size="large"
+            >功能待完善</el-radio
+          >
         </div>
       </template>
       <template #footer>
@@ -67,14 +71,14 @@ export default {
   transition: transform 0.3s ease;
   z-index: 998;
 
-  >.el-button {
+  > .el-button {
     @include bg_color('secondaryColor');
-    box-shadow: none;
     border: none;
     height: 3rem;
     width: 3rem;
     padding: 0;
     text-align: center;
+    box-shadow: 0 0 #0000, 0 0 #0000, inset 1px 1px 0px hsl(0deg 0% 100% / 10%);
   }
 
   :deep(.el-overlay) {

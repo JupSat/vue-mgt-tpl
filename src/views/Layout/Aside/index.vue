@@ -45,6 +45,13 @@
       </el-menu>
     </el-scrollbar>
   </el-aside>
+  <div class="collapse">
+    <el-affix :offset="350">
+      <el-icon size="23" :color="'#8f9bb3'" @click="isCollapse = !isCollapse"
+        ><DArrowLeft v-if="!isCollapse" /><DArrowRight v-else
+      /></el-icon>
+    </el-affix>
+  </div>
 </template>
 
 <script>
@@ -182,5 +189,20 @@ export default {
 :deep(.el-scrollbar__bar.is-vertical > div) {
   width: 65%;
   margin-left: 4px;
+}
+
+.collapse {
+  position: relative;
+  @include bg_color('mainBodyColor');
+  &:hover .el-affix {
+    cursor: pointer;
+    .el-icon {
+      border-radius: 50px;
+      background: rgba(2, 123, 190, 0.2);
+      &:hover {
+        color: #598bff;
+      }
+    }
+  }
 }
 </style>

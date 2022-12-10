@@ -72,7 +72,7 @@ export default {
         order: 1;
         flex: 1 0;
         min-width: 0;
-        padding: 0 35px;
+        padding: 0 35px 0 11px;
       }
     }
   }

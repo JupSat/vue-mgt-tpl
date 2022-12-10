@@ -78,6 +78,7 @@ export default {
   dark: '黑色',
   light: '白色',
   cosmic: '紫色',
+  blue: '蓝色',
   systemCustomization: '系统自定义',
   contactUS: '联系我们',
   docArticle: '文档和定制稿件',

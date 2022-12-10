@@ -115,12 +115,14 @@ export default {
     margin-left: 16px;
     border-radius: 4px;
     @include bg_color('secondaryColor');
+    box-shadow: 0 0 #0000, 0 0 #0000, inset 0px 1px 0px hsl(0deg 0% 100% / 10%);
   }
 }
 
 .content-card {
   border-radius: 4px;
   @include bg_color('secondaryColor');
+  box-shadow: 0 0 #0000, 0 0 #0000, inset 0px 1px 0px hsl(0deg 0% 100% / 10%);
 
   .total {
     display: flex;

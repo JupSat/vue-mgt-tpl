@@ -78,6 +78,7 @@ export default {
   dark: 'Dark',
   light: 'Light',
   cosmic: 'Cosmic',
+  blue: 'Blue',
   systemCustomization: 'System customization',
   contactUS: 'Contact US',
   docArticle: 'Documentation and customization articles',

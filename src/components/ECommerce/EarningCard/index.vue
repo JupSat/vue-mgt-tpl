@@ -179,6 +179,7 @@ export default {
   height: 216px;
   @include bg_color('secondaryColor');
   border-radius: 4px;
+  box-shadow: 0 0 #0000, 0 0 #0000, inset 0px 1px 0px hsl(0deg 0% 100% / 10%);
 
   .card-body {
     width: 100%;

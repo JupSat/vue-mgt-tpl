@@ -185,6 +185,8 @@ export default {
 
   :deep(.el-tabs__header) {
     @include bg_color('secondaryColor');
+    box-shadow: 0 0 #0000, 0 0 #0000, inset 0px 1px 0px hsl(0deg 0% 100% / 10%);
+
     border-radius: 4px;
     border-bottom: none;
 
@@ -202,7 +204,7 @@ export default {
 
 .tabs {
   position: relative;
-  padding: 8px 35px;
+  padding: 8px 35px 8px 11px;
 
   .menu-tabs > .el-tabs__content {
     padding: 32px;

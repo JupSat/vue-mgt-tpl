@@ -172,7 +172,7 @@ export default {
       language: 'zh',
       color: '#8f9bb3',
       list: [1, 2, 3, 4, 5, 6, 7, 8],
-      colorList: ['dark', 'light', 'purple', 'yellow'],
+      colorList: ['blue', 'light', 'dark', 'purple', 'yellow'],
       menuList: [],
       menuValue: '',
       loading: false,

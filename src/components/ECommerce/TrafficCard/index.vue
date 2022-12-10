@@ -86,6 +86,7 @@ export default {
   @include bg_color('secondaryColor');
   border-radius: 4px;
   overflow: hidden;
+  box-shadow: 0 0 #0000, 0 0 #0000, inset 0px 1px 0px hsl(0deg 0% 100% / 10%);
 
   .card-header {
     padding: 1rem 1.5rem;

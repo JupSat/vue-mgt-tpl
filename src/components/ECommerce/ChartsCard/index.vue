@@ -82,12 +82,12 @@ export default {
     margin-bottom: 1.875rem;
     @include bg_color('secondaryColor');
     border-radius: 0.25rem;
-    box-shadow: none;
     @include font_color('fontColor');
     font-family: Open Sans, sans-serif;
     font-size: 0.9375rem;
     font-weight: 400;
     line-height: 1.25rem;
+    box-shadow: 0 0 #0000, 0 0 #0000, inset 0px 1px 0px hsl(0deg 0% 100% / 10%);
 
     :deep(.el-tabs__item) {
       background-color: transparent;
