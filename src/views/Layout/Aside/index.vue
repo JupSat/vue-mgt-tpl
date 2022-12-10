@@ -3,16 +3,18 @@
     <el-scrollbar always>
       <el-menu
         :default-active="route.path"
+        :router="true"
         :collapse="isCollapse"
         collapse-transition
         @open="handleOpen"
         @close="handleClose"
+        active-text-color="#ffd04b"
+        text-color="#fff"
       >
         <el-menu-item
-          v-for="{ id, icon, name } in menuNoChild"
+          v-for="{ id, icon, path } in menuNoChild"
           :key="id"
-          :index="id"
-          @click="clickMenu(name)"
+          :index="path"
         >
           <el-icon>
             <component :is="icon" />
@@ -20,9 +22,9 @@
           <template #title>{{ $t(id) }}</template>
         </el-menu-item>
         <el-sub-menu
-          v-for="{ id, icon, children } in menuHasChild"
+          v-for="{ id, icon, children, path } in menuHasChild"
           :key="id"
-          :index="id"
+          :index="path"
           @open="handleOpen"
           @close="handleClose"
         >
@@ -34,12 +36,11 @@
           </template>
 
           <el-menu-item
-            v-for="item in children"
-            :key="item.id"
-            :index="item.id"
-            @click="clickMenu(item.name)"
+            v-for="{ id, path } in children"
+            :key="id"
+            :index="path"
           >
-            {{ $t(item.id) }}
+            {{ $t(id) }}
           </el-menu-item>
         </el-sub-menu>
       </el-menu>
@@ -61,8 +62,7 @@ import { useMenuStore } from '@/pinia/modules/menu'
 
 export default {
   name: 'Aside',
-  emits: ['goView'],
-  setup(props, { emit }) {
+  setup() {
     const state = reactive({
       isCollapse: false,
       menuNoChild: [],
@@ -74,10 +74,6 @@ export default {
     }
     const handleClose = (key, keyPath) => {
       console.log(key, keyPath)
-    }
-
-    const clickMenu = (name) => {
-      emit('goView', name)
     }
 
     const selectMenu = (key, keyPath) => {
@@ -110,7 +106,6 @@ export default {
       ...toRefs(state),
       handleOpen,
       handleClose,
-      clickMenu,
       selectMenu,
       selectMenuItem,
       setCollapse,
@@ -182,8 +177,8 @@ export default {
   }
 }
 
-.el-menu > .is-active {
-  color: #598bff;
+:deep(.el-menu-item.is-active) {
+  color: #598bff !important;
 }
 
 :deep(.el-scrollbar__bar.is-vertical > div) {

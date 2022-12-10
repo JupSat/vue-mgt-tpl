@@ -3,8 +3,8 @@
     <Header @changeCollapse="setCollapse"></Header>
     <Settings></Settings>
     <el-container class="body-container">
-      <Aside @goView="switchView" ref="asideRef"></Aside>
-      <Main ref="mainRef"></Main>
+      <Aside ref="asideRef"></Aside>
+      <Main></Main>
     </el-container>
   </el-container>
 </template>
@@ -25,20 +25,14 @@ export default {
     Settings
   },
   setup() {
-    const mainRef = ref(null)
     const asideRef = ref(null)
 
-    const switchView = (name) => {
-      mainRef.value.switchView(name)
-    }
     const setCollapse = () => {
       asideRef.value.setCollapse()
     }
 
     return {
-      mainRef,
       asideRef,
-      switchView,
       setCollapse
     }
   }
