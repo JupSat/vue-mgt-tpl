@@ -3,7 +3,7 @@
     <div class="header-layout">
       <div class="header-container">
         <div class="logo-container">
-          <div @click="setCollapse()" class="sidebar-toggle">
+          <!-- <div @click="setCollapse()" class="sidebar-toggle">
             <el-tooltip
               :content="expand ? $t('fold') : $t('expand')"
               placement="top"
@@ -14,28 +14,16 @@
                 <Expand v-else />
               </el-icon>
             </el-tooltip>
-          </div>
-          <div class="logo" @click="navigateHome()"></div>
+          </div> -->
+          <img
+            class="logo"
+            @click="navigateHome"
+            src="~@/assets/img/jupiter.png"
+            alt=""
+          />
         </div>
 
-        <div class="header-select">
-          <el-select
-            @change="changeTheme"
-            v-model="theme"
-            popper-class="custom-select"
-          >
-            <el-option
-              v-for="(color, index) in colorList"
-              :label="$t(color)"
-              :value="color"
-              :key="index"
-            />
-          </el-select>
-        </div>
-      </div>
-
-      <div class="header-container-right">
-        <div class="search">
+        <div class="header-query">
           <el-select
             v-model="menuValue"
             filterable
@@ -50,6 +38,41 @@
               :key="item.id"
               :label="$t(item.id)"
               :value="item.id"
+            />
+          </el-select>
+        </div>
+      </div>
+
+      <div class="header-container-right">
+        <!-- <div class="search">
+          <el-select
+            v-model="menuValue"
+            filterable
+            remote
+            reserve-keyword
+            :remote-method="remoteMethod"
+            :placeholder="$t('plzEnterKeyword')"
+            :loading="loading"
+          >
+            <el-option
+              v-for="item in menuList"
+              :key="item.id"
+              :label="$t(item.id)"
+              :value="item.id"
+            />
+          </el-select>
+        </div> -->
+        <div class="theme-select">
+          <el-select
+            @change="changeTheme"
+            v-model="theme"
+            popper-class="custom-select"
+          >
+            <el-option
+              v-for="(color, index) in colorList"
+              :label="$t(color)"
+              :value="color"
+              :key="index"
             />
           </el-select>
         </div>
@@ -287,13 +310,23 @@ export default {
     display: flex;
     align-items: center;
     width: auto;
-    margin-left: 20px;
+    margin-left: 6px;
 
     .el-select {
       width: 105px;
       margin-left: 30px;
       border-radius: 3px;
-      @include bg_color('mainColor');
+    }
+
+    .header-query {
+      width: 150px;
+
+      .el-select {
+        width: 140px;
+        height: 45px;
+        padding-top: 4px;
+        margin-left: 0;
+      }
     }
 
     .sidebar-toggle {
@@ -317,13 +350,16 @@ export default {
     }
 
     .logo {
-      width: 208px;
-      height: 60px;
-      font-size: 1.75rem;
-      white-space: nowrap;
-      text-decoration: none;
-      @include font_color('fontColor');
-      background: url('~@/assets/img/jupiter.png') no-repeat center;
+      // width: 45px;
+      // height: 45px;
+      // font-size: 1.75rem;
+      // white-space: nowrap;
+      // text-decoration: none;
+      // @include font_color('fontColor');
+      // background: url('~@/assets/img/jupiter.ico') no-repeat center;
+      height: 3.5rem;
+      width: 3.5rem;
+      border-radius: 50%;
     }
   }
 
@@ -361,13 +397,8 @@ export default {
       }
     }
 
-    .search {
-      width: 148px;
-
-      .el-select {
-        height: 45px;
-        padding-top: 4px;
-      }
+    .theme-select {
+      width: 95px;
     }
 
     .language {
