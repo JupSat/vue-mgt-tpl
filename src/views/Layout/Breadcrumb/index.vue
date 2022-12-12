@@ -1,9 +1,11 @@
 <template>
   <div class="bread-crumb">
     <el-breadcrumb :separator-icon="ArrowRight">
-      <el-breadcrumb-item v-for="(item, index) in breadcrumbs" :key="index" :to="{ path: item.path }">{{
-          $t(firstCharChange(item))
-      }}
+      <el-breadcrumb-item
+        v-for="(item, index) in breadcrumbs"
+        :key="index"
+        :to="{ path: item.path }"
+        >{{ $t(firstCharChange(item)) }}
       </el-breadcrumb-item>
     </el-breadcrumb>
   </div>
@@ -55,8 +57,8 @@ export default {
 @import '@/styles/switchTheme.scss';
 
 .bread-crumb {
-  width: 30px;
-  padding: 12px 0 0px 8px;
+  display: flex;
+  padding: 3px 0 3px 0;
 
   :deep(.el-breadcrumb__inner) {
     @include font_color('fontColor');

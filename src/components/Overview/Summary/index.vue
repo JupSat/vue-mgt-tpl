@@ -65,6 +65,7 @@
       <EmployeesTable></EmployeesTable>
     </el-row>
   </div>
+  <!-- <el-backtop target=".summary-content"></el-backtop> -->
 </template>
 
 <script>
@@ -98,6 +99,8 @@ export default {
 @import '@/styles/switchTheme.scss';
 
 .summary-content {
+  height: 100%; // 不必是100vh，只需要是该容器显示的最大高度即可
+  overflow-x: hidden;
   .el-row {
     display: flex;
     margin-bottom: 30px;

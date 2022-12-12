@@ -204,7 +204,7 @@ export default {
 
 .tabs {
   position: relative;
-  padding: 8px 35px 8px 11px;
+  padding-top: 3px;
 
   .menu-tabs > .el-tabs__content {
     padding: 32px;

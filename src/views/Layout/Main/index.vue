@@ -1,10 +1,12 @@
 <template>
   <el-container>
     <el-main class="main-layout">
+      <div class="fixed-views">
+        <Breadcrumb class="main-breadcrumb"></Breadcrumb>
+        <Tabs></Tabs>
+      </div>
       <el-scrollbar>
         <div class="main-body">
-          <Breadcrumb class="main-breadcrumb"></Breadcrumb>
-          <Tabs></Tabs>
           <div class="main-container">
             <div class="main-content">
               <router-view />
@@ -44,6 +46,16 @@ export default {
 .main-layout {
   padding: 0;
 
+  .fixed-views {
+    position: fixed;
+    width: 100%;
+    top: 60px;
+    left: 215px;
+    z-index: 100;
+    padding: 8px 0 8px 0;
+    @include bg_color('mainBodyColor');
+  }
+
   .main-body {
     display: flex;
     flex: 1;
@@ -69,10 +81,11 @@ export default {
       width: 100%;
 
       .main-content {
+        // height: 100vh;
         order: 1;
         flex: 1 0;
         min-width: 0;
-        padding: 0 35px 0 11px;
+        padding: 98px 35px 0 11px;
       }
     }
   }
