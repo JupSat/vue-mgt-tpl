@@ -118,5 +118,7 @@ export default {
   notFoundTip: '好像找不到你要查找页面~',
   goBack: '返回',
   analytics: '分析',
-  summary: '概要'
+  summary: '概要',
+  closeFullScreen: '关闭全屏',
+  openFullScreen: '开启全屏'
 }

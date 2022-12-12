@@ -3,18 +3,6 @@
     <div class="header-layout">
       <div class="header-container">
         <div class="logo-container">
-          <!-- <div @click="setCollapse()" class="sidebar-toggle">
-            <el-tooltip
-              :content="expand ? $t('fold') : $t('expand')"
-              placement="top"
-              effect="light"
-            >
-              <el-icon :size="22" :color="color">
-                <Fold v-if="expand" />
-                <Expand v-else />
-              </el-icon>
-            </el-tooltip>
-          </div> -->
           <img
             class="logo"
             @click="navigateHome"
@@ -44,24 +32,12 @@
       </div>
 
       <div class="header-container-right">
-        <!-- <div class="search">
-          <el-select
-            v-model="menuValue"
-            filterable
-            remote
-            reserve-keyword
-            :remote-method="remoteMethod"
-            :placeholder="$t('plzEnterKeyword')"
-            :loading="loading"
-          >
-            <el-option
-              v-for="item in menuList"
-              :key="item.id"
-              :label="$t(item.id)"
-              :value="item.id"
-            />
-          </el-select>
-        </div> -->
+        <div>
+          <Screenfull
+            class="search-icon"
+            :style="{ cursor: 'pointer' }"
+          ></Screenfull>
+        </div>
         <div class="theme-select">
           <el-select
             @change="changeTheme"
@@ -76,6 +52,7 @@
             />
           </el-select>
         </div>
+
         <div>
           <el-dropdown trigger="click">
             <el-badge :value="99" class="item">
@@ -183,12 +160,14 @@ import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import { useMenuStore } from '@/pinia/modules/menu'
 import { useCommonStore } from '@/pinia/modules/common'
+import Screenfull from '@/views/Layout/Screenfull'
 
 export default {
   name: 'Header',
-  components: {},
-  emits: ['changeCollapse', 'switchTheme'],
-  setup(props, { emit }) {
+  components: {
+    Screenfull
+  },
+  setup() {
     const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
     const data = reactive({
       theme: 'light',
@@ -203,12 +182,6 @@ export default {
       messagesList: tempList,
       emailsList: tempList
     })
-
-    // 菜单展开(或折叠)
-    const setCollapse = () => {
-      data.expand = !data.expand
-      emit('changeCollapse')
-    }
 
     // 回到首页
     const navigateHome = () => {
@@ -261,7 +234,6 @@ export default {
 
     return {
       ...toRefs(data),
-      setCollapse,
       changeTheme,
       navigateHome,
       remoteMethod,
@@ -350,16 +322,10 @@ export default {
     }
 
     .logo {
-      // width: 45px;
-      // height: 45px;
-      // font-size: 1.75rem;
-      // white-space: nowrap;
-      // text-decoration: none;
-      // @include font_color('fontColor');
-      // background: url('~@/assets/img/jupiter.ico') no-repeat center;
       height: 3.5rem;
       width: 3.5rem;
       border-radius: 50%;
+      cursor: pointer;
     }
   }
 

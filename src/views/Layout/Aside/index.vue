@@ -189,7 +189,7 @@ export default {
 .collapse {
   position: relative;
   @include bg_color('mainBodyColor');
-  &:hover .el-affix {
+  .el-affix:hover {
     cursor: pointer;
     .el-icon {
       border-radius: 50px;

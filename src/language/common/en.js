@@ -118,5 +118,7 @@ export default {
   notFoundTip: 'It seems like we could not find the page you were looking for',
   goBack: 'Go back',
   analytics: 'Analytics',
-  summary: 'Summary'
+  summary: 'Summary',
+  closeFullScreen: 'Close fullscreen mode',
+  openFullScreen: 'Open fullscreen mode'
 }

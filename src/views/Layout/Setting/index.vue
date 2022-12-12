@@ -64,7 +64,7 @@ export default {
 
 .toggle-settings {
   position: fixed;
-  top: 50%;
+  top: 350px;
   right: 0;
   border-radius: 0.25rem;
   box-shadow: none;
