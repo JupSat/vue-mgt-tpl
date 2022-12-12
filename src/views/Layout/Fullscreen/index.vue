@@ -1,7 +1,7 @@
 <template>
-  <div @click="triggerFullScreen" class="full-screen">
+  <div @click="triggerFullscreen" class="full-screen">
     <el-tooltip
-      :content="showFullScreen ? $t('openFullScreen') : $t('closeFullScreen')"
+      :content="showFullscreen ? $t('openFullScreen') : $t('closeFullScreen')"
       placement="top"
       effect="light"
     >
@@ -15,15 +15,15 @@ import { reactive, toRefs, onUnmounted, onMounted } from 'vue'
 import screenfull from 'screenfull'
 
 export default {
-  name: 'Screenfull',
+  name: 'Fullscreen',
   setup() {
     const state = reactive({
-      showFullScreen: true
+      showFullscreen: true
     })
 
     onMounted(() => {
       if (screenfull.isEnabled) {
-        screenfull.on('change', changeFullScreen)
+        screenfull.on('change', changeFullscreen)
       }
     })
 
@@ -31,18 +31,18 @@ export default {
       screenfull.off('change')
     })
 
-    const triggerFullScreen = () => {
+    const triggerFullscreen = () => {
       if (screenfull.isEnabled) {
         screenfull.toggle()
       }
     }
 
-    const changeFullScreen = () => {
-      state.showFullScreen = !screenfull.isFullscreen
+    const changeFullscreen = () => {
+      state.showFullscreen = !screenfull.isFullscreen
     }
     return {
       ...toRefs(state),
-      triggerFullScreen
+      triggerFullscreen
     }
   }
 }

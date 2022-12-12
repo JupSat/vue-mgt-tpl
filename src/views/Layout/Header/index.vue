@@ -33,10 +33,10 @@
 
       <div class="header-container-right">
         <div>
-          <Screenfull
+          <Fullscreen
             class="search-icon"
             :style="{ cursor: 'pointer' }"
-          ></Screenfull>
+          ></Fullscreen>
         </div>
         <div class="theme-select">
           <el-select
@@ -160,12 +160,12 @@ import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import { useMenuStore } from '@/pinia/modules/menu'
 import { useCommonStore } from '@/pinia/modules/common'
-import Screenfull from '@/views/Layout/Screenfull'
+import Fullscreen from '@/views/Layout/Fullscreen'
 
 export default {
   name: 'Header',
   components: {
-    Screenfull
+    Fullscreen
   },
   setup() {
     const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
