@@ -10,6 +10,12 @@
           <div class="main-container">
             <div class="main-content">
               <router-view />
+              <el-backtop
+                target=".main-layout .el-scrollbar__wrap"
+                :bottom="90"
+              >
+                <el-icon><Top /></el-icon>
+              </el-backtop>
             </div>
           </div>
         </div>
@@ -42,7 +48,6 @@ export default {
 
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
-
 .main-layout {
   padding: 0;
 
@@ -54,6 +59,11 @@ export default {
     z-index: 100;
     padding: 8px 0 8px 0;
     @include bg_color('mainBodyColor');
+
+    .main-breadcrumb {
+      width: 100%;
+      height: 30px;
+    }
   }
 
   .main-body {
@@ -67,12 +77,6 @@ export default {
     font-size: 0.9375rem;
     font-weight: 400;
     line-height: 1.25rem;
-    min-height: 100vh;
-
-    .main-breadcrumb {
-      width: 100%;
-      height: 30px;
-    }
 
     .main-container {
       display: flex;
@@ -81,7 +85,6 @@ export default {
       width: 100%;
 
       .main-content {
-        // height: 100vh;
         order: 1;
         flex: 1 0;
         min-width: 0;

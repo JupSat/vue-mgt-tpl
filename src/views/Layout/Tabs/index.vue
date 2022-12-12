@@ -228,9 +228,8 @@ export default {
   .operate {
     display: inline-block;
     position: absolute;
-    right: 45px;
-    top: 20px;
-
+    right: 230px;
+    top: 15px;
     .el-icon {
       color: #fff;
 

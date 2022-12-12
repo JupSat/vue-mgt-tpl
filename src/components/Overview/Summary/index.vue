@@ -65,7 +65,6 @@
       <EmployeesTable></EmployeesTable>
     </el-row>
   </div>
-  <!-- <el-backtop target=".summary-content"></el-backtop> -->
 </template>
 
 <script>
