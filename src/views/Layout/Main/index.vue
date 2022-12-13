@@ -54,10 +54,10 @@ export default {
   .fixed-views {
     position: fixed;
     width: 100%;
-    top: 60px;
+    top: 62px;
     left: 215px;
     z-index: 100;
-    padding: 8px 0 8px 0;
+    padding-left: 8px;
     @include bg_color('mainBodyColor');
 
     .main-breadcrumb {
