@@ -212,7 +212,7 @@ export default {
 @import '@/styles/switchTheme.scss';
 
 .reset-pwd {
-  width: 375px;
+  width: 365px;
   background-color: #13152c;
   padding: 40px;
   border-radius: 10px;

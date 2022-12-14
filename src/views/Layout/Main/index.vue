@@ -50,6 +50,7 @@ export default {
 @import '@/styles/switchTheme.scss';
 .main-layout {
   padding: 0;
+  padding-top: 2px;
 
   .fixed-views {
     position: fixed;
