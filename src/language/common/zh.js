@@ -120,5 +120,8 @@ export default {
   analytics: '分析',
   summary: '概要',
   closeFullScreen: '关闭全屏',
-  openFullScreen: '开启全屏'
+  openFullScreen: '开启全屏',
+  LoginSucJumping: '登录成功！正在跳转......',
+  accOrPwdAErr: '账号或密码错误！',
+  captchaError: '验证码错误'
 }

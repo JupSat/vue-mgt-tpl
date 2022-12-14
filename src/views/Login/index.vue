@@ -186,7 +186,7 @@ export default {
           const res = await loginApi(formData)
           if (res && res.success) {
             ElMessage({
-              message: '登录成功！正在跳转.....',
+              message: t('LoginSucJumping'),
               grouping: true,
               type: 'success',
               duration: 2000
@@ -196,7 +196,7 @@ export default {
             }, 3000)
           } else if (res && res.status === 1) {
             ElMessage({
-              message: '密码或账号错误！',
+              message: t('accOrPwdAErr'),
               grouping: true,
               type: 'warning',
               duration: 2000
@@ -205,7 +205,7 @@ export default {
             return false
           } else if (res && res.status === 2) {
             ElMessage({
-              message: '验证码错误！',
+              message: t('captchaError'),
               grouping: true,
               type: 'warning',
               duration: 2000

@@ -8,7 +8,7 @@ export default {
   signUp: 'Sign up',
   signOut: 'Sign out',
   haveAccount: 'Already have an account? ',
-  freeRegister: 'Free register',
+  freeRegister: 'Sign up for free',
   forgotPassword: 'Forgot password',
   resetPassword: 'Reset password',
   requestPassword: 'Request Password',
@@ -120,5 +120,8 @@ export default {
   analytics: 'Analytics',
   summary: 'Summary',
   closeFullScreen: 'Close fullscreen mode',
-  openFullScreen: 'Open fullscreen mode'
+  openFullScreen: 'Open fullscreen mode',
+  LoginSucJumping: 'Login successful! Jumping',
+  accOrPwdAErr: 'The account or password is incorrect',
+  captchaError: 'Captcha error'
 }
