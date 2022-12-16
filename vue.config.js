@@ -3,6 +3,8 @@ const { defineConfig } = require('@vue/cli-service')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 // 定义压缩文件类型
 const productionGzipExtensions = ['html', 'js', 'css']
+const path = require('path')
+const resolve = (dir) => path.resolve(__dirname, dir)
 
 module.exports = defineConfig({
   publicPath: './',
@@ -52,9 +54,64 @@ module.exports = defineConfig({
           deleteOriginalAssets: false // 不删除源文件
         })
       )
-      // 移除 prefetch 插件
-      config.plugins.delete('prefetch')
     }
+
+    // 移除 prefetch 插件
+    config.plugins.delete('prefetch')
+
+    config.resolve.alias
+      .set('@', resolve('src'))
+      .set('@api', resolve('src/api'))
+      .set('@img', resolve('src/assets/img'))
+      .set('@config', resolve('src/config'))
+      .set('@utils', resolve('src/utils'))
+      .set('@language', resolve('src/language'))
+
+    config.optimization.splitChunks({
+      chunks: 'all',
+      maxAsyncRequests: 30,
+      maxInitialRequests: 30,
+      minChunks: 1,
+      hidePathInfo: true,
+      minSize: 30000,
+      cacheGroups: {
+        api: {
+          name: 'chunk-api',
+          test: resolve('src/api'),
+          minChunks: 1,
+          priority: 10,
+          reuseExistingChunk: true
+        },
+        components: {
+          name: 'chunk-components',
+          test: resolve('src/components'),
+          minChunks: 1,
+          priority: 10,
+          reuseExistingChunk: true
+        },
+        elementPlus: {
+          name: 'chunk-elementPlus',
+          priority: 20,
+          test: /[\\/]node_modules[\\/]_?element-plus(.*)/
+        },
+        elementIcon: {
+          name: 'chunk-elementIcon',
+          priority: 20,
+          test: /[\\/]node_modules[\\/]_?@element-plus(.*)/
+        },
+        echarts: {
+          name: 'chunk-echarts',
+          priority: 20,
+          test: /[\\/]node_modules[\\/]_?echarts(.*)/
+        },
+        libs: {
+          name: 'chunk-libs',
+          test: /[\\/]node_modules[\\/]/,
+          priority: 5,
+          chunks: 'initial'
+        }
+      }
+    })
   },
   configureWebpack: {
     plugins: []
