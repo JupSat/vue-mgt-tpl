@@ -30,9 +30,9 @@
           :placeholder="$t('plzEnterCaptcha')"
         />
       </el-form-item>
-      <el-form-item prop="regUsrNam">
+      <el-form-item prop="username">
         <el-input
-          v-model="formData.regUsrNam"
+          v-model="formData.username"
           :placeholder="$t('plzEnterUsrNam')"
         >
           <template #suffix>
@@ -107,11 +107,11 @@ export default {
 
     const registerRef = ref(null)
     const formData = reactive({
-      email: '12@163.com',
-      validCod: '222222',
-      regUsrNam: 'dddd',
-      password: '111111',
-      checkPass: '111111'
+      email: '',
+      validCod: '',
+      username: '',
+      password: '',
+      checkPass: ''
     })
 
     const { t } = useI18n()
@@ -164,7 +164,7 @@ export default {
       validCod: [
         { required: true, message: t('plzEnterCaptcha'), trigger: 'blur' }
       ],
-      regUsrNam: [
+      username: [
         { required: true, message: t('plzEnterUsrNam'), trigger: 'blur' }
       ],
       password: [
@@ -180,14 +180,25 @@ export default {
         if (valid) {
           console.log('submit!')
           const res = await registerApi(formData)
-          if (res && res.success) {
-            ElMessage({
-              message: '注册成功！即将跳转到登录界面',
-              grouping: true,
-              type: 'success',
-              duration: 3000
-            })
-            goLogin()
+          if (res) {
+            if (res.result.code === 1) {
+              ElMessage({
+                message: '注册成功！即将跳转到登录界面',
+                grouping: true,
+                type: 'success',
+                duration: 3000
+              })
+              setTimeout(() => {
+                goLogin()
+              }, 2000)
+            } else {
+              ElMessage({
+                message: res.result.msg,
+                grouping: true,
+                type: 'warning',
+                duration: 2000
+              })
+            }
           }
         } else {
           console.log('error submit!')

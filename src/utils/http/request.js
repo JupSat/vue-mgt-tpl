@@ -30,11 +30,11 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (res) => {
     removePendingRequest(res.config)
-    // console.log('resp', res)
     return res.data
   },
   (error) => {
     removePendingRequest(error.config || {})
+    return Promise.reject(error)
   }
 )
 
