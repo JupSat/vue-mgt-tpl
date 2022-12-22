@@ -37,7 +37,7 @@ export const getGraphCaptchaApi = (data) => {
 
 export const resetPwdApi = (data) => {
   return request({
-    url: `/${prefix}/user/resetPassword`,
+    url: `/${prefix}/user/resetPwd`,
     method: 'post',
     data: data
   })

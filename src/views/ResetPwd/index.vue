@@ -92,10 +92,10 @@ export default {
     })
 
     const formData = reactive({
-      email: '12@163.com',
-      validCod: '222222',
-      password: '111111',
-      checkPass: '111111'
+      email: '',
+      validCod: '',
+      password: '',
+      checkPass: ''
     })
 
     const { t } = useI18n()
@@ -173,9 +173,8 @@ export default {
       if (!resetPwdRef.value) return
       resetPwdRef.value.validate(async (valid) => {
         if (valid) {
-          console.log('submit!')
           const res = await resetPwdApi(formData)
-          if (res && res.success) {
+          if (res && res.status === 200) {
             ElMessage({
               message: '重置密码成功！即将跳转到登录界面',
               grouping: true,
