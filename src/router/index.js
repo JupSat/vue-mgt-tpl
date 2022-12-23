@@ -102,7 +102,7 @@ router.beforeEach(async (to, from, next) => {
     document.title = to.meta.title
   }
 
-  if (!menuStore.menuList.length) {
+  if (!Array.isArray(menuStore.menuList) || !menuStore.menuList.length) {
     await getDynamicRoutes().then((menus) => {
       menus.forEach((route) => {
         if (!router.hasRoute(route.name)) {
