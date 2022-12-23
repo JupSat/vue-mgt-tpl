@@ -41,29 +41,39 @@ async function getDynamicRoutes() {
   await menuStore.loadMenu()
   const menuList = menuStore.menuList
 
+  if (!menuList || menuList.length === 0) {
+    return routes
+  }
+
   const iterator = (list, parent) => {
     const menus = []
-    list.forEach((el) => {
-      const item = {
-        path: el.path,
-        name: el.name,
-        icon: el.icon,
-        component: Layout,
-        meta: {
-          title: el.id,
-          id: el.id
+    list &&
+      list.forEach((el) => {
+        const item = {
+          path: el.path,
+          name: el.name,
+          icon: el.icon,
+          component: Layout,
+          meta: {
+            title: el.id,
+            id: el.id
+          }
         }
-      }
 
-      if (parent && parent.name && (!el.children || el.children.length === 0)) {
-        item.component = () => import(`@/components/${parent.name}/${el.name}`)
-      }
-      if (el.children && el.children.length > 0) {
-        item.children = iterator(el.children, el)
-        item.redirect = el.redirect
-      }
-      menus.push(item)
-    })
+        if (
+          parent &&
+          parent.name &&
+          (!el.children || el.children.length === 0)
+        ) {
+          item.component = () =>
+            import(`@/components/${parent.name}/${el.name}`)
+        }
+        if (el.children && el.children.length > 0) {
+          item.children = iterator(el.children, el)
+          item.redirect = el.redirect
+        }
+        menus.push(item)
+      })
     return menus
   }
   const tempMenus = iterator(menuList, '')
