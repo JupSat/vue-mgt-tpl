@@ -95,20 +95,26 @@ function checkPath(subPath) {
   return flag
 }
 
-router.beforeEach(async (to, from, next) => {
-  const menuStore = useMenuStore()
+let firstLoad = true
 
+router.beforeEach(async (to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
 
-  if (!Array.isArray(menuStore.menuList) || !menuStore.menuList.length) {
+  const menuStore = useMenuStore()
+  if (
+    (!Array.isArray(menuStore.menuList) || !menuStore.menuList.length) &&
+    firstLoad
+  ) {
+    firstLoad = false
     await getDynamicRoutes().then((menus) => {
-      menus.forEach((route) => {
-        if (!router.hasRoute(route.name)) {
-          router.addRoute(route)
-        }
-      })
+      Array.isArray(menus) &&
+        menus.forEach((route) => {
+          if (!router.hasRoute(route.name)) {
+            router.addRoute(route)
+          }
+        })
       next({ ...to, replace: true })
     })
   } else {

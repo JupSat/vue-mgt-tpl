@@ -5,7 +5,7 @@ import ElementPlus from 'element-plus'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import '@/styles/index.scss'
 import 'element-plus/dist/index.css'
-// import '@/mock'/
+// import '@/mock'
 import i18n from '@/language'
 import { store } from '@/pinia'
 
