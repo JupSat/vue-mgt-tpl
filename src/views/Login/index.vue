@@ -268,6 +268,9 @@ export default {
   .title {
     color: #fff;
     margin-bottom: 20px;
+    h1 {
+      height: 45px;
+    }
   }
 
   .operation {

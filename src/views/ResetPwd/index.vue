@@ -1,7 +1,7 @@
 <template>
   <div class="reset-pwd">
     <div class="title">
-      <h3>{{ $t('resetPassword') }}</h3>
+      <h1>{{ $t('resetPassword') }}</h1>
     </div>
     <el-form
       ref="resetPwdRef"
@@ -219,6 +219,9 @@ export default {
   .title {
     color: #fff;
     margin-bottom: 20px;
+    h1 {
+      height: 45px;
+    }
   }
 
   .captcha {
