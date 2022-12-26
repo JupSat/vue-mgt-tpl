@@ -29,15 +29,8 @@
           v-model="formData.password"
           :type="'password'"
           :placeholder="$t('plzEnterPwd')"
-        >
-          <template #suffix>
-            <span class="input-icon">
-              <el-icon>
-                <Lock />
-              </el-icon>
-            </span>
-          </template>
-        </el-input>
+          show-password
+        />
       </el-form-item>
       <el-form-item prop="captcha">
         <div class="captcha-item">
@@ -106,10 +99,9 @@ export default {
     })
 
     const formData = reactive({
-      username: '',
-      password: '',
-      captcha: '',
-      captchaId: ''
+      username: 'admin',
+      password: '123456',
+      captcha: ''
     })
 
     const { t } = useI18n()
@@ -161,7 +153,7 @@ export default {
           trigger: 'blur'
         })
         captchaPicPath.value = res.data.picPath
-        formData.captchaId = res.data.captchaId
+        formData.captcha = res.data.captchaId
       }
     }
 

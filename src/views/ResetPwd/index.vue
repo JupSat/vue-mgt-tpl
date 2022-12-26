@@ -40,8 +40,8 @@
         <el-input
           v-model="formData.password"
           type="password"
-          autocomplete="off"
           :placeholder="$t('plzEnterPwd')"
+          show-password
         >
         </el-input>
       </el-form-item>
@@ -49,8 +49,8 @@
         <el-input
           v-model="formData.checkPass"
           type="password"
-          autocomplete="off"
           :placeholder="$t('plzEnterPwdAgain')"
+          show-password
         >
         </el-input>
       </el-form-item>

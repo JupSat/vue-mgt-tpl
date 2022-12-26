@@ -49,20 +49,12 @@
           v-model="formData.password"
           :type="'password'"
           :placeholder="$t('plzEnterPwd')"
-        >
-          <template #suffix>
-            <span class="input-icon">
-              <el-icon>
-                <Lock />
-              </el-icon>
-            </span>
-          </template>
-        </el-input>
+          show-password
+        />
       </el-form-item>
       <el-form-item prop="checkPass">
         <el-input
           v-model="formData.checkPass"
-          :type="'password'"
           :placeholder="$t('plzEnterPwdAgain')"
         >
         </el-input>
