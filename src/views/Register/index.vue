@@ -69,7 +69,7 @@
       </el-form-item>
 
       <el-form-item>
-        <div class="btn-register">
+        <div class="btn">
           <el-button type="primary" style="width: 100%" @click="submitForm">{{
             $t('signUp')
           }}</el-button>
@@ -251,26 +251,10 @@ export default {
   background-color: #13152c;
   border-radius: 10px;
 
-  .title {
-    color: #fff;
-    margin-bottom: 20px;
-    h1 {
-      height: 45px;
-    }
-  }
-
   .captcha {
     background: #409eff;
     color: #fff;
     margin-right: -21px;
-  }
-
-  .btn-register {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
   }
 
   .go-login {

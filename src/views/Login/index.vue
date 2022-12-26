@@ -8,6 +8,7 @@
       :model="formData"
       :rules="rules"
       @keyup.enter="submitForm"
+      :validate-on-rule-change="false"
     >
       <el-form-item prop="username">
         <el-input
@@ -56,7 +57,7 @@
         </div>
       </el-form-item>
       <el-form-item>
-        <div class="btn-login">
+        <div class="btn">
           <el-button type="primary" style="width: 100%" @click="submitForm">{{
             $t('signIn')
           }}</el-button>
@@ -86,7 +87,6 @@ import router from '@/router'
 import { useI18n } from 'vue-i18n'
 import { loginApi, getGraphCaptchaApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
-import { jsonp } from 'vue-jsonp'
 import Language from '@/components/Language'
 
 export default {
@@ -106,9 +106,9 @@ export default {
     })
 
     const formData = reactive({
-      username: 'admin',
-      password: '123456',
-      captcha: '123456',
+      username: '',
+      password: '',
+      captcha: '',
       captchaId: ''
     })
 
@@ -151,9 +151,6 @@ export default {
 
     const captchaPicPath = ref('')
 
-    const jsonpFunc = () => {
-      console.log('jsonpFunc', 'test')
-    }
     const getGraphCaptcha = async () => {
       const res = await getGraphCaptchaApi({})
       if (res) {
@@ -165,15 +162,6 @@ export default {
         })
         captchaPicPath.value = res.data.picPath
         formData.captchaId = res.data.captchaId
-      } else {
-        jsonp(
-          'https://api.map.baidu.com/geocoder/v2/?callback=renderReverse&output=json&pois=1',
-          {
-            ak: 'ZwTVu16RLXjhW7FHDjYt5HfMnR1dhFpR'
-          }
-        ).then((res) => {
-          console.log('jsonp', res)
-        })
       }
     }
 
@@ -192,6 +180,7 @@ export default {
                 type: 'success',
                 duration: 2000
               })
+
               setTimeout(() => {
                 router.push({ path: '/overview' })
               }, 2000)
@@ -249,8 +238,7 @@ export default {
       ...toRefs(state),
       ...toRefs(data),
       validatePwd,
-      forgetPwd,
-      jsonpFunc
+      forgetPwd
     }
   }
 }
@@ -264,14 +252,6 @@ export default {
   background-color: #13152c;
   padding: 40px;
   border-radius: 10px;
-
-  .title {
-    color: #fff;
-    margin-bottom: 20px;
-    h1 {
-      height: 45px;
-    }
-  }
 
   .operation {
     display: flex;
@@ -311,14 +291,6 @@ export default {
         vertical-align: middle;
       }
     }
-  }
-
-  .btn-login {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
   }
 }
 </style>

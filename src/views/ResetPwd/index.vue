@@ -56,7 +56,7 @@
       </el-form-item>
 
       <el-form-item>
-        <div class="btn-reset">
+        <div class="btn">
           <el-button type="primary" style="width: 100%" @click="submitForm">{{
             $t('confirmReset')
           }}</el-button>
@@ -216,26 +216,10 @@ export default {
   padding: 40px;
   border-radius: 10px;
 
-  .title {
-    color: #fff;
-    margin-bottom: 20px;
-    h1 {
-      height: 45px;
-    }
-  }
-
   .captcha {
     background: #409eff;
     color: #fff;
     margin-right: -21px;
-  }
-
-  .btn-reset {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
   }
 
   .go-login {
