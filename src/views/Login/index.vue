@@ -142,19 +142,20 @@ export default {
     }
 
     const captchaPicPath = ref('')
-
-    const getGraphCaptcha = async () => {
-      const res = await getGraphCaptchaApi({})
-      if (res) {
-        rules.captcha.push({
-          max: res.data.captchaLength,
-          min: res.data.captchaLength,
-          message: `请输入${res.data.captchaLength}位验证码`,
-          trigger: 'blur'
-        })
-        captchaPicPath.value = res.data.picPath
-        formData.captcha = res.data.captchaId
-      }
+    const getGraphCaptcha = () => {
+      getGraphCaptchaApi({}).then((res) => {
+        if (res) {
+          const { captcha = '', captchaImgStr = '' } = res.result
+          const len = captcha.length
+          rules.captcha.push({
+            max: len,
+            min: len,
+            message: `请输入${len}位验证码`,
+            trigger: 'blur'
+          })
+          captchaPicPath.value = captchaImgStr
+        }
+      })
     }
 
     const loginRef = ref(null)

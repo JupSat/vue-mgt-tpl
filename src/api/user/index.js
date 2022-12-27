@@ -29,7 +29,7 @@ export const loginApi = (data) => {
 
 export const getGraphCaptchaApi = (data) => {
   return request({
-    url: `/${prefix}/base/captcha`, // 借用接口
+    url: `/${prefix}/captcha/getCaptcha`,
     method: 'post',
     data: data
   })
