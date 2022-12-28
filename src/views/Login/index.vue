@@ -163,10 +163,10 @@ export default {
       if (!loginRef.value) return
       loginRef.value.validate(async (valid) => {
         if (valid) {
-          console.log('submit!')
           const res = await loginApi(formData)
           if (res) {
-            if (res.result.code === 1) {
+            const { code = null } = res.result || {}
+            if (code === 1) {
               ElMessage({
                 message: t('LoginSucJumping'),
                 grouping: true,
@@ -177,34 +177,25 @@ export default {
               setTimeout(() => {
                 router.push({ path: '/overview' })
               }, 2000)
-            } else {
+            } else if (code === 2) {
               ElMessage({
                 message: t('accOrPwdAErr'),
                 grouping: true,
                 type: 'warning',
                 duration: 2000
               })
+              return false
+            } else if (code === 3) {
+              ElMessage({
+                message: t('captchaError'),
+                grouping: true,
+                type: 'warning',
+                duration: 2000
+              })
+              getGraphCaptcha()
+              return false
             }
           }
-          // else if (res && res.status === 2) {
-          //   ElMessage({
-          //     message: t('accOrPwdAErr'),
-          //     grouping: true,
-          //     type: 'warning',
-          //     duration: 2000
-          //   })
-          //   getGraphCaptcha()
-          //   return false
-          // } else if (res && res.status === 3) {
-          //   ElMessage({
-          //     message: t('captchaError'),
-          //     grouping: true,
-          //     type: 'warning',
-          //     duration: 2000
-          //   })
-          //   getGraphCaptcha()
-          //   return false
-          // }
         } else {
           console.log('error submit!')
           getGraphCaptcha()

@@ -1,7 +1,7 @@
 import request from '@/utils/http/request'
 
-const prefix = 'api'
-// const prefix = 'debug'
+// const prefix = 'api'
+const prefix = 'debug'
 
 export const registerApi = (data) => {
   return request({
