@@ -28,6 +28,7 @@ export const loginApi = (data) => {
 }
 
 export const getGraphCaptchaApi = (data) => {
+  const prefix = 'api'
   return request({
     url: `/${prefix}/captcha/getCaptcha`,
     method: 'post',

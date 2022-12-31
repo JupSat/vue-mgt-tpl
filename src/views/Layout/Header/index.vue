@@ -161,6 +161,7 @@ import router from '@/router'
 import { useMenuStore } from '@/pinia/modules/menu'
 import { useCommonStore } from '@/pinia/modules/common'
 import Fullscreen from '@/views/Layout/Fullscreen'
+import { useUserStore } from '@/pinia/modules/user'
 
 export default {
   name: 'Header',
@@ -190,6 +191,7 @@ export default {
 
     // 退出
     const signOut = () => {
+      useUserStore().clearUserInfo()
       navigateHome()
     }
 

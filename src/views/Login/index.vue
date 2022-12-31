@@ -81,6 +81,7 @@ import { useI18n } from 'vue-i18n'
 import { loginApi, getGraphCaptchaApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
+import { useUserStore } from '@/pinia/modules/user'
 
 export default {
   name: 'Login',
@@ -173,6 +174,8 @@ export default {
                 type: 'success',
                 duration: 2000
               })
+
+              useUserStore().setUserInfo(formData)
 
               setTimeout(() => {
                 router.push({ path: '/overview' })
