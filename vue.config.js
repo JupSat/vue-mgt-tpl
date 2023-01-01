@@ -19,10 +19,10 @@ module.exports = defineConfig({
     port: 8080,
     hot: true,
     proxy: {
-      '/debug': {
+      '/api': {
         target: 'http://localhost:8082/',
         pathRewrite: {
-          '^/debug': ''
+          '^/api': ''
         },
         changeOrigin: true,
         secure: false

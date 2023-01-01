@@ -1,7 +1,6 @@
 import request from '@/utils/http/request'
 
-// const prefix = 'api'
-const prefix = 'debug'
+const prefix = 'api'
 
 export const registerApi = (data) => {
   return request({
@@ -28,7 +27,6 @@ export const loginApi = (data) => {
 }
 
 export const getGraphCaptchaApi = (data) => {
-  const prefix = 'api'
   return request({
     url: `/${prefix}/captcha/getCaptcha`,
     method: 'post',
