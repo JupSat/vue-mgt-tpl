@@ -55,7 +55,9 @@
       <el-form-item prop="checkPass">
         <el-input
           v-model="formData.checkPass"
+          :type="'password'"
           :placeholder="$t('plzEnterPwdAgain')"
+          show-password
         >
         </el-input>
       </el-form-item>
@@ -146,7 +148,7 @@ export default {
 
     const rules = {
       email: [
-        { required: true, message: t('plzEnterEmail'), trigger: 'change' },
+        { required: true, message: t('plzEnterEmail'), trigger: 'blur' },
         {
           type: 'email',
           message: t('plzEnterCorrectEmail'),
@@ -173,7 +175,8 @@ export default {
           console.log('submit!')
           const res = await registerApi(formData)
           if (res) {
-            if (res.result.code === 1) {
+            const { code = null } = res.result || {}
+            if (code === 1) {
               ElMessage({
                 message: '注册成功！即将跳转到登录界面',
                 grouping: true,
@@ -185,7 +188,7 @@ export default {
               }, 2000)
             } else {
               ElMessage({
-                message: res.result.msg,
+                message: res.msg,
                 grouping: true,
                 type: 'warning',
                 duration: 2000
@@ -199,19 +202,52 @@ export default {
       })
     }
 
-    const sendVerificationCode = async () => {
+    const sendVerificationCode = () => {
+      if (!formData.email) {
+        ElMessage({
+          message: '邮箱不能为空',
+          grouping: true,
+          type: 'warning',
+          duration: 2000
+        })
+        return
+      }
+
+      const regEmail = /^([a-zA-Z0-9]+[-_\\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/
+
+      if (!regEmail.test(formData.email)) {
+        ElMessage({
+          message: '请输入正确的邮箱！',
+          grouping: true,
+          type: 'warning',
+          duration: 2000
+        })
+        return
+      }
+
+      const params = {
+        email: formData.email
+      }
+
       state.sendingCode = true
       state.loading = true
 
-      sendVerificationCodeApi(formData)
+      sendVerificationCodeApi(params)
         .then((res) => {
           if (res) {
-            const { status = null } = res || {}
+            const { status = null, msg = '' } = res || {}
             if (status === 200) {
               ElMessage({
                 message: res.msg,
                 grouping: true,
                 type: 'success',
+                duration: 3000
+              })
+            } else {
+              ElMessage({
+                message: msg,
+                grouping: true,
+                type: 'warning',
                 duration: 3000
               })
             }
@@ -253,7 +289,6 @@ export default {
   .captcha {
     background: #409eff;
     color: #fff;
-    margin-right: -21px;
   }
 
   .go-login {
@@ -265,7 +300,6 @@ export default {
     font-size: 12px;
     .to-login {
       color: #9fa2a8;
-
       em {
         margin-left: 5px;
         color: #2878ff;

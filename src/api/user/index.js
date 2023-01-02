@@ -10,11 +10,11 @@ export const registerApi = (data) => {
   })
 }
 
-export const sendVerificationCodeApi = (data) => {
+export const sendVerificationCodeApi = (params) => {
   return request({
     url: `/${prefix}/user/sendVerificationCodeToEmail`,
     method: 'post',
-    data: data
+    params: params
   })
 }
 
