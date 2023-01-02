@@ -15,7 +15,7 @@
             <el-button
               :disabled="sendingCode"
               :loading="loading"
-              @click="sendCodeToEmail"
+              @click="sendVerificationCode"
               type="primary"
               class="captcha"
               >{{ $t('getCaptcha') }}
@@ -81,7 +81,7 @@
 <script>
 import { reactive, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { registerApi, sendCodeToEmailApi } from '@/api/user'
+import { registerApi, sendVerificationCodeApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
 
@@ -199,21 +199,28 @@ export default {
       })
     }
 
-    const sendCodeToEmail = async () => {
+    const sendVerificationCode = async () => {
       state.sendingCode = true
       state.loading = true
 
-      const res = await sendCodeToEmailApi(formData.email)
-      if (res && res.success) {
-        state.sendingCode = false
-        state.loading = false
-        ElMessage({
-          message: '验证码已发送到邮箱，请查收！',
-          grouping: true,
-          type: 'success',
-          duration: 3000
+      sendVerificationCodeApi(formData)
+        .then((res) => {
+          if (res) {
+            const { status = null } = res || {}
+            if (status === 200) {
+              ElMessage({
+                message: res.msg,
+                grouping: true,
+                type: 'success',
+                duration: 3000
+              })
+            }
+          }
         })
-      }
+        .finally(() => {
+          state.sendingCode = false
+          state.loading = false
+        })
     }
 
     const goLogin = () => {
@@ -229,7 +236,7 @@ export default {
       rules,
       submitForm,
       goLogin,
-      sendCodeToEmail
+      sendVerificationCode
     }
   }
 }
