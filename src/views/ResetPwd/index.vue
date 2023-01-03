@@ -21,7 +21,7 @@
             <el-button
               :disabled="sendingCode"
               :loading="loading"
-              @click="sendCodeToEmail"
+              @click="sendVerificationCode(formData.email)"
               class="captcha"
               >{{ $t('getCaptcha') }}
             </el-button>
@@ -74,9 +74,10 @@
 <script>
 import { reactive, toRefs, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { resetPwdApi, sendCodeToEmailApi } from '@/api/user'
+import { resetPwdApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
+import { sendVerificationCodeToEmail, checkEmail } from '@/utils/common'
 
 export default {
   name: 'ResetPassword',
@@ -141,31 +142,15 @@ export default {
     }
 
     const sendingCode = ref(false)
-    const sendCodeToEmail = async () => {
-      if (!formData.email) {
-        ElMessage({
-          message: t('plzEnterEmail'),
-          grouping: true,
-          type: 'warning',
-          duration: 3000
-        })
-        return
-      }
 
-      state.sendingCode = true
-      state.loading = true
-
-      const res = await sendCodeToEmailApi(formData.email)
-      if (res && res.success) {
+    const sendVerificationCode = async (email) => {
+      const flag = checkEmail(email)
+      if (flag) {
+        state.sendingCode = true
+        state.loading = true
+        await sendVerificationCodeToEmail(email)
         state.sendingCode = false
         state.loading = false
-        // formData.validCod = res.data.code
-        ElMessage({
-          message: '验证码已发送到邮箱，请查收！',
-          grouping: true,
-          type: 'success',
-          duration: 3000
-        })
       }
     }
 
@@ -199,7 +184,7 @@ export default {
       rules,
       sendingCode,
       toLogin,
-      sendCodeToEmail,
+      sendVerificationCode,
       submitForm,
       formData,
       resetPwdRef

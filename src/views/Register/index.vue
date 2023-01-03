@@ -15,7 +15,7 @@
             <el-button
               :disabled="sendingCode"
               :loading="loading"
-              @click="sendVerificationCode"
+              @click="sendVerificationCode(formData.email)"
               type="primary"
               class="captcha"
               >{{ $t('getCaptcha') }}
@@ -83,9 +83,10 @@
 <script>
 import { reactive, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { registerApi, sendVerificationCodeApi } from '@/api/user'
+import { registerApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
+import { sendVerificationCodeToEmail, checkEmail } from '@/utils/common'
 
 export default {
   name: 'Register',
@@ -202,61 +203,15 @@ export default {
       })
     }
 
-    const sendVerificationCode = () => {
-      if (!formData.email) {
-        ElMessage({
-          message: '邮箱不能为空',
-          grouping: true,
-          type: 'warning',
-          duration: 2000
-        })
-        return
+    const sendVerificationCode = async (email) => {
+      const flag = checkEmail(email)
+      if (flag) {
+        state.sendingCode = true
+        state.loading = true
+        await sendVerificationCodeToEmail(email)
+        state.sendingCode = false
+        state.loading = false
       }
-
-      const regEmail = /^([a-zA-Z0-9]+[-_\\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/
-
-      if (!regEmail.test(formData.email)) {
-        ElMessage({
-          message: '请输入正确的邮箱！',
-          grouping: true,
-          type: 'warning',
-          duration: 2000
-        })
-        return
-      }
-
-      const params = {
-        email: formData.email
-      }
-
-      state.sendingCode = true
-      state.loading = true
-
-      sendVerificationCodeApi(params)
-        .then((res) => {
-          if (res) {
-            const { status = null, msg = '' } = res || {}
-            if (status === 200) {
-              ElMessage({
-                message: res.msg,
-                grouping: true,
-                type: 'success',
-                duration: 3000
-              })
-            } else {
-              ElMessage({
-                message: msg,
-                grouping: true,
-                type: 'warning',
-                duration: 3000
-              })
-            }
-          }
-        })
-        .finally(() => {
-          state.sendingCode = false
-          state.loading = false
-        })
     }
 
     const goLogin = () => {
