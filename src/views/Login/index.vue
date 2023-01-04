@@ -41,11 +41,14 @@
             style="width: 60%"
           />
           <div class="img">
-            <img
-              v-if="captchaPicPath"
-              :src="captchaPicPath"
-              :alt="$t('plzEnterCaptcha')"
-            />
+            <el-tooltip :content="'点击刷新'" placement="top" effect="light">
+              <img
+                v-if="captchaPicPath"
+                :src="captchaPicPath"
+                :alt="$t('plzEnterCaptcha')"
+                @click="refreshCaptcha"
+              />
+            </el-tooltip>
           </div>
         </div>
       </el-form-item>
@@ -159,6 +162,10 @@ export default {
       })
     }
 
+    const refreshCaptcha = () => {
+      getGraphCaptcha()
+    }
+
     const loginRef = ref(null)
     const submitForm = () => {
       if (!loginRef.value) return
@@ -225,7 +232,8 @@ export default {
       ...toRefs(state),
       ...toRefs(data),
       validatePwd,
-      forgetPwd
+      forgetPwd,
+      refreshCaptcha
     }
   }
 }
@@ -271,6 +279,7 @@ export default {
     .img {
       width: 33%;
       background: #ccc;
+      cursor: pointer;
 
       img {
         width: 100%;
