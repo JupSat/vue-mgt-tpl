@@ -6,7 +6,7 @@ export const sendVerificationCodeToEmail = (email) => {
     email
   }
 
-  sendVerificationCodeApi(params).then((res) => {
+  return sendVerificationCodeApi(params).then((res) => {
     if (res) {
       const { status = null, msg = '' } = res || {}
       if (status === 200) {
@@ -16,6 +16,8 @@ export const sendVerificationCodeToEmail = (email) => {
           type: 'success',
           duration: 3000
         })
+
+        return 'succuss'
       } else {
         ElMessage({
           message: msg,
@@ -23,8 +25,10 @@ export const sendVerificationCodeToEmail = (email) => {
           type: 'warning',
           duration: 3000
         })
+        return 'failed'
       }
     }
+    return 'failed'
   })
 }
 

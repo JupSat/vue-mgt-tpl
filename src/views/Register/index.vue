@@ -7,19 +7,17 @@
       ref="registerRef"
       :model="formData"
       :rules="rules"
+      status-icon
       @keyup.enter="submitForm"
     >
       <el-form-item prop="email">
-        <el-input v-model="formData.email" :placeholder="$t('plzEnterEmail')">
+        <el-input
+          v-model="formData.email"
+          :placeholder="$t('plzEnterEmail')"
+          autocomplete="off"
+        >
           <template #append>
-            <el-button
-              :disabled="sendingCode"
-              :loading="loading"
-              @click="sendVerificationCode(formData.email)"
-              type="primary"
-              class="captcha"
-              >{{ $t('getCaptcha') }}
-            </el-button>
+            <Captcha :email="formData.email"></Captcha>
           </template>
         </el-input>
       </el-form-item>
@@ -86,12 +84,13 @@ import { useI18n } from 'vue-i18n'
 import { registerApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
-import { sendVerificationCodeToEmail, checkEmail } from '@/utils/common'
+import Captcha from '@/components/Captcha'
 
 export default {
   name: 'Register',
   components: {
-    Language
+    Language,
+    Captcha
   },
   emits: ['toLogin'],
   setup(props, { emit }) {
@@ -149,7 +148,7 @@ export default {
 
     const rules = {
       email: [
-        { required: true, message: t('plzEnterEmail'), trigger: 'blur' },
+        { required: true, message: t('plzEnterEmail'), trigger: 'change' },
         {
           type: 'email',
           message: t('plzEnterCorrectEmail'),
@@ -203,17 +202,6 @@ export default {
       })
     }
 
-    const sendVerificationCode = async (email) => {
-      const flag = checkEmail(email)
-      if (flag) {
-        state.sendingCode = true
-        state.loading = true
-        await sendVerificationCodeToEmail(email)
-        state.sendingCode = false
-        state.loading = false
-      }
-    }
-
     const goLogin = () => {
       emit('toLogin')
     }
@@ -226,8 +214,7 @@ export default {
       checkPassword,
       rules,
       submitForm,
-      goLogin,
-      sendVerificationCode
+      goLogin
     }
   }
 }
@@ -241,10 +228,10 @@ export default {
   background-color: #13152c;
   border-radius: 10px;
 
-  .captcha {
-    background: #409eff;
-    color: #fff;
-  }
+  // .captcha {
+  //   background: #409eff;
+  //   color: #fff;
+  // }
 
   .go-login {
     display: flex;

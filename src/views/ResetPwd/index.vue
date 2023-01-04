@@ -18,13 +18,7 @@
           :placeholder="$t('plzEnterEmail')"
         >
           <template #append>
-            <el-button
-              :disabled="sendingCode"
-              :loading="loading"
-              @click="sendVerificationCode(formData.email)"
-              class="captcha"
-              >{{ $t('getCaptcha') }}
-            </el-button>
+            <Captcha :email="formData.email"></Captcha>
           </template>
         </el-input>
       </el-form-item>
@@ -72,25 +66,22 @@
   </div>
 </template>
 <script>
-import { reactive, toRefs, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { resetPwdApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
-import { sendVerificationCodeToEmail, checkEmail } from '@/utils/common'
+import Captcha from '@/components/Captcha'
 
 export default {
   name: 'ResetPassword',
   components: {
-    Language
+    Language,
+    Captcha
   },
   emits: ['toLogin'],
   setup(props, { emit }) {
     const resetPwdRef = ref()
-    const state = reactive({
-      loading: false,
-      sendingCode: false
-    })
 
     const formData = reactive({
       email: '',
@@ -141,19 +132,6 @@ export default {
       ]
     }
 
-    const sendingCode = ref(false)
-
-    const sendVerificationCode = async (email) => {
-      const flag = checkEmail(email)
-      if (flag) {
-        state.sendingCode = true
-        state.loading = true
-        await sendVerificationCodeToEmail(email)
-        state.sendingCode = false
-        state.loading = false
-      }
-    }
-
     const submitForm = () => {
       if (!resetPwdRef.value) return
       resetPwdRef.value.validate(async (valid) => {
@@ -180,11 +158,8 @@ export default {
     }
 
     return {
-      ...toRefs(state),
       rules,
-      sendingCode,
       toLogin,
-      sendVerificationCode,
       submitForm,
       formData,
       resetPwdRef
