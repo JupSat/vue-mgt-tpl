@@ -42,12 +42,13 @@
           />
           <div class="img">
             <el-tooltip :content="'点击刷新'" placement="top" effect="light">
-              <img
-                v-if="captchaPicPath"
-                :src="captchaPicPath"
-                :alt="$t('plzEnterCaptcha')"
-                @click="refreshCaptcha"
-              />
+              <span>
+                <img
+                  v-if="captchaPicPath"
+                  :src="captchaPicPath"
+                  :alt="$t('plzEnterCaptcha')"
+                  @click="refreshCaptcha"
+              /></span>
             </el-tooltip>
           </div>
         </div>

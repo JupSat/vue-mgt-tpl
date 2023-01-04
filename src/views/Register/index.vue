@@ -227,12 +227,6 @@ export default {
   padding: 40px;
   background-color: #13152c;
   border-radius: 10px;
-
-  // .captcha {
-  //   background: #409eff;
-  //   color: #fff;
-  // }
-
   .go-login {
     display: flex;
     flex-direction: row;
