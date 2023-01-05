@@ -72,7 +72,8 @@ export default {
 </script>
 <style scoped lang="scss">
 .captcha {
-  background-color: #409eff;
-  color: #fff;
+  background-color: #409eff !important;
+  color: #fff !important;
+  height: 34px;
 }
 </style>
