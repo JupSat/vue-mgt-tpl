@@ -449,7 +449,7 @@ export default {
   }
 
   :deep(.el-dropdown-menu__item:not(.is-disabled):hover) {
-    background-color: #598bff;
+    background-color: rgba(2, 123, 190, 0.2);
     color: #66b1ff;
   }
 }
