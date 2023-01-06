@@ -85,6 +85,7 @@ import { registerApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
 import Captcha from '@/components/Captcha'
+import { regPwd, isRequired } from '@/utils/reg'
 
 export default {
   name: 'Register',
@@ -109,22 +110,6 @@ export default {
     })
 
     const { t } = useI18n()
-    const checkUsername = (rule, value, callback) => {
-      if (value.length < 5) {
-        return callback(new Error(t('usrNamDonLessLen5')))
-      } else {
-        callback()
-      }
-    }
-
-    const checkPassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        return callback(new Error(t('pwdDonLessLen6')))
-      } else {
-        callback()
-      }
-    }
-
     const validatePwdAgain = (rule, value, callback) => {
       if (!value) {
         callback(new Error(t('plzEnterPwdAgain')))
@@ -135,38 +120,23 @@ export default {
       }
     }
 
-    const validatePwd = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(t('plzEnterPwd')))
-      } else {
-        if (formData.checkPass) {
-          registerRef.value.validateField('checkPass')
-        }
-        callback()
-      }
-    }
-
-    const rules = {
+    const rules = reactive({
       email: [
-        { required: true, message: t('plzEnterEmail'), trigger: 'change' },
+        isRequired('plzEnterEmail'),
         {
           type: 'email',
           message: t('plzEnterCorrectEmail'),
           trigger: ['blur', 'change']
         }
       ],
-      validCod: [
-        { required: true, message: t('plzEnterCaptcha'), trigger: 'blur' }
-      ],
-      username: [
-        { required: true, message: t('plzEnterUsrNam'), trigger: 'blur' }
-      ],
+      validCod: [isRequired('plzEnterCaptcha')],
+      username: [isRequired('plzEnterUsrNam')],
       password: [
-        { validator: validatePwd, trigger: 'blur' },
-        { min: 6, max: 10, message: t('pwdLenIn6To10'), trigger: 'blur' }
+        isRequired('pwdLenIn6To10'),
+        { validator: regPwd, trigger: 'blur' }
       ],
       checkPass: [{ validator: validatePwdAgain, trigger: 'blur' }]
-    }
+    })
 
     const submitForm = () => {
       if (!registerRef.value) return
@@ -210,8 +180,8 @@ export default {
       ...toRefs(state),
       registerRef,
       formData,
-      checkUsername,
-      checkPassword,
+      // checkUsername,
+      // checkPassword,
       rules,
       submitForm,
       goLogin

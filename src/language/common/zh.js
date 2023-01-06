@@ -123,5 +123,7 @@ export default {
   openFullScreen: '开启全屏',
   LoginSucJumping: '登录成功！正在跳转......',
   accOrPwdAErr: '账号或密码错误！',
-  captchaError: '验证码错误'
+  captchaError: '验证码错误',
+  required: '此项必填',
+  pwdRule: '密码为6-40位数字字母“.” 和 “_”'
 }

@@ -123,5 +123,7 @@ export default {
   openFullScreen: 'Open fullscreen mode',
   LoginSucJumping: 'Login successful! Jumping',
   accOrPwdAErr: 'The account or password is incorrect',
-  captchaError: 'Captcha error'
+  captchaError: 'Captcha error',
+  required: 'This item is required',
+  pwdRule: 'The password is 6-40 digits and letters "." and "_"'
 }
