@@ -1,4 +1,4 @@
-import { sendVerificationCodeApi } from '@/api/user'
+import { sendVerificationCodeApi } from '@/api/email'
 import { ElMessage } from 'element-plus'
 
 export const sendVerificationCodeToEmail = (email) => {

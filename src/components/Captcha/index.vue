@@ -15,7 +15,7 @@
 
 <script>
 import { reactive, toRefs } from 'vue'
-import { sendVerificationCodeToEmail, checkEmail } from '@/utils/common'
+import { sendVerificationCodeToEmail, checkEmail } from '@/utils/email'
 
 export default {
   name: 'Captcha',
