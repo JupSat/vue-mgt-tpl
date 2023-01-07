@@ -180,8 +180,6 @@ export default {
       ...toRefs(state),
       registerRef,
       formData,
-      // checkUsername,
-      // checkPassword,
       rules,
       submitForm,
       goLogin
