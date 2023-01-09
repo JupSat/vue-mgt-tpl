@@ -1,5 +1,17 @@
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
+
+import router from '@/router'
 import Qs from 'qs'
+
+const message = (str) => {
+  ElMessage.closeAll()
+  ElMessage({
+    message: str,
+    type: 'error',
+    duration: 3 * 1000
+  })
+}
 
 // 创建axios实例
 const service = axios.create({
@@ -30,10 +42,25 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (res) => {
     removePendingRequest(res.config)
-    return res.data
+    if (res.status === 200) {
+      return res.data
+    }
   },
   (error) => {
     removePendingRequest(error.config || {})
+    if (error.response.status === 401) {
+      message.error({ message: '请先登录' })
+      router.replace('/')
+    } else if (error.response.status === 403) {
+      message.error({ message: '没有权限!' })
+      router.push({ path: '/noAuth' })
+    } else if (error.response.status === 404) {
+      message.error('未找到！')
+    } else if (error.response.status === 504) {
+      message.error('网关超时！')
+    } else {
+      message.error({ message: '未知错误' })
+    }
     return Promise.reject(error)
   }
 )
