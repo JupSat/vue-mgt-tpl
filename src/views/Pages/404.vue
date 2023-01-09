@@ -7,24 +7,14 @@
   <div class="panel">
     <div class="box">
       <div class="box__ghost">
-        <div class="symbol"></div>
-        <div class="symbol"></div>
-        <div class="symbol"></div>
-        <div class="symbol"></div>
-        <div class="symbol"></div>
-        <div class="symbol"></div>
-
+        <div class="symbol" v-for="item in 6" :key="item"></div>
         <div class="box__ghost-container">
           <div class="box__ghost-eyes">
             <div class="box__eye-left"></div>
             <div class="box__eye-right"></div>
           </div>
           <div class="box__ghost-bottom">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div v-for="item in 5" :key="item"></div>
           </div>
         </div>
         <div class="box__ghost-shadow"></div>
