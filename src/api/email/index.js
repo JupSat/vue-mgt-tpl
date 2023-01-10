@@ -1,11 +1,6 @@
-import request from '@/utils/http/request'
+import { rPostByParams } from '@/utils/http/function'
 
 const prefix = 'api'
 
-export const sendVerificationCodeApi = (params) => {
-  return request({
-    url: `/${prefix}/user/sendVerificationCodeToEmail`,
-    method: 'post',
-    params: params
-  })
-}
+export const sendVerificationCodeApi = (params) =>
+  rPostByParams(`/${prefix}/user/sendVerificationCodeToEmail`, params)

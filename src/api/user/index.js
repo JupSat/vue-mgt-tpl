@@ -1,35 +1,12 @@
-import request from '@/utils/http/request'
+import { rPost } from '@/utils/http/function'
 
 const prefix = 'api'
 
-export const registerApi = (data) => {
-  return request({
-    url: `/${prefix}/user/register`,
-    method: 'post',
-    data: data
-  })
-}
+export const registerApi = (data) => rPost(`/${prefix}/user/register`, data)
 
-export const loginApi = (data) => {
-  return request({
-    url: `/${prefix}/user/login`,
-    method: 'post',
-    data: data
-  })
-}
+export const loginApi = (data) => rPost(`/${prefix}/user/login`, data)
 
-export const getGraphCaptchaApi = (data) => {
-  return request({
-    url: `/${prefix}/captcha/getCaptcha`,
-    method: 'post',
-    data: data
-  })
-}
+export const getGraphCaptchaApi = (data) =>
+  rPost(`/${prefix}/captcha/getCaptcha`, data)
 
-export const resetPwdApi = (data) => {
-  return request({
-    url: `/${prefix}/user/resetPwd`,
-    method: 'post',
-    data: data
-  })
-}
+export const resetPwdApi = (data) => rPost(`/${prefix}/user/resetPwd`, data)
