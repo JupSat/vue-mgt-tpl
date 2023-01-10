@@ -85,7 +85,7 @@ import { registerApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
 import Captcha from '@/components/Captcha'
-import { regPwd, isRequired } from '@/utils/reg'
+import { regPwd, isRequired } from '@/utils/validate'
 
 export default {
   name: 'Register',
