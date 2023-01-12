@@ -10,10 +10,7 @@
           <div class="main-container">
             <div class="main-content">
               <router-view />
-              <el-backtop
-                target=".main-layout .el-scrollbar__wrap"
-                :bottom="90"
-              >
+              <el-backtop target=".main-layout .el-scrollbar__wrap" :bottom="90">
                 <el-icon><Top /></el-icon>
               </el-backtop>
             </div>
@@ -56,7 +53,7 @@ export default {
     position: fixed;
     width: 100%;
     top: 62px;
-    left: 215px;
+    // left: 215px;
     z-index: 100;
     padding-left: 8px;
     @include bg_color('mainBodyColor');
@@ -75,9 +72,9 @@ export default {
     @include bg_color('mainBodyColor');
     @include font_color('fontColor');
     font-family: Open Sans, sans-serif;
-    font-size: 0.9375rem;
+    font-size: 15px;
     font-weight: 400;
-    line-height: 1.25rem;
+    line-height: 20px;
 
     .main-container {
       display: flex;
@@ -88,8 +85,8 @@ export default {
       .main-content {
         order: 1;
         flex: 1 0;
-        min-width: 0;
-        padding: 98px 35px 0 11px;
+        //  min-width: 0;
+        margin: 98px 35px 0 11px;
       }
     }
   }

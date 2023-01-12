@@ -4,10 +4,10 @@ import { ElMessage } from 'element-plus'
 import router from '@/router'
 import Qs from 'qs'
 
-const message = (str) => {
+const message = (message) => {
   ElMessage.closeAll()
   ElMessage({
-    message: str,
+    message,
     type: 'error',
     duration: 3 * 1000
   })

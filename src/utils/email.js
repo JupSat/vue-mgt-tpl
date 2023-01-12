@@ -1,6 +1,11 @@
 import { sendVerificationCodeApi } from '@/api/email'
 import { ElMessage } from 'element-plus'
 
+/**
+ * @description 发送验证码到邮箱
+ * @param {*} email 邮箱
+ * @returns
+ */
 export const sendVerificationCodeToEmail = (email) => {
   const params = {
     email
@@ -32,6 +37,11 @@ export const sendVerificationCodeToEmail = (email) => {
   })
 }
 
+/**
+ * @description 检查邮箱
+ * @param {*} email 邮箱
+ * @returns
+ */
 export const checkEmail = (email) => {
   if (!email) {
     ElMessage({

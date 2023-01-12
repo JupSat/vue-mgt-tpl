@@ -3,18 +3,9 @@
     <div class="title">
       <h1>{{ $t('signIn') }}</h1>
     </div>
-    <el-form
-      ref="loginRef"
-      :model="formData"
-      :rules="rules"
-      @keyup.enter="submitForm"
-      :validate-on-rule-change="false"
-    >
+    <el-form ref="loginRef" :model="formData" :rules="rules" @keyup.enter="submitForm" :validate-on-rule-change="false">
       <el-form-item prop="username">
-        <el-input
-          v-model="formData.username"
-          :placeholder="$t('plzEnterUsrNam')"
-        >
+        <el-input v-model="formData.username" :placeholder="$t('plzEnterUsrNam')">
           <template #suffix>
             <span class="input-icon">
               <el-icon>
@@ -25,48 +16,28 @@
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input
-          v-model="formData.password"
-          :type="'password'"
-          :placeholder="$t('plzEnterPwd')"
-          show-password
-        />
+        <el-input v-model="formData.password" :type="'password'" :placeholder="$t('plzEnterPwd')" show-password />
       </el-form-item>
       <el-form-item prop="captcha">
         <div class="captcha-item">
-          <el-input
-            v-model="formData.captcha"
-            maxlength="6"
-            :placeholder="$t('plzEnterCaptcha')"
-            style="width: 60%"
-          />
+          <el-input v-model="formData.captcha" maxlength="6" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
           <div class="img">
             <el-tooltip :content="'点击刷新'" placement="top" effect="light">
               <span>
-                <img
-                  v-if="captchaPicPath"
-                  :src="captchaPicPath"
-                  :alt="$t('plzEnterCaptcha')"
-                  @click="refreshCaptcha"
-              /></span>
+                <img v-if="captchaPicPath" :src="captchaPicPath" :alt="$t('plzEnterCaptcha')" @click="refreshCaptcha" />
+              </span>
             </el-tooltip>
           </div>
         </div>
       </el-form-item>
       <el-form-item>
         <div class="btn">
-          <el-button type="primary" style="width: 100%" @click="submitForm">{{
-            $t('signIn')
-          }}</el-button>
+          <el-button type="primary" style="width: 100%" @click="submitForm">{{ $t('signIn') }}</el-button>
         </div>
         <div class="operation">
           <div>
-            <span class="free-register" @click="showLogin = !showLogin">{{
-              $t('freeRegister')
-            }}</span>
-            <span class="forget-password" @click="forgetPwd">{{
-              $t('forgotPassword')
-            }}</span>
+            <span class="free-register" @click="showLogin = !showLogin">{{ $t('freeRegister') }}</span>
+            <span class="forget-password" @click="forgetPwd">{{ $t('forgotPassword') }}</span>
           </div>
           <Language />
         </div>
@@ -148,7 +119,7 @@ export default {
 
     const captchaPicPath = ref('')
     const getGraphCaptcha = () => {
-      getGraphCaptchaApi({}).then((res) => {
+      getGraphCaptchaApi().then((res) => {
         if (res) {
           const { captcha = '', captchaImgStr = '' } = res.result
           const len = captcha.length
