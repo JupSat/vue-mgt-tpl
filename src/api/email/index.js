@@ -2,5 +2,9 @@ import { rPostByParams } from '@/utils/http/function'
 
 const prefix = 'api'
 
-export const sendVerificationCodeApi = (params) =>
-  rPostByParams(`/${prefix}/user/sendVerificationCodeToEmail`, params)
+/**
+ * @description 发送验证码
+ * @param {*} params
+ * @returns
+ */
+export const sendVerificationCodeApi = (params) => rPostByParams(`/${prefix}/user/sendVerificationCodeToEmail`, params)
