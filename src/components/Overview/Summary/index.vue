@@ -105,11 +105,6 @@ export default {
     margin-bottom: 30px;
   }
 
-  .inner-row {
-    display: flex;
-    justify-content: space-between;
-  }
-
   .trend-chart {
     width: 100%;
     height: 520px;
@@ -151,11 +146,6 @@ export default {
       font-family: Open Sans, sans-serif;
       font-size: 20px;
       font-weight: 600;
-
-      .invoice {
-        color: red !important;
-        background: #fcdddd !important;
-      }
     }
   }
 }
