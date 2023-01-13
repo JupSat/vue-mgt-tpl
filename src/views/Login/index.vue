@@ -23,7 +23,7 @@
           <el-input v-model="formData.captcha" maxlength="6" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
           <div class="img">
             <el-tooltip :content="'点击刷新'" placement="top" effect="light">
-              <span>
+              <span v-loading="doneLoading">
                 <img v-if="captchaPicPath" :src="captchaPicPath" :alt="$t('plzEnterCaptcha')" @click="refreshCaptcha" />
               </span>
             </el-tooltip>
@@ -67,7 +67,8 @@ export default {
   },
   setup(props, { emit }) {
     const state = reactive({
-      showLogin: true
+      showLogin: true,
+      doneLoading: false
     })
 
     const data = reactive({
@@ -119,19 +120,24 @@ export default {
 
     const captchaPicPath = ref('')
     const getGraphCaptcha = () => {
-      getGraphCaptchaApi().then((res) => {
-        if (res) {
-          const { captcha = '', captchaImgStr = '' } = res.result
-          const len = captcha.length
-          rules.captcha.push({
-            max: len,
-            min: len,
-            message: `请输入${len}位验证码`,
-            trigger: 'blur'
-          })
-          captchaPicPath.value = captchaImgStr
-        }
-      })
+      state.doneLoading = true
+      getGraphCaptchaApi()
+        .then((res) => {
+          if (res) {
+            const { captcha = '', captchaImgStr = '' } = res.result
+            const len = captcha.length
+            rules.captcha.push({
+              max: len,
+              min: len,
+              message: `请输入${len}位验证码`,
+              trigger: 'blur'
+            })
+            captchaPicPath.value = captchaImgStr
+          }
+        })
+        .finally(() => {
+          state.doneLoading = false
+        })
     }
 
     const refreshCaptcha = () => {
