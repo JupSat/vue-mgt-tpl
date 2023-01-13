@@ -25,22 +25,19 @@ export default {
   components: {
     ResetPassword,
     Login
-  },
-  setup() {
-    const state = reactive({
-      showLoading: true,
-      showLogin: true
-    })
-
-    setTimeout(() => {
-      state.showLoading = false
-    }, 2000)
-
-    return {
-      ...toRefs(state)
-    }
   }
 }
+</script>
+<script setup>
+const state = reactive({
+  showLoading: true,
+  showLogin: true
+})
+
+setTimeout(() => {
+  state.showLoading = false
+}, 2000)
+const { showLoading, showLogin } = toRefs(state)
 </script>
 <style lang="scss">
 .home {
