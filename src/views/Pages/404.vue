@@ -25,55 +25,43 @@
           <div class="box__description-title">{{ $t('whoops') }}</div>
           <div class="box__description-text">{{ $t('notFoundTip') }}</div>
         </div>
-        <span
-          href="#"
-          target="_blank"
-          class="box__button"
-          @click="router.back(-1)"
-          >{{ $t('goBack') }}</span
-        >
+        <span href="#" target="_blank" class="box__button" @click="router.back(-1)">{{ $t('goBack') }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, toRefs, onBeforeUnmount, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 export default {
-  setup() {
-    const router = useRouter()
-    const state = reactive({})
-    const pageX = document.body.clientWidth
-    const pageY = document.body.clientHeight
-    let mouseY = 0
-    let mouseX = 0
-
-    const handleMousemove = (e) => {
-      mouseY = e.pageY
-      const yAxis = ((pageY / 2 - mouseY) / pageY) * 300
-      mouseX = e.pageX / -pageX
-      const xAxis = -mouseX * 100 - 100
-
-      document.querySelector(
-        '.box__ghost-eyes'
-      ).style.transform = `translate(${xAxis}%,-${yAxis}%`
-    }
-
-    onMounted(() => {
-      document.addEventListener('mousemove', handleMousemove)
-    })
-
-    onBeforeUnmount(() => {
-      document.removeEventListener('mousemove', handleMousemove)
-    })
-
-    return {
-      ...toRefs(state),
-      router
-    }
-  }
+  name: '404'
 }
+</script>
+<script setup>
+import { onBeforeUnmount, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const pageX = document.body.clientWidth
+const pageY = document.body.clientHeight
+let mouseY = 0
+let mouseX = 0
+
+const handleMousemove = (e) => {
+  mouseY = e.pageY
+  const yAxis = ((pageY / 2 - mouseY) / pageY) * 300
+  mouseX = e.pageX / -pageX
+  const xAxis = -mouseX * 100 - 100
+
+  document.querySelector('.box__ghost-eyes').style.transform = `translate(${xAxis}%,-${yAxis}%`
+}
+
+onMounted(() => {
+  document.addEventListener('mousemove', handleMousemove)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('mousemove', handleMousemove)
+})
 </script>
 <style scoped lang="scss">
 .page-404 {
@@ -105,25 +93,25 @@ export default {
 
 @-webkit-keyframes shining {
   from {
-    text-shadow: 0 0 10px lightblue, 0 0 20px lightblue, 0 0 30px lightblue,
-      0 0 40px skyblue, 0 0 50px skyblue, 0 0 60px skyblue;
+    text-shadow: 0 0 10px lightblue, 0 0 20px lightblue, 0 0 30px lightblue, 0 0 40px skyblue, 0 0 50px skyblue,
+      0 0 60px skyblue;
   }
 
   to {
-    text-shadow: 0 0 5px lightblue, 0 0 10px lightblue, 0 0 15px lightblue,
-      0 0 20px skyblue, 0 0 25px skyblue, 0 0 30px skyblue;
+    text-shadow: 0 0 5px lightblue, 0 0 10px lightblue, 0 0 15px lightblue, 0 0 20px skyblue, 0 0 25px skyblue,
+      0 0 30px skyblue;
   }
 }
 
 @keyframes shining {
   from {
-    text-shadow: 0 0 10px lightblue, 0 0 20px lightblue, 0 0 30px lightblue,
-      0 0 40px skyblue, 0 0 50px skyblue, 0 0 60px skyblue;
+    text-shadow: 0 0 10px lightblue, 0 0 20px lightblue, 0 0 30px lightblue, 0 0 40px skyblue, 0 0 50px skyblue,
+      0 0 60px skyblue;
   }
 
   to {
-    text-shadow: 0 0 5px lightblue, 0 0 10px lightblue, 0 0 15px lightblue,
-      0 0 20px skyblue, 0 0 25px skyblue, 0 0 30px skyblue;
+    text-shadow: 0 0 5px lightblue, 0 0 10px lightblue, 0 0 15px lightblue, 0 0 20px skyblue, 0 0 25px skyblue,
+      0 0 30px skyblue;
   }
 }
 

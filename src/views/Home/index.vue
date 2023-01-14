@@ -16,19 +16,14 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
-import Login from './../Login'
-import ResetPassword from './../ResetPwd'
-
 export default {
-  name: 'Home',
-  components: {
-    ResetPassword,
-    Login
-  }
+  name: 'Home'
 }
 </script>
 <script setup>
+import Login from './../Login'
+import ResetPassword from './../ResetPwd'
+import { reactive, toRefs } from 'vue'
 const state = reactive({
   showLoading: true,
   showLogin: true

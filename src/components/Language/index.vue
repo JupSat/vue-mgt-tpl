@@ -2,8 +2,8 @@
   <div class="language">
     <el-dropdown @command="handleCommand">
       <span class="el-dropdown-link">
-        {{ language === 'zh' ? $t('langZh') : $t('langEn')
-        }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+        {{ language === 'zh' ? $t('langZh') : $t('langEn') }}
+        <el-icon class="el-icon--right"><arrow-down /></el-icon>
       </span>
       <template #dropdown>
         <el-dropdown-menu>
@@ -16,37 +16,36 @@
 </template>
 
 <script>
+export default {
+  name: 'Language'
+}
+</script>
+
+<script setup>
 import { reactive, toRefs, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useCommonStore } from '@/pinia/modules/common'
 
-export default {
-  name: 'Language',
-  setup() {
-    const data = reactive({
-      language: 'zh'
-    })
+const data = reactive({
+  language: 'zh'
+})
 
-    // 语言切换
-    const { locale } = useI18n()
-    const commonStore = useCommonStore()
-    const handleCommand = (command) => {
-      data.language = command
-      locale.value = data.language
-      commonStore.setLanguage(data.language)
-    }
-
-    onMounted(() => {
-      handleCommand(commonStore.language)
-    })
-
-    return {
-      ...toRefs(data),
-      handleCommand
-    }
-  }
+// 语言切换
+const { locale } = useI18n()
+const commonStore = useCommonStore()
+const handleCommand = (command) => {
+  data.language = command
+  locale.value = data.language
+  commonStore.setLanguage(data.language)
 }
+
+onMounted(() => {
+  handleCommand(commonStore.language)
+})
+
+const { language } = toRefs(data)
 </script>
+
 <style scoped lang="scss">
 .language {
   display: flex;

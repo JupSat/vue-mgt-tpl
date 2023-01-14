@@ -46,27 +46,22 @@
 </template>
 
 <script>
+export default {
+  name: 'ChartsCard'
+}
+</script>
+
+<script setup>
 import { reactive, toRefs } from 'vue'
 import OrderChart from '@/components/ECommerce/ChartsCard/OrderChart'
 import ProfitChart from '@/components/ECommerce/ChartsCard/ProfitChart'
 
-export default {
-  name: 'ChartsCard',
-  components: {
-    OrderChart,
-    ProfitChart
-  },
-  setup() {
-    const state = reactive({
-      dataType: 0,
-      activeName: 'Orders'
-    })
+const state = reactive({
+  dataType: 0,
+  activeName: 'Orders'
+})
 
-    return {
-      ...toRefs(state)
-    }
-  }
-}
+const { dataType, activeName } = toRefs(state)
 </script>
 
 <style scoped lang="scss">

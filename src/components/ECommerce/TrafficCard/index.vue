@@ -17,11 +17,7 @@
     </div>
     <div class="card-body">
       <div class="body-list">
-        <div
-          class="list-item item"
-          v-for="(item, index) in trafficList"
-          :key="index"
-        >
+        <div class="list-item item" v-for="(item, index) in trafficList" :key="index">
           <span class="">{{ item.year }}</span>
           <span class="">{{ item.number }}</span>
           <span :class="item.flag === 0 ? 'number-tip-up' : 'number-tip-down'">
@@ -36,10 +32,7 @@
               <div class="bar-prev"></div>
             </div>
             <div class="bar-container" style="height: 88%">
-              <div
-                class="bar-now"
-                :class="{ 'now-status': item.flag === 1 }"
-              ></div>
+              <div class="bar-now" :class="{ 'now-status': item.flag === 1 }"></div>
             </div>
             <span class="year">{{ item.year }}</span>
           </div>
@@ -50,30 +43,28 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
 export default {
-  name: 'TrafficCard',
-  setup() {
-    const state = reactive({
-      dataType: 0,
-      trafficList: [
-        { year: 2015, number: 19, percent: 12, flag: 0 },
-        { year: 2016, number: 943, percent: 0, flag: 0 },
-        { year: 2017, number: 215, percent: 12, flag: 0 },
-        { year: 2018, number: 237, percent: 36, flag: 1 },
-        { year: 2019, number: 342, percent: 52, flag: 1 },
-        { year: 2020, number: 246, percent: 56, flag: 1 },
-        { year: 2021, number: 645, percent: 62, flag: 1 },
-        { year: 2022, number: 375, percent: 43, flag: 0 },
-        { year: 2023, number: 0, percent: 0, flag: 0 }
-      ]
-    })
-
-    return {
-      ...toRefs(state)
-    }
-  }
+  name: 'TrafficCard'
 }
+</script>
+
+<script setup>
+import { reactive, toRefs } from 'vue'
+const state = reactive({
+  dataType: 0,
+  trafficList: [
+    { year: 2015, number: 19, percent: 12, flag: 0 },
+    { year: 2016, number: 943, percent: 0, flag: 0 },
+    { year: 2017, number: 215, percent: 12, flag: 0 },
+    { year: 2018, number: 237, percent: 36, flag: 1 },
+    { year: 2019, number: 342, percent: 52, flag: 1 },
+    { year: 2020, number: 246, percent: 56, flag: 1 },
+    { year: 2021, number: 645, percent: 62, flag: 1 },
+    { year: 2022, number: 375, percent: 43, flag: 0 },
+    { year: 2023, number: 0, percent: 0, flag: 0 }
+  ]
+})
+const { dataType, trafficList } = toRefs(state)
 </script>
 
 <style scoped lang="scss">

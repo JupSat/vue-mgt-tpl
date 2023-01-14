@@ -22,27 +22,15 @@
 </template>
 
 <script>
-import router from '@/router'
-import Breadcrumb from '@/views/Layout/Breadcrumb'
-import Tabs from '@/views/Layout/Tabs'
-
 export default {
-  name: 'Main',
-  components: {
-    Breadcrumb,
-    Tabs
-  },
-  setup() {
-    const switchView = (name) => {
-      router.push({ name })
-    }
-    return {
-      switchView
-    }
-  }
+  name: 'Main'
 }
 </script>
 
+<script setup>
+import Breadcrumb from '@/views/Layout/Breadcrumb'
+import Tabs from '@/views/Layout/Tabs'
+</script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
 .main-layout {

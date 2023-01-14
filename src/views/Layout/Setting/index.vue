@@ -8,12 +8,8 @@
     <el-drawer v-model="drawer" :direction="direction" title="设置">
       <template #default>
         <div>
-          <el-radio v-model="radio1" label="Option 1" size="large"
-            >功能待完善</el-radio
-          >
-          <el-radio v-model="radio1" label="Option 2" size="large"
-            >功能待完善</el-radio
-          >
+          <el-radio v-model="radio1" label="Option 1" size="large">功能待完善</el-radio>
+          <el-radio v-model="radio1" label="Option 2" size="large">功能待完善</el-radio>
         </div>
       </template>
       <template #footer>
@@ -27,35 +23,29 @@
 </template>
 
 <script>
+export default {
+  name: 'Settings'
+}
+</script>
+
+<script setup>
 import { ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
-export default {
-  name: 'Settings',
-  setup() {
-    const drawer = ref(false)
-    const direction = ref('rtl')
-    const radio1 = ref('Option 1')
+const drawer = ref(false)
+const direction = ref('rtl')
+const radio1 = ref('Option 1')
 
-    const cancelClick = () => {
+const cancelClick = () => {
+  drawer.value = false
+}
+const confirmClick = () => {
+  ElMessageBox.confirm(`Are you confirm to chose ${radio1.value} ?`)
+    .then(() => {
       drawer.value = false
-    }
-    const confirmClick = () => {
-      ElMessageBox.confirm(`Are you confirm to chose ${radio1.value} ?`)
-        .then(() => {
-          drawer.value = false
-        })
-        .catch(() => {
-          // catch error
-        })
-    }
-    return {
-      drawer,
-      direction,
-      cancelClick,
-      confirmClick,
-      radio1
-    }
-  }
+    })
+    .catch(() => {
+      // catch error
+    })
 }
 </script>
 

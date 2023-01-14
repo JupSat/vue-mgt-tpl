@@ -18,118 +18,114 @@
 </template>
 
 <script>
+export default {
+  name: 'StatusCard'
+}
+</script>
+
+<script setup>
 import { onMounted } from 'vue'
 import * as echarts from 'echarts'
 import { useI18n } from 'vue-i18n'
 
-export default {
-  name: 'StatusCard',
-  setup() {
-    const { t } = useI18n()
-    const setEChartsLine = () => {
-      const chart1 = document.getElementById('statusCardId')
-      const myChart = echarts.init(chart1)
-      let option = null
-      const xAxisData = []
-      const data1 = []
-      const data2 = []
-      for (let i = 0; i < 80; i++) {
-        xAxisData.push('A' + i)
-        data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 10)
-        data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 10)
+const { t } = useI18n()
+const setEChartsLine = () => {
+  const chart1 = document.getElementById('statusCardId')
+  const myChart = echarts.init(chart1)
+  let option = null
+  const xAxisData = []
+  const data1 = []
+  const data2 = []
+  for (let i = 0; i < 80; i++) {
+    xAxisData.push('A' + i)
+    data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 10)
+    data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 10)
+  }
+  option = {
+    // title: {
+    //   text: "Bar Animation Delay",
+    // },
+    legend: {
+      data: [t('transactions'), t('orders')],
+      itemWidth: 15,
+      textStyle: {
+        color: 'white'
       }
-      option = {
-        // title: {
-        //   text: "Bar Animation Delay",
-        // },
-        legend: {
-          data: [t('transactions'), t('orders')],
-          itemWidth: 15,
-          textStyle: {
-            color: 'white'
-          }
+    },
+    grid: {
+      show: false,
+      top: '0%',
+      left: '0%',
+      right: '0%'
+    },
+    tooltip: {},
+    xAxis: {
+      data: xAxisData,
+      splitLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    yAxis: {
+      splitLine: {
+        show: true,
+        lineStyle: {
+          color: ['#151a30'],
+          width: '0.5'
+        }
+      },
+      axisTick: {
+        show: false
+      },
+      axisLabel: {
+        show: false
+      }
+    },
+    series: [
+      {
+        name: t('transactions'),
+        type: 'bar',
+        data: data1,
+        emphasis: {
+          focus: 'series'
         },
-        grid: {
-          show: false,
-          top: '0%',
-          left: '0%',
-          right: '0%'
+        animationDelay: function (idx) {
+          return idx * 10
+        }
+      },
+      {
+        name: t('orders'),
+        type: 'bar',
+        data: data2,
+        emphasis: {
+          focus: 'series'
         },
-        tooltip: {},
-        xAxis: {
-          data: xAxisData,
-          splitLine: {
-            show: false
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            show: false
-          }
-        },
-        yAxis: {
-          splitLine: {
-            show: true,
-            lineStyle: {
-              color: ['#151a30'],
-              width: '0.5'
-            }
-          },
-          axisTick: {
-            show: false
-          },
-          axisLabel: {
-            show: false
-          }
-        },
-        series: [
-          {
-            name: t('transactions'),
-            type: 'bar',
-            data: data1,
-            emphasis: {
-              focus: 'series'
-            },
-            animationDelay: function (idx) {
-              return idx * 10
-            }
-          },
-          {
-            name: t('orders'),
-            type: 'bar',
-            data: data2,
-            emphasis: {
-              focus: 'series'
-            },
-            animationDelay: function (idx) {
-              return idx * 10 + 100
-            }
-          }
-        ],
-        animationEasing: 'elasticOut',
-        animationDelayUpdate: function (idx) {
-          return idx * 5
+        animationDelay: function (idx) {
+          return idx * 10 + 100
         }
       }
-
-      option && myChart.setOption(option)
-    }
-
-    const initECharts = () => {
-      setEChartsLine()
-    }
-
-    onMounted(() => {
-      initECharts()
-    })
-
-    return {
-      setEChartsLine,
-      initECharts
+    ],
+    animationEasing: 'elasticOut',
+    animationDelayUpdate: function (idx) {
+      return idx * 5
     }
   }
+
+  option && myChart.setOption(option)
 }
+
+const initECharts = () => {
+  setEChartsLine()
+}
+
+onMounted(() => {
+  initECharts()
+})
 </script>
 
 <style scoped lang="scss">

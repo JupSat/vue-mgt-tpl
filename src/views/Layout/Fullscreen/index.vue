@@ -1,51 +1,45 @@
 <template>
   <div @click="triggerFullscreen" class="full-screen">
-    <el-tooltip
-      :content="showFullscreen ? $t('openFullScreen') : $t('closeFullScreen')"
-      placement="top"
-      effect="light"
-    >
+    <el-tooltip :content="showFullscreen ? $t('openFullScreen') : $t('closeFullScreen')" placement="top" effect="light">
       <el-icon :size="23" color="#8f9bb3"><FullScreen /></el-icon>
     </el-tooltip>
   </div>
 </template>
 
 <script>
+export default {
+  name: 'Fullscreen'
+}
+</script>
+
+<script setup>
 import { reactive, toRefs, onUnmounted, onMounted } from 'vue'
 import screenfull from 'screenfull'
+const state = reactive({
+  showFullscreen: true
+})
 
-export default {
-  name: 'Fullscreen',
-  setup() {
-    const state = reactive({
-      showFullscreen: true
-    })
+onMounted(() => {
+  if (screenfull.isEnabled) {
+    screenfull.on('change', changeFullscreen)
+  }
+})
 
-    onMounted(() => {
-      if (screenfull.isEnabled) {
-        screenfull.on('change', changeFullscreen)
-      }
-    })
+onUnmounted(() => {
+  screenfull.off('change')
+})
 
-    onUnmounted(() => {
-      screenfull.off('change')
-    })
-
-    const triggerFullscreen = () => {
-      if (screenfull.isEnabled) {
-        screenfull.toggle()
-      }
-    }
-
-    const changeFullscreen = () => {
-      state.showFullscreen = !screenfull.isFullscreen
-    }
-    return {
-      ...toRefs(state),
-      triggerFullscreen
-    }
+const triggerFullscreen = () => {
+  if (screenfull.isEnabled) {
+    screenfull.toggle()
   }
 }
+
+const changeFullscreen = () => {
+  state.showFullscreen = !screenfull.isFullscreen
+}
+
+const { showFullscreen } = toRefs(state)
 </script>
 <style scoped lang="scss">
 .full-screen {

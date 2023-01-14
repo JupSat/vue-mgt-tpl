@@ -3,12 +3,7 @@
     <div class="header-layout">
       <div class="header-container">
         <div class="logo-container">
-          <img
-            class="logo"
-            @click="navigateHome"
-            src="~@/assets/img/jupiter.png"
-            alt=""
-          />
+          <img class="logo" @click="navigateHome" src="~@/assets/img/jupiter.png" alt="" />
         </div>
 
         <div class="header-query">
@@ -21,35 +16,18 @@
             :placeholder="$t('plzEnterKeyword')"
             :loading="loading"
           >
-            <el-option
-              v-for="item in menuList"
-              :key="item.id"
-              :label="$t(item.id)"
-              :value="item.id"
-            />
+            <el-option v-for="item in menuList" :key="item.id" :label="$t(item.id)" :value="item.id" />
           </el-select>
         </div>
       </div>
 
       <div class="header-container-right">
         <div>
-          <Fullscreen
-            class="search-icon"
-            :style="{ cursor: 'pointer' }"
-          ></Fullscreen>
+          <Fullscreen class="search-icon" :style="{ cursor: 'pointer' }"></Fullscreen>
         </div>
         <div class="theme-select">
-          <el-select
-            @change="changeTheme"
-            v-model="theme"
-            popper-class="custom-select"
-          >
-            <el-option
-              v-for="(color, index) in colorList"
-              :label="$t(color)"
-              :value="color"
-              :key="index"
-            />
+          <el-select @change="changeTheme" v-model="theme" popper-class="custom-select">
+            <el-option v-for="(color, index) in colorList" :label="$t(color)" :value="color" :key="index" />
           </el-select>
         </div>
 
@@ -62,10 +40,7 @@
             </el-badge>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
-                  v-for="(item, index) in messagesList.splice(0, 4)"
-                  :key="index"
-                >
+                <el-dropdown-item v-for="(item, index) in messagesList.splice(0, 4)" :key="index">
                   这是第{{ item }}个邮件
                 </el-dropdown-item>
                 <template v-if="list.length > 4">
@@ -91,10 +66,7 @@
             </el-badge>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item
-                  v-for="(item, index) in emailsList.splice(0, 4)"
-                  :key="index"
-                >
+                <el-dropdown-item v-for="(item, index) in emailsList.splice(0, 4)" :key="index">
                   <span>这是第{{ item }}条消息</span>
                 </el-dropdown-item>
                 <template v-if="list.length > 4">
@@ -155,6 +127,11 @@
   </el-header>
 </template>
 <script>
+export default {
+  name: 'Header'
+}
+</script>
+<script setup>
 import { reactive, toRefs, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import router from '@/router'
@@ -163,88 +140,71 @@ import { useCommonStore } from '@/pinia/modules/common'
 import Fullscreen from '@/views/Layout/Fullscreen'
 import { useUserStore } from '@/pinia/modules/user'
 
-export default {
-  name: 'Header',
-  components: {
-    Fullscreen
-  },
-  setup() {
-    const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
-    const data = reactive({
-      theme: 'light',
-      language: 'zh',
-      color: '#8f9bb3',
-      list: [1, 2, 3, 4, 5, 6, 7, 8],
-      colorList: ['blue', 'light', 'dark', 'purple', 'yellow'],
-      menuList: [],
-      menuValue: '',
-      loading: false,
-      expand: true,
-      messagesList: tempList,
-      emailsList: tempList
+const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
+const data = reactive({
+  theme: 'light',
+  language: 'zh',
+  color: '#8f9bb3',
+  list: [1, 2, 3, 4, 5, 6, 7, 8],
+  colorList: ['blue', 'light', 'dark', 'purple', 'yellow'],
+  menuList: [],
+  menuValue: '',
+  loading: false,
+  messagesList: tempList,
+  emailsList: tempList
+})
+
+// 回到首页
+const navigateHome = () => {
+  router.push({ path: '/' })
+}
+
+// 退出
+const signOut = () => {
+  useUserStore().clearUserInfo()
+  navigateHome()
+}
+
+// 语言切换
+const { locale } = useI18n()
+const commonStore = useCommonStore()
+watch(
+  () => data.language,
+  () => {
+    locale.value = data.language
+    commonStore.setLanguage(data.language)
+  }
+)
+
+const changeTheme = () => {
+  commonStore.setTheme(data.theme)
+  window.document.documentElement.setAttribute('data-theme', data.theme)
+}
+
+// 搜索菜单
+const remoteMethod = (query) => {
+  if (query) {
+    data.loading = true
+    const menuStore = useMenuStore()
+    const menuList = menuStore.menuList.map((list) => list.children.flat()).flat()
+    data.loading = false
+    data.menuList = menuList.filter((item) => {
+      return item.id.toLowerCase().includes(query.toLowerCase())
     })
-
-    // 回到首页
-    const navigateHome = () => {
-      router.push({ path: '/' })
-    }
-
-    // 退出
-    const signOut = () => {
-      useUserStore().clearUserInfo()
-      navigateHome()
-    }
-
-    // 语言切换
-    const { locale } = useI18n()
-    const commonStore = useCommonStore()
-    watch(
-      () => data.language,
-      () => {
-        locale.value = data.language
-        commonStore.setLanguage(data.language)
-      }
-    )
-
-    const changeTheme = () => {
-      commonStore.setTheme(data.theme)
-      window.document.documentElement.setAttribute('data-theme', data.theme)
-    }
-
-    // 搜索菜单
-    const remoteMethod = (query) => {
-      if (query) {
-        data.loading = true
-        const menuStore = useMenuStore()
-        const menuList = menuStore.menuList
-          .map((list) => list.children.flat())
-          .flat()
-        data.loading = false
-        data.menuList = menuList.filter((item) => {
-          return item.id.toLowerCase().includes(query.toLowerCase())
-        })
-      } else {
-        data.menuList = []
-      }
-    }
-
-    onMounted(() => {
-      data.language = commonStore.language
-      data.theme = commonStore.theme
-      changeTheme()
-    })
-
-    return {
-      ...toRefs(data),
-      changeTheme,
-      navigateHome,
-      remoteMethod,
-      signOut,
-      commonStore
-    }
+  } else {
+    data.menuList = []
   }
 }
+
+onMounted(() => {
+  data.language = commonStore.language
+  data.theme = commonStore.theme
+  changeTheme()
+})
+
+const { theme, language, color, list, colorList, menuList, menuValue, loading, messagesList, emailsList } = toRefs(data)
 </script>
+
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
 

@@ -49,172 +49,145 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs, onMounted } from 'vue'
-import Register from './../Register'
+export default {
+  name: 'Login'
+}
+</script>
+
+<script setup>
+import { reactive, defineEmits, ref, toRefs, onMounted } from 'vue'
 import router from '@/router'
 import { useI18n } from 'vue-i18n'
 import { loginApi, getGraphCaptchaApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
-import Language from '@/components/Language'
 import { useUserStore } from '@/pinia/modules/user'
+import Register from './../Register'
+import Language from '@/components/Language'
 
-export default {
-  name: 'Login',
-  emits: ['toResetPwd'],
-  components: {
-    Register,
-    Language
-  },
-  setup(props, { emit }) {
-    const state = reactive({
-      showLogin: true,
-      doneLoading: false
-    })
+const state = reactive({
+  showLogin: true,
+  doneLoading: false
+})
 
-    const data = reactive({
-      language: 'zh'
-    })
+const formData = reactive({
+  username: 'admin',
+  password: '123456',
+  captcha: ''
+})
 
-    const formData = reactive({
-      username: 'admin',
-      password: '123456',
-      captcha: ''
-    })
+const { t } = useI18n()
+const checkUsername = (rule, value, callback) => {
+  if (value.length < 5) {
+    return callback(new Error(t('plzEnterCorrectUerNam')))
+  } else {
+    callback()
+  }
+}
 
-    const { t } = useI18n()
-    const checkUsername = (rule, value, callback) => {
-      if (value.length < 5) {
-        return callback(new Error(t('plzEnterCorrectUerNam')))
-      } else {
-        callback()
-      }
+const checkPassword = (rule, value, callback) => {
+  if (value.length < 6) {
+    return callback(new Error(t('plzEnterCorrectPwd')))
+  } else {
+    callback()
+  }
+}
+
+const rules = reactive({
+  username: [{ validator: checkUsername, trigger: 'blur' }],
+  password: [{ validator: checkPassword, trigger: 'blur' }],
+  captcha: [
+    {
+      required: true,
+      message: t('verificationCodeError'),
+      trigger: 'blur'
     }
+  ]
+})
 
-    const checkPassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        return callback(new Error(t('plzEnterCorrectPwd')))
-      } else {
-        callback()
-      }
-    }
-
-    const rules = reactive({
-      username: [{ validator: checkUsername, trigger: 'blur' }],
-      password: [{ validator: checkPassword, trigger: 'blur' }],
-      captcha: [
-        {
-          required: true,
-          message: t('verificationCodeError'),
+const captchaPicPath = ref('')
+const getGraphCaptcha = () => {
+  state.doneLoading = true
+  getGraphCaptchaApi()
+    .then((res) => {
+      if (res) {
+        const { captcha = '', captchaImgStr = '' } = res.result
+        const len = captcha.length
+        rules.captcha.push({
+          max: len,
+          min: len,
+          message: `请输入${len}位验证码`,
           trigger: 'blur'
-        }
-      ]
-    })
-
-    const validatePwd = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error(t('plzEnterPwd')))
-      } else {
-        callback()
+        })
+        captchaPicPath.value = captchaImgStr
       }
-    }
+    })
+    .finally(() => {
+      state.doneLoading = false
+    })
+}
 
-    const captchaPicPath = ref('')
-    const getGraphCaptcha = () => {
-      state.doneLoading = true
-      getGraphCaptchaApi()
-        .then((res) => {
-          if (res) {
-            const { captcha = '', captchaImgStr = '' } = res.result
-            const len = captcha.length
-            rules.captcha.push({
-              max: len,
-              min: len,
-              message: `请输入${len}位验证码`,
-              trigger: 'blur'
-            })
-            captchaPicPath.value = captchaImgStr
-          }
-        })
-        .finally(() => {
-          state.doneLoading = false
-        })
-    }
+const refreshCaptcha = () => {
+  getGraphCaptcha()
+}
 
-    const refreshCaptcha = () => {
-      getGraphCaptcha()
-    }
+const loginRef = ref(null)
+const submitForm = () => {
+  if (!loginRef.value) return
+  loginRef.value.validate(async (valid) => {
+    if (valid) {
+      const res = await loginApi(formData)
+      if (res) {
+        const { code = null } = res.result || {}
+        if (code === 1) {
+          ElMessage({
+            message: t('LoginSucJumping'),
+            grouping: true,
+            type: 'success',
+            duration: 2000
+          })
 
-    const loginRef = ref(null)
-    const submitForm = () => {
-      if (!loginRef.value) return
-      loginRef.value.validate(async (valid) => {
-        if (valid) {
-          const res = await loginApi(formData)
-          if (res) {
-            const { code = null } = res.result || {}
-            if (code === 1) {
-              ElMessage({
-                message: t('LoginSucJumping'),
-                grouping: true,
-                type: 'success',
-                duration: 2000
-              })
+          useUserStore().setUserInfo(formData)
 
-              useUserStore().setUserInfo(formData)
-
-              setTimeout(() => {
-                router.push({ path: '/overview' })
-              }, 2000)
-            } else if (code === 2) {
-              ElMessage({
-                message: t('accOrPwdAErr'),
-                grouping: true,
-                type: 'warning',
-                duration: 2000
-              })
-              return false
-            } else if (code === 3) {
-              ElMessage({
-                message: t('captchaError'),
-                grouping: true,
-                type: 'warning',
-                duration: 2000
-              })
-              getGraphCaptcha()
-              return false
-            }
-          }
-        } else {
-          console.log('error submit!')
+          setTimeout(() => {
+            router.push({ path: '/overview' })
+          }, 2000)
+        } else if (code === 2) {
+          ElMessage({
+            message: t('accOrPwdAErr'),
+            grouping: true,
+            type: 'warning',
+            duration: 2000
+          })
+          return false
+        } else if (code === 3) {
+          ElMessage({
+            message: t('captchaError'),
+            grouping: true,
+            type: 'warning',
+            duration: 2000
+          })
           getGraphCaptcha()
           return false
         }
-      })
-    }
-
-    const forgetPwd = () => {
-      emit('toResetPwd')
-    }
-
-    onMounted(() => {
+      }
+    } else {
+      console.log('error submit!')
       getGraphCaptcha()
-    })
-
-    return {
-      loginRef,
-      formData,
-      submitForm,
-      rules,
-      captchaPicPath,
-      getGraphCaptcha,
-      ...toRefs(state),
-      ...toRefs(data),
-      validatePwd,
-      forgetPwd,
-      refreshCaptcha
+      return false
     }
-  }
+  })
 }
+
+const emit = defineEmits(['toResetPwd'])
+const forgetPwd = () => {
+  emit('toResetPwd')
+}
+
+onMounted(() => {
+  getGraphCaptcha()
+})
+
+const { showLogin, doneLoading } = toRefs(state)
 </script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
