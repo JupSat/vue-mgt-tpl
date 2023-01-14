@@ -65,9 +65,7 @@
               </div>
             </td>
             <td data-column="Policy Status" class="table-row__td">
-              <p class="table-row__p-status status status--yellow">
-                Awating Approval
-              </p>
+              <p class="table-row__p-status status status--yellow">Awating Approval</p>
             </td>
             <td data-column="Destination" class="table-row__td">Huston, US</td>
             <td data-column="Status" class="table-row__td">
@@ -157,20 +155,14 @@
                 </td>
 
                 <td data-column="Policy status" class="table-row__td">
-                  <p class="table-row__p-status status--yellow status">
-                    Awating Approval
-                  </p>
+                  <p class="table-row__p-status status--yellow status">Awating Approval</p>
                 </td>
-                <td data-column="destination" class="table-row__td">
-                  Boston, US
-                </td>
+                <td data-column="destination" class="table-row__td">Boston, US</td>
                 <td data-column="status" class="table-row__td">
                   <p class="table-row__status status--green status">Active</p>
                 </td>
                 <td data-column="progress" class="table-row__td">
-                  <p class="table-row__progress status--blue status">
-                    On track
-                  </p>
+                  <p class="table-row__progress status--blue status">On track</p>
                 </td>
                 <td class="table-row__td"></td>
               </tr>
@@ -224,9 +216,7 @@
                   </div>
                 </td>
                 <td class="table-row__td">
-                  <p class="table-row__p-status status--green status">
-                    Approved
-                  </p>
+                  <p class="table-row__p-status status--green status">Approved</p>
                 </td>
                 <td class="table-row__td">New York, US</td>
                 <td class="table-row__td">
@@ -247,11 +237,7 @@
 
 <script>
 export default {
-  name: 'EmployeesTable',
-
-  setup() {
-    return {}
-  }
+  name: 'EmployeesTable'
 }
 </script>
 <style lang="scss">

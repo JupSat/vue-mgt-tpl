@@ -16,47 +16,28 @@
 </template>
 
 <script>
-import { ref, reactive, toRefs, onBeforeMount, onMounted } from 'vue'
 export default {
-  name: 'Stepper',
-  setup() {
-    const state = reactive({})
-    onBeforeMount(() => {})
-    onMounted(() => {})
+  name: 'Stepper'
+}
+</script>
 
-    const currentPage1 = ref(5)
-    const currentPage2 = ref(5)
-    const currentPage3 = ref(5)
-    const currentPage4 = ref(4)
-    const pageSize2 = ref(100)
-    const pageSize3 = ref(100)
-    const pageSize4 = ref(100)
-    const small = ref(false)
-    const background = ref(false)
-    const disabled = ref(false)
+<script setup>
+import { ref, onBeforeMount, onMounted } from 'vue'
+onBeforeMount(() => {})
+onMounted(() => {})
 
-    const handleSizeChange = (val) => {
-      console.log(`${val} items per page`)
-    }
-    const handleCurrentChange = (val) => {
-      console.log(`current page: ${val}`)
-    }
-    return {
-      handleCurrentChange,
-      handleSizeChange,
-      currentPage1,
-      currentPage2,
-      currentPage3,
-      currentPage4,
-      pageSize2,
-      pageSize3,
-      pageSize4,
-      small,
-      background,
-      disabled,
-      ...toRefs(state)
-    }
-  }
+const currentPage4 = ref(4)
+
+const pageSize4 = ref(100)
+const small = ref(false)
+const background = ref(false)
+const disabled = ref(false)
+
+const handleSizeChange = (val) => {
+  console.log(`${val} items per page`)
+}
+const handleCurrentChange = (val) => {
+  console.log(`current page: ${val}`)
 }
 </script>
 <style scoped lang="scss"></style>

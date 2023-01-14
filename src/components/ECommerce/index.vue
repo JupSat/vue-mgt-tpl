@@ -4,11 +4,7 @@
 
 <script>
 export default {
-  name: 'ECommerce',
-  components: {},
-  setup() {
-    return {}
-  }
+  name: 'ECommerce'
 }
 </script>
 

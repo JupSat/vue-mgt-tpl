@@ -68,30 +68,13 @@
 </template>
 
 <script>
+export default {
+  name: 'Summary'
+}
+</script>
+<script setup>
 import TrendChart from '@/components/Overview/TrendChart'
 import EmployeesTable from '@/components/Overview/EmployeesTable'
-
-import { reactive, toRefs } from 'vue'
-
-export default {
-  name: 'Summary',
-  components: {
-    TrendChart,
-    EmployeesTable
-  },
-  setup() {
-    const data = reactive({
-      transactions: [
-        { id: 'dropBox', value: '$5000' },
-        { id: 'StarBucks', value: '$3500' },
-        { id: 'McDonalds', value: '$5000' }
-      ]
-    })
-    return {
-      ...toRefs(data)
-    }
-  }
-}
 </script>
 
 <style scoped lang="scss">

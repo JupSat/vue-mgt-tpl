@@ -20,25 +20,26 @@
 
 <script>
 export default {
-  name: 'ActionCard',
-  props: {
-    iconName: {
-      type: String,
-      default: ''
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    tip: {
-      type: String,
-      default: ''
-    }
-  },
-  setup() {
-    return {}
-  }
+  name: 'ActionCard'
 }
+</script>
+
+<script setup>
+import { defineProps } from 'vue'
+defineProps({
+  iconName: {
+    type: String,
+    default: ''
+  },
+  title: {
+    type: String,
+    default: ''
+  },
+  tip: {
+    type: String,
+    default: ''
+  }
+})
 </script>
 <style lang="scss">
 @import '@/styles/switchTheme.scss';
