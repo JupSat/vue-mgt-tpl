@@ -10,32 +10,21 @@
 </template>
 
 <script>
+export default {
+  name: 'Layout'
+}
+</script>
+<script setup>
 import { ref } from 'vue'
 import Header from './Header'
 import Aside from './Aside'
 import Main from './Main'
 import Settings from './Setting'
 
-export default {
-  name: 'Layout',
-  components: {
-    Header,
-    Aside,
-    Main,
-    Settings
-  },
-  setup() {
-    const asideRef = ref(null)
+const asideRef = ref(null)
 
-    const setCollapse = () => {
-      asideRef.value.setCollapse()
-    }
-
-    return {
-      asideRef,
-      setCollapse
-    }
-  }
+const setCollapse = () => {
+  asideRef.value.setCollapse()
 }
 </script>
 

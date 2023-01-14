@@ -3,17 +3,9 @@
 </template>
 
 <script>
-import { reactive, toRefs, onBeforeMount, onMounted } from 'vue'
 export default {
-  setup() {
-    const state = reactive({})
-    onBeforeMount(() => {})
-    onMounted(() => {})
-
-    return {
-      ...toRefs(state)
-    }
-  }
+  name: '500'
 }
 </script>
+
 <style scoped lang="scss"></style>

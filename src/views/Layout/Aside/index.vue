@@ -11,11 +11,7 @@
         active-text-color="#ffd04b"
         text-color="#fff"
       >
-        <el-menu-item
-          v-for="{ id, icon, path } in menuNoChild"
-          :key="id"
-          :index="path"
-        >
+        <el-menu-item v-for="{ id, icon, path } in menuNoChild" :key="id" :index="path">
           <el-icon>
             <component :is="icon" />
           </el-icon>
@@ -35,11 +31,7 @@
             <span>{{ $t(id) }}</span>
           </template>
 
-          <el-menu-item
-            v-for="{ id, path } in children"
-            :key="id"
-            :index="path"
-          >
+          <el-menu-item v-for="{ id, path } in children" :key="id" :index="path">
             {{ $t(id) }}
           </el-menu-item>
         </el-sub-menu>
@@ -48,71 +40,48 @@
   </el-aside>
   <div class="collapse">
     <el-affix :offset="350">
-      <el-icon size="23" :color="'#8f9bb3'" @click="isCollapse = !isCollapse"
-        ><DArrowLeft v-if="!isCollapse" /><DArrowRight v-else
-      /></el-icon>
+      <el-icon size="23" :color="'#8f9bb3'" @click="isCollapse = !isCollapse">
+        <DArrowLeft v-if="!isCollapse" />
+        <DArrowRight v-else />
+      </el-icon>
     </el-affix>
   </div>
 </template>
 
 <script>
+export default {
+  name: 'Aside'
+}
+</script>
+<script setup>
 import { reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/pinia/modules/menu'
 
-export default {
-  name: 'Aside',
-  setup() {
-    const state = reactive({
-      isCollapse: false,
-      menuNoChild: [],
-      menuHasChild: []
-    })
+const state = reactive({
+  isCollapse: false,
+  menuNoChild: [],
+  menuHasChild: []
+})
 
-    const handleOpen = (key, keyPath) => {
-      console.log(key, keyPath)
-    }
-    const handleClose = (key, keyPath) => {
-      console.log(key, keyPath)
-    }
-
-    const selectMenu = (key, keyPath) => {
-      console.log(key, keyPath)
-    }
-
-    const selectMenuItem = (key, keyPath) => {
-      console.log(key, keyPath)
-    }
-
-    const setCollapse = () => {
-      state.isCollapse = !state.isCollapse
-    }
-
-    const getMenu = async () => {
-      const menuStore = useMenuStore()
-      const menuList = menuStore.menuList
-      state.menuNoChild = menuList.filter(
-        (item) => !item.children || item.children.some((v) => v.hidden)
-      )
-      state.menuHasChild = menuList.filter(
-        (item) => item.children && item.children.some((v) => !v.hidden)
-      )
-    }
-    getMenu()
-
-    const route = useRoute()
-
-    return {
-      ...toRefs(state),
-      handleOpen,
-      handleClose,
-      selectMenu,
-      selectMenuItem,
-      setCollapse,
-      route
-    }
-  }
+const handleOpen = (key, keyPath) => {
+  console.log(key, keyPath)
 }
+const handleClose = (key, keyPath) => {
+  console.log(key, keyPath)
+}
+
+const getMenu = async () => {
+  const menuStore = useMenuStore()
+  const menuList = menuStore.menuList
+  state.menuNoChild = menuList.filter((item) => !item.children || item.children.some((v) => v.hidden))
+  state.menuHasChild = menuList.filter((item) => item.children && item.children.some((v) => !v.hidden))
+}
+getMenu()
+
+const route = useRoute()
+
+const { isCollapse, menuNoChild, menuHasChild } = toRefs(state)
 </script>
 
 <style scoped lang="scss">
