@@ -39,12 +39,14 @@
     </el-scrollbar>
   </el-aside>
   <div class="collapse">
-    <el-affix :offset="350">
-      <el-icon size="23" :color="'#8f9bb3'" @click="isCollapse = !isCollapse">
-        <DArrowLeft v-if="!isCollapse" />
-        <DArrowRight v-else />
-      </el-icon>
-    </el-affix>
+    <span @click="isCollapse = !isCollapse">
+      <el-affix>
+        <el-icon size="16" :color="'#8f9bb3'">
+          <DArrowLeft v-if="!isCollapse" />
+          <DArrowRight v-else />
+        </el-icon>
+      </el-affix>
+    </span>
   </div>
 </template>
 
@@ -156,17 +158,16 @@ const { isCollapse, menuNoChild, menuHasChild } = toRefs(state)
 }
 
 .collapse {
-  position: relative;
   @include bg_color('mainBodyColor');
-  .el-affix:hover {
-    cursor: pointer;
-    .el-icon {
-      border-radius: 50px;
-      background: rgba(2, 123, 190, 0.2);
-      &:hover {
-        color: #598bff;
-      }
-    }
+  span {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 16px;
+    height: 82px;
+    top: 35%;
+    border-radius: 0 5px 5px 0;
+    @include bg_color('secondaryColor');
   }
 }
 </style>
