@@ -1,20 +1,13 @@
 <template>
   <div class="tabs">
-    <el-tabs
-      :model-value="activeTab"
-      type="card"
-      class="menu-tabs"
-      @tab-click="clickTab"
-      @tab-remove="removeTab"
-    >
+    <el-tabs :model-value="activeTab" type="card" class="menu-tabs" @tab-click="clickTab" @tab-remove="removeTab">
       <el-tab-pane
         v-for="item in tabs"
         :key="item.name"
         :name="item.name"
         :label="$t(firstCharChange(item))"
         :closable="tabs.length > 1"
-      >
-      </el-tab-pane>
+      ></el-tab-pane>
     </el-tabs>
     <el-dropdown trigger="click" class="operate">
       <el-icon :size="20">
@@ -92,17 +85,13 @@ export default {
           }
 
           let flag = true
-          const tabIndex = data.tabs.findIndex(
-            (item) => item.name === data.activeTab
-          )
+          const tabIndex = data.tabs.findIndex((item) => item.name === data.activeTab)
           if (index === 0 || index === 3) {
             flag = !(data.tabs.length > 1)
           } else if (index === 1) {
             flag = !(tabIndex > 0 && tabIndex <= data.tabs.length - 1)
           } else if (index === 2) {
-            flag = !(
-              tabIndex !== data.tabs.length - 1 && tabIndex < data.tabs.length
-            )
+            flag = !(tabIndex !== data.tabs.length - 1 && tabIndex < data.tabs.length)
           }
           menu.disabled = flag
           return menu
@@ -228,7 +217,7 @@ export default {
   .operate {
     display: inline-block;
     position: absolute;
-    right: 230px;
+    right: 17%;
     top: 15px;
     .el-icon {
       color: #fff;
