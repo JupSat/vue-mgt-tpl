@@ -73,8 +73,8 @@ export default {
 }
 </script>
 <script setup>
-import TrendChart from '@/components/Overview/TrendChart'
-import EmployeesTable from '@/components/Overview/EmployeesTable'
+import TrendChart from '@/views/Overview/TrendChart'
+import EmployeesTable from '@/views/Overview/EmployeesTable'
 </script>
 
 <style scoped lang="scss">

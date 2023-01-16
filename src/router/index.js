@@ -1,5 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Layout from '@/views/Layout'
+import Layout from '@/views/Basics/Layout'
 import { useMenuStore } from '@/pinia/modules/menu'
 
 const routes = [
@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: () => import(/* webpackChunkName: "home" */ '@/views/Home'),
+    component: () => import(/* webpackChunkName: "home" */ '@/views/Basics/Home'),
     meta: {
       title: '首页',
       id: 'home'
@@ -19,7 +19,7 @@ const routes = [
   {
     path: '/404',
     name: '404',
-    component: () => import(/* webpackChunkName: "404" */ '@/views/Pages/404.vue'),
+    component: () => import(/* webpackChunkName: "404" */ '@/views/Basics/Exceptions/404.vue'),
     meta: {
       title: '404',
       id: '404'
@@ -28,7 +28,7 @@ const routes = [
   {
     path: '/500',
     name: '500',
-    component: () => import(/* webpackChunkName: "500" */ '@/views/Pages/500.vue'),
+    component: () => import(/* webpackChunkName: "500" */ '@/views/Basics/Exceptions/500.vue'),
     meta: {
       title: '500',
       id: '500'
@@ -61,7 +61,7 @@ async function getDynamicRoutes() {
         }
 
         if (parent && parent.name && (!el.children || el.children.length === 0)) {
-          item.component = () => import(`@/components/${parent.name}/${el.name}`)
+          item.component = () => import(`@/views/${parent.name}/${el.name}`)
         }
         if (el.children && el.children.length > 0) {
           item.children = iterator(el.children, el)

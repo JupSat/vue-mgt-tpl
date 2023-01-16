@@ -30,10 +30,10 @@ export default {
 </script>
 
 <script setup>
-import StatusCard from '@/components/ECommerce/StatusCard'
-import EarningCard from '@/components/ECommerce/EarningCard'
-import TrafficCard from '@/components/ECommerce/TrafficCard'
-import ChartsCard from '@/components/ECommerce/ChartsCard'
+import StatusCard from '@/views/ECommerce/StatusCard'
+import EarningCard from '@/views/ECommerce/EarningCard'
+import TrafficCard from '@/views/ECommerce/TrafficCard'
+import ChartsCard from '@/views/ECommerce/ChartsCard'
 </script>
 
 <style scoped lang="scss">

@@ -137,8 +137,8 @@ import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import { useMenuStore } from '@/pinia/modules/menu'
 import { useCommonStore } from '@/pinia/modules/common'
-import Fullscreen from '@/views/Layout/Fullscreen'
 import { useUserStore } from '@/pinia/modules/user'
+import Fullscreen from '@/components/Fullscreen'
 
 const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
 const data = reactive({
