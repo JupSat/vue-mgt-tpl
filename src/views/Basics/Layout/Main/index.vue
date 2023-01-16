@@ -28,8 +28,8 @@ export default {
 </script>
 
 <script setup>
-import Breadcrumb from '@/views/Layout/Breadcrumb'
-import Tabs from '@/views/Layout/Tabs'
+import Breadcrumb from '@/views/Basics/Layout/Breadcrumb'
+import Tabs from '@/views/Basics/Layout/Tabs'
 </script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
@@ -41,7 +41,6 @@ import Tabs from '@/views/Layout/Tabs'
     position: fixed;
     width: 100%;
     top: 62px;
-    // left: 215px;
     z-index: 100;
     padding-left: 8px;
     @include bg_color('mainBodyColor');

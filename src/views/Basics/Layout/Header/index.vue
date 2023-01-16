@@ -137,7 +137,7 @@ import { useI18n } from 'vue-i18n'
 import router from '@/router'
 import { useMenuStore } from '@/pinia/modules/menu'
 import { useCommonStore } from '@/pinia/modules/common'
-import Fullscreen from '@/views/Layout/Fullscreen'
+import Fullscreen from '@/views/Basics/Layout/Fullscreen'
 import { useUserStore } from '@/pinia/modules/user'
 
 const tempList = [1, 2, 3, 4, 5, 6, 7, 8]

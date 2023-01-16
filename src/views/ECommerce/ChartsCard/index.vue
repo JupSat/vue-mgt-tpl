@@ -53,8 +53,8 @@ export default {
 
 <script setup>
 import { reactive, toRefs } from 'vue'
-import OrderChart from '@/components/ECommerce/ChartsCard/OrderChart'
-import ProfitChart from '@/components/ECommerce/ChartsCard/ProfitChart'
+import OrderChart from '@/views/ECommerce/ChartsCard/OrderChart'
+import ProfitChart from '@/views/ECommerce/ChartsCard/ProfitChart'
 
 const state = reactive({
   dataType: 0,
