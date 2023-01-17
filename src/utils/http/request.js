@@ -1,3 +1,12 @@
+/*
+ * @Description: 请求服务创建、请求及响应拦截
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-10 19:48:03
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-01-17 09:57:53
+ */
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
 

@@ -15,7 +15,7 @@ const reg = {
  * @param {*} s  提示文本(有语言配置时传单词)
  * @returns { }
  */
-export const isRequired = (s = 'required') => {
+export const getValidator = (s = 'required') => {
   return {
     required: true,
     message: i18n.global.t(s), // 必填项
