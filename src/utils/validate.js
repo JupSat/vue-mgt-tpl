@@ -13,7 +13,7 @@ const reg = {
 /**
  * @description  获取校验对象
  * @param {*} s  提示文本(有语言配置时传单词)
- * @returns { }
+ * @return { }
  */
 export const getValidator = (s = 'required') => {
   return {
@@ -28,7 +28,7 @@ export const getValidator = (s = 'required') => {
  * @param {*} rule 规则
  * @param {*} value 值
  * @param {*} cb
- * @returns
+ * @return
  */
 export const regPhone = (rule, value, cb) => {
   if (reg.phone.test(value)) {
@@ -42,7 +42,7 @@ export const regPhone = (rule, value, cb) => {
  * @param {*} rule 规则
  * @param {*} value 值
  * @param {*} cb
- * @returns
+ * @return
  */
 export const regPwd = (rule, value, cb) => {
   if (reg.password.test(value)) {
@@ -56,7 +56,7 @@ export const regPwd = (rule, value, cb) => {
  * @param {*} rule
  * @param {*} value
  * @param {*} cb
- * @returns
+ * @return
  */
 export const regMoney = (rule, value, cb) => {
   if (reg.money.test(value)) {
@@ -70,7 +70,7 @@ export const regMoney = (rule, value, cb) => {
  * @param {*} rule
  * @param {*} value
  * @param {*} cb
- * @returns
+ * @return
  */
 export const regAddress = (rule, value, cb) => {
   if (reg.address.test(value)) {
@@ -84,7 +84,7 @@ export const regAddress = (rule, value, cb) => {
  * @param {*} rule
  * @param {*} value
  * @param {*} cb
- * @returns
+ * @return
  */
 export const regUserName = (rule, value, cb) => {
   if (reg.userName.test(value)) {
@@ -98,7 +98,7 @@ export const regUserName = (rule, value, cb) => {
  * @param {*} rule
  * @param {*} value
  * @param {*} cb
- * @returns
+ * @return
  */
 export const regIntNumber = (rule, value, cb) => {
   if (reg.intNumber.test(value)) {

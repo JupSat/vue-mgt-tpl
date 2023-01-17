@@ -5,13 +5,13 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-17 09:57:53
+ * @LastEditTime: 2023-01-17 10:47:54
  */
 import axios from 'axios'
 import { ElMessage } from 'element-plus'
-
 import router from '@/router'
 import Qs from 'qs'
+import { getToken } from '@/utils/token'
 
 const message = (message) => {
   ElMessage.closeAll()
@@ -38,7 +38,8 @@ service.interceptors.request.use(
     // console.log('req', config)
     config.headers = {
       'Content-Type': 'application/json',
-      ...config.headers
+      ...config.headers,
+      token: getToken() || ''
     }
     return config
   },

@@ -5,6 +5,6 @@ const prefix = 'api'
 /**
  * @description 发送验证码
  * @param {*} params
- * @returns
+ * @return
  */
 export const sendVerificationCodeApi = (params) => rPostByParams(`/${prefix}/user/sendVerificationCodeToEmail`, params)

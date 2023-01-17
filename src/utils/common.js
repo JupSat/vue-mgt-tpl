@@ -5,14 +5,14 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-12 22:07:21
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-17 09:53:44
+ * @LastEditTime: 2023-01-17 10:21:22
  */
 /**
  * @author JupSat
  * @description 防抖
  * @param {*} fn 执行的方法
  * @param {*} delay 延时时长： 默认200ms
- * @returns
+ * @return
  */
 export function debounce(fn, delay = 200) {
   let timer
@@ -30,7 +30,7 @@ export function debounce(fn, delay = 200) {
  * @description  节流
  * @param {*} fn 执行的方法
  * @param {*} delay 延时时长： 默认1000ms
- * @returns
+ * @return
  */
 export const throttle = (fn, delay = 1000) => {
   let valid = true
