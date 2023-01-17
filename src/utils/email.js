@@ -1,16 +1,25 @@
+/*
+ * @Description: email相关方法
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-12 22:07:21
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-01-17 10:20:03
+ */
 import { sendVerificationCodeApi } from '@/api/email'
 import { ElMessage } from 'element-plus'
 
 /**
+ * @author JupSat
  * @description 发送验证码到邮箱
  * @param {*} email 邮箱
- * @returns
+ * @return
  */
 export const sendVerificationCodeToEmail = (email) => {
   const params = {
     email
   }
-
   return sendVerificationCodeApi(params).then((res) => {
     if (res) {
       const { status = null, msg = '' } = res || {}
@@ -38,10 +47,12 @@ export const sendVerificationCodeToEmail = (email) => {
 }
 
 /**
+ * @author JupSat
  * @description 检查邮箱
  * @param {*} email 邮箱
- * @returns
+ * @return
  */
+
 export const checkEmail = (email) => {
   if (!email) {
     ElMessage({

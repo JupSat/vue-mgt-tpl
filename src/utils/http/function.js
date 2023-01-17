@@ -1,3 +1,12 @@
+/*
+ * @Description: 接口基础请求方法
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-10 19:49:10
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-01-17 09:55:25
+ */
 import request from '@/utils/http/request'
 import { ElMessage } from 'element-plus'
 export const rGet = (url, data) => {

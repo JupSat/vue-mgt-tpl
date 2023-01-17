@@ -66,7 +66,7 @@ import { registerApi } from '@/api/user'
 import { ElMessage } from 'element-plus'
 import Language from '@/components/Language'
 import Captcha from '@/components/Captcha'
-import { regPwd, isRequired } from '@/utils/validate'
+import { regPwd, getValidator } from '@/utils/validate'
 
 const registerRef = ref(null)
 const formData = reactive({
@@ -90,16 +90,16 @@ const validatePwdAgain = (rule, value, callback) => {
 
 const rules = reactive({
   email: [
-    isRequired('plzEnterEmail'),
+    getValidator('plzEnterEmail'),
     {
       type: 'email',
       message: t('plzEnterCorrectEmail'),
       trigger: ['blur', 'change']
     }
   ],
-  validCod: [isRequired('plzEnterCaptcha')],
-  username: [isRequired('plzEnterUsrNam')],
-  password: [isRequired('pwdLenIn6To10'), { validator: regPwd, trigger: 'blur' }],
+  validCod: [getValidator('plzEnterCaptcha')],
+  username: [getValidator('plzEnterUsrNam')],
+  password: [getValidator('pwdLenIn6To10'), { validator: regPwd, trigger: 'blur' }],
   checkPass: [{ validator: validatePwdAgain, trigger: 'blur' }]
 })
 

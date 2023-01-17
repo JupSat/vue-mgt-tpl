@@ -1,4 +1,14 @@
+/*
+ * @Description: 用户相关
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-10 19:48:03
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-01-17 10:44:31
+ */
 import { defineStore } from 'pinia'
+import { setToken, clearToken } from '@/utils/token'
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -15,11 +25,13 @@ export const useUserStore = defineStore('user', {
       Object.keys(this.user).forEach((key) => {
         this.user[key] = val[key]
       })
+      setToken(val.token || '')
     },
     clearUserInfo() {
       Object.keys(this.user).forEach((key) => {
         this.user[key] = ''
       })
+      clearToken()
     }
   },
   persist: {
