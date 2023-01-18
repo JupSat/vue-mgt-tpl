@@ -37,7 +37,7 @@ setTimeout(() => {
 }, 2000)
 const { showLoading, showLogin } = toRefs(state)
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .home {
   height: 100vh;
   width: 100vw;
@@ -125,15 +125,15 @@ const { showLoading, showLogin } = toRefs(state)
       background: url('~@/assets/img/astrocat.webp') no-repeat center;
       background-size: cover;
     }
-  }
-}
 
-.put-on-record {
-  position: absolute;
-  bottom: 15px;
+    .put-on-record {
+      position: absolute;
+      bottom: 15px;
 
-  a:hover {
-    color: rgb(90, 147, 255);
+      a:hover {
+        color: rgb(90, 147, 255);
+      }
+    }
   }
 }
 </style>
