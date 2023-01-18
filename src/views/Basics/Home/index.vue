@@ -11,6 +11,9 @@
         <Login v-if="showLogin" @toResetPwd="showLogin = !showLogin"></Login>
         <ResetPassword v-else @toLogin="showLogin = !showLogin"></ResetPassword>
       </div>
+      <div class="put-on-record">
+        <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2023004209号</a>
+      </div>
     </div>
   </div>
 </template>
@@ -111,7 +114,6 @@ const { showLoading, showLogin } = toRefs(state)
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    position: absolute;
     width: 100%;
     height: 100%;
 
@@ -119,11 +121,19 @@ const { showLoading, showLogin } = toRefs(state)
       width: 37%;
       height: 66%;
       margin-top: 104px;
-      float: right !important;
       border-radius: 8px;
       background: url('~@/assets/img/astrocat.webp') no-repeat center;
       background-size: cover;
     }
+  }
+}
+
+.put-on-record {
+  position: absolute;
+  bottom: 15px;
+
+  a:hover {
+    color: rgb(90, 147, 255);
   }
 }
 </style>

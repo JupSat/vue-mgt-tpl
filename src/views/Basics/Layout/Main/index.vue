@@ -1,3 +1,12 @@
+<!--
+ * @Description: 主体内容
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2022-11-15 19:48:03
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-01-18 11:06:38
+-->
 <template>
   <el-container>
     <el-main class="main-layout">
@@ -15,6 +24,9 @@
               </el-backtop>
             </div>
           </div>
+        </div>
+        <div class="put-on-record">
+          <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2023004209号</a>
         </div>
       </el-scrollbar>
     </el-main>
@@ -88,6 +100,16 @@ import Tabs from '@/views/Basics/Layout/Tabs'
       font-size: 14px;
       font-weight: 400;
     }
+  }
+}
+
+.put-on-record {
+  text-align: center;
+  padding-bottom: 15px;
+  @include bg_color('mainBodyColor');
+
+  a:hover {
+    color: rgb(90, 147, 255);
   }
 }
 </style>
