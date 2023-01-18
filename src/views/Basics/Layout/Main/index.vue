@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-18 11:06:38
+ * @LastEditTime: 2023-01-18 11:37:10
 -->
 <template>
   <el-container>
@@ -90,6 +90,16 @@ import Tabs from '@/views/Basics/Layout/Tabs'
     }
   }
 
+  .put-on-record {
+    text-align: center;
+    padding-bottom: 15px;
+    @include bg_color('mainBodyColor');
+
+    a:hover {
+      color: rgb(90, 147, 255);
+    }
+  }
+
   :deep(.el-input__wrapper) {
     @include bg_color('mainColor');
 
@@ -100,16 +110,6 @@ import Tabs from '@/views/Basics/Layout/Tabs'
       font-size: 14px;
       font-weight: 400;
     }
-  }
-}
-
-.put-on-record {
-  text-align: center;
-  padding-bottom: 15px;
-  @include bg_color('mainBodyColor');
-
-  a:hover {
-    color: rgb(90, 147, 255);
   }
 }
 </style>
