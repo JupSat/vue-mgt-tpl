@@ -12,6 +12,10 @@
         <ResetPassword v-else @toLogin="showLogin = !showLogin"></ResetPassword>
       </div>
       <div class="put-on-record">
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030602007395">
+          <img src="~@/assets/img/beian.png" style="float: left" />
+          <p>粤公网安备 44030602007395号</p>
+        </a>
         <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2023004209号</a>
       </div>
     </div>
@@ -129,6 +133,17 @@ const { showLoading, showLogin } = toRefs(state)
     .put-on-record {
       position: absolute;
       bottom: 15px;
+      font-size: 13px;
+
+      a:first-child > p {
+        float: left;
+        height: 20px;
+        margin: 0px 0px 0px 5px;
+      }
+
+      a:nth-child(2) {
+        margin-left: 15px;
+      }
 
       a:hover {
         color: rgb(90, 147, 255);

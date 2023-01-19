@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-18 11:37:10
+ * @LastEditTime: 2023-01-19 16:53:44
 -->
 <template>
   <el-container>
@@ -26,6 +26,10 @@
           </div>
         </div>
         <div class="put-on-record">
+          <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030602007395">
+            <img src="~@/assets/img/beian.png" style="float: left" />
+            <p>粤公网安备 44030602007395号</p>
+          </a>
           <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2023004209号</a>
         </div>
       </el-scrollbar>
@@ -91,9 +95,17 @@ import Tabs from '@/views/Basics/Layout/Tabs'
   }
 
   .put-on-record {
-    text-align: center;
-    padding-bottom: 15px;
+    padding: 15px 32%;
+    font-size: 13px;
     @include bg_color('mainBodyColor');
+    a:first-child > p {
+      float: left;
+      margin: 0px 0px 0px 5px;
+    }
+
+    a:nth-child(2) {
+      margin-left: 15px;
+    }
 
     a:hover {
       color: rgb(90, 147, 255);
