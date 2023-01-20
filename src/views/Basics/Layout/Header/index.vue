@@ -156,13 +156,13 @@ const data = reactive({
 
 // 回到首页
 const navigateHome = () => {
-  router.push({ path: '/' })
+  // router.push({ path: '/' })
 }
 
 // 退出
 const signOut = () => {
   useUserStore().clearUserInfo()
-  navigateHome()
+  router.push({ path: '/' })
 }
 
 // 语言切换

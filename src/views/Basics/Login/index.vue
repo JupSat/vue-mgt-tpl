@@ -19,9 +19,9 @@
         <el-input v-model="formData.password" :type="'password'" :placeholder="$t('plzEnterPwd')" show-password />
       </el-form-item>
       <el-form-item prop="captcha">
-        <div class="captcha-item">
+        <div class="captcha">
           <el-input v-model="formData.captcha" maxlength="6" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
-          <div class="img">
+          <div class="captcha-img">
             <el-tooltip :content="'点击刷新'" placement="top" effect="light">
               <span v-loading="doneLoading">
                 <img v-if="captchaPicPath" :src="captchaPicPath" :alt="$t('plzEnterCaptcha')" @click="refreshCaptcha" />
@@ -63,6 +63,7 @@ import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/pinia/modules/user'
 import Register from './../Register'
 import Language from '@/components/Language'
+import { regUserName, regLoginPwd, getValidator } from '@/utils/validate'
 
 const state = reactive({
   showLogin: true,
@@ -75,33 +76,10 @@ const formData = reactive({
   captcha: ''
 })
 
-const { t } = useI18n()
-const checkUsername = (rule, value, callback) => {
-  if (value.length < 5) {
-    return callback(new Error(t('plzEnterCorrectUerNam')))
-  } else {
-    callback()
-  }
-}
-
-const checkPassword = (rule, value, callback) => {
-  if (value.length < 6) {
-    return callback(new Error(t('plzEnterCorrectPwd')))
-  } else {
-    callback()
-  }
-}
-
 const rules = reactive({
-  username: [{ validator: checkUsername, trigger: 'blur' }],
-  password: [{ validator: checkPassword, trigger: 'blur' }],
-  captcha: [
-    {
-      required: true,
-      message: t('verificationCodeError'),
-      trigger: 'blur'
-    }
-  ]
+  username: [{ validator: regUserName, trigger: 'blur' }],
+  password: [{ validator: regLoginPwd, trigger: 'blur' }],
+  captcha: [getValidator('verificationCodeError')]
 })
 
 const captchaPicPath = ref('')
@@ -131,6 +109,8 @@ const refreshCaptcha = () => {
 }
 
 const loginRef = ref(null)
+const { t } = useI18n()
+
 const submitForm = () => {
   if (!loginRef.value) return
   loginRef.value.validate(async (valid) => {
@@ -222,12 +202,12 @@ const { showLogin, doneLoading } = toRefs(state)
     }
   }
 
-  .captcha-item {
+  .captcha {
     display: flex;
     justify-content: space-between;
     width: 100%;
 
-    .img {
+    .captcha-img {
       width: 33%;
       background: #ccc;
       cursor: pointer;
