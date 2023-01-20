@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-19 16:53:44
+ * @LastEditTime: 2023-01-19 16:56:21
 -->
 <template>
   <el-container>
@@ -98,9 +98,15 @@ import Tabs from '@/views/Basics/Layout/Tabs'
     padding: 15px 32%;
     font-size: 13px;
     @include bg_color('mainBodyColor');
-    a:first-child > p {
-      float: left;
-      margin: 0px 0px 0px 5px;
+    a:first-child {
+      img {
+        float: left;
+      }
+      p {
+        float: left;
+        height: 20px;
+        margin-left: 5px;
+      }
     }
 
     a:nth-child(2) {

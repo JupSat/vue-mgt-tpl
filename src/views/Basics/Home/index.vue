@@ -13,7 +13,7 @@
       </div>
       <div class="put-on-record">
         <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030602007395">
-          <img src="~@/assets/img/beian.png" style="float: left" />
+          <img src="~@/assets/img/beian.png" />
           <p>粤公网安备 44030602007395号</p>
         </a>
         <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2023004209号</a>
@@ -135,10 +135,15 @@ const { showLoading, showLogin } = toRefs(state)
       bottom: 15px;
       font-size: 13px;
 
-      a:first-child > p {
-        float: left;
-        height: 20px;
-        margin: 0px 0px 0px 5px;
+      a:first-child {
+        img {
+          float: left;
+        }
+        p {
+          float: left;
+          height: 20px;
+          margin-left: 5px;
+        }
       }
 
       a:nth-child(2) {
