@@ -5,22 +5,13 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-17 10:47:54
+ * @LastEditTime: 2023-01-29 22:34:00
  */
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
 import router from '@/router'
 import Qs from 'qs'
 import { getToken } from '@/utils/token'
-
-const message = (message) => {
-  ElMessage.closeAll()
-  ElMessage({
-    message,
-    type: 'error',
-    duration: 3 * 1000
-  })
-}
+import { message } from '@/utils/message'
 
 // 创建axios实例
 const service = axios.create({
@@ -59,17 +50,17 @@ service.interceptors.response.use(
   (error) => {
     removePendingRequest(error.config || {})
     if (error.response.status === 401) {
-      message.error({ message: '请先登录' })
+      message('请先登录', 'error')
       router.replace('/')
     } else if (error.response.status === 403) {
-      message.error({ message: '没有权限!' })
+      message('没有权限!', 'error')
       router.push({ path: '/noAuth' })
     } else if (error.response.status === 404) {
-      message.error('未找到！')
+      message('未找到！', 'error')
     } else if (error.response.status === 504) {
-      message.error('网关超时！')
+      message('网关超时！', 'error')
     } else {
-      message.error({ message: '未知错误' })
+      message('未知错误！', 'error')
     }
     return Promise.reject(error)
   }

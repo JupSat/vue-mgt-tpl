@@ -63,7 +63,7 @@ export default {
 import { reactive, ref, defineEmits } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { registerApi } from '@/api/user'
-import { ElMessage } from 'element-plus'
+import { message } from '@/utils/message'
 import Language from '@/components/Language'
 import Captcha from '@/components/Captcha'
 import { regPwd, getValidator } from '@/utils/validate'
@@ -112,22 +112,12 @@ const submitForm = () => {
       if (res) {
         const { code = null } = res.result || {}
         if (code === 1) {
-          ElMessage({
-            message: '注册成功！即将跳转到登录界面',
-            grouping: true,
-            type: 'success',
-            duration: 3000
-          })
+          message('注册成功！即将跳转到登录界面')
           setTimeout(() => {
             goLogin()
           }, 2000)
         } else {
-          ElMessage({
-            message: res.msg,
-            grouping: true,
-            type: 'warning',
-            duration: 2000
-          })
+          message(res.msg, 'warning')
         }
       }
     } else {

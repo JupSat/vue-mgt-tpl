@@ -59,11 +59,11 @@ import { reactive, defineEmits, ref, toRefs, onMounted } from 'vue'
 import router from '@/router'
 import { useI18n } from 'vue-i18n'
 import { loginApi, getGraphCaptchaApi } from '@/api/user'
-import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/pinia/modules/user'
 import Register from './../Register'
 import Language from '@/components/Language'
 import { regUserName, regLoginPwd, getValidator } from '@/utils/validate'
+import { message } from '@/utils/message'
 
 const state = reactive({
   showLogin: true,
@@ -117,35 +117,19 @@ const submitForm = () => {
     if (valid) {
       const res = await loginApi(formData)
       if (res) {
-        const { code = null } = res.result || {}
+        const { code = null, token = '' } = res.result || {}
         if (code === 1) {
-          ElMessage({
-            message: t('LoginSucJumping'),
-            grouping: true,
-            type: 'success',
-            duration: 2000
-          })
-
+          message(t('LoginSucJumping'))
+          formData.token = token
           useUserStore().setUserInfo(formData)
-
           setTimeout(() => {
             router.push({ path: '/overview' })
           }, 2000)
         } else if (code === 2) {
-          ElMessage({
-            message: t('accOrPwdAErr'),
-            grouping: true,
-            type: 'warning',
-            duration: 2000
-          })
+          message(t('accOrPwdAErr'), 'warning')
           return false
         } else if (code === 3) {
-          ElMessage({
-            message: t('captchaError'),
-            grouping: true,
-            type: 'warning',
-            duration: 2000
-          })
+          message(t('captchaError'), 'warning')
           getGraphCaptcha()
           return false
         }
