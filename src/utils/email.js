@@ -5,10 +5,10 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-12 22:07:21
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-17 10:20:03
+ * @LastEditTime: 2023-01-29 22:36:34
  */
 import { sendVerificationCodeApi } from '@/api/email'
-import { ElMessage } from 'element-plus'
+import { message } from '@/utils/message'
 
 /**
  * @author JupSat
@@ -24,21 +24,10 @@ export const sendVerificationCodeToEmail = (email) => {
     if (res) {
       const { status = null, msg = '' } = res || {}
       if (status === 200) {
-        ElMessage({
-          message: res.msg,
-          grouping: true,
-          type: 'success',
-          duration: 3000
-        })
-
+        message(msg)
         return 'succuss'
       } else {
-        ElMessage({
-          message: msg,
-          grouping: true,
-          type: 'warning',
-          duration: 3000
-        })
+        message(msg, 'warning')
         return 'failed'
       }
     }
@@ -55,24 +44,14 @@ export const sendVerificationCodeToEmail = (email) => {
 
 export const checkEmail = (email) => {
   if (!email) {
-    ElMessage({
-      message: '邮箱不能为空',
-      grouping: true,
-      type: 'warning',
-      duration: 2000
-    })
+    message('邮箱不能为空', 'warning')
     return false
   }
 
   const regEmail = /^([a-zA-Z0-9]+[-_\\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/
 
   if (!regEmail.test(email)) {
-    ElMessage({
-      message: '请输入正确的邮箱！',
-      grouping: true,
-      type: 'warning',
-      duration: 2000
-    })
+    message('请输入正确的邮箱！', 'warning')
     return false
   }
 

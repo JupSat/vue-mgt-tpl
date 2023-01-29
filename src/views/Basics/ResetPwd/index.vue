@@ -62,7 +62,7 @@ export default {
 import { reactive, ref, defineEmits } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { resetPwdApi } from '@/api/user'
-import { ElMessage } from 'element-plus'
+import { message } from '@/utils/message'
 import Language from '@/components/Language'
 import Captcha from '@/components/Captcha'
 import { regPwd, getValidator } from '@/utils/validate'
@@ -107,12 +107,7 @@ const submitForm = () => {
     if (valid) {
       const res = await resetPwdApi(formData)
       if (res && res.status === 200) {
-        ElMessage({
-          message: '重置密码成功！即将跳转到登录界面',
-          grouping: true,
-          type: 'success',
-          duration: 3000
-        })
+        message('重置密码成功！即将跳转到登录界面')
         toLogin()
       }
     } else {

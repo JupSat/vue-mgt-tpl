@@ -5,10 +5,11 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:49:10
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-17 09:55:25
+ * @LastEditTime: 2023-01-29 22:38:17
  */
 import request from '@/utils/http/request'
-import { ElMessage } from 'element-plus'
+import { message } from '@/utils/message'
+
 export const rGet = (url, data) => {
   return request({
     method: 'get',
@@ -68,11 +69,7 @@ export const rDownloadFile = (url, data, filename, method = 'get') => {
   method === 'get' ? (reqParams.params = data) : (reqParams.data = data)
   return request(reqParams).then((res) => {
     if (!res) {
-      ElMessage({
-        message: '文件不存在！',
-        type: 'error',
-        duration: 2 * 1000
-      })
+      message('文件不存在！', 'error')
       return
     }
     const blob = new Blob([res.data], { type: res.type })

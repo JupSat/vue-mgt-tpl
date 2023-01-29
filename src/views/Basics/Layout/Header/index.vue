@@ -140,7 +140,7 @@ import { useCommonStore } from '@/pinia/modules/common'
 import { useUserStore } from '@/pinia/modules/user'
 import Fullscreen from '@/components/Fullscreen'
 import { logoutApi } from '@/api/user'
-import { ElMessage } from 'element-plus'
+import { message } from '@/utils/message'
 
 const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
 const data = reactive({
@@ -166,12 +166,7 @@ const signOut = async () => {
   const res = await logoutApi()
   const { code = null, msg = '' } = res.result || {}
   if (code === 1) {
-    ElMessage({
-      message: msg,
-      grouping: true,
-      type: 'success',
-      duration: 2000
-    })
+    message(msg)
     useUserStore().clearUserInfo()
     router.push({ path: '/' })
   }
