@@ -117,7 +117,7 @@ const submitForm = () => {
     if (valid) {
       const res = await loginApi(formData)
       if (res) {
-        const { code = null } = res.result || {}
+        const { code = null, token = '' } = res.result || {}
         if (code === 1) {
           ElMessage({
             message: t('LoginSucJumping'),
@@ -125,6 +125,7 @@ const submitForm = () => {
             type: 'success',
             duration: 2000
           })
+          formData.token = token
 
           useUserStore().setUserInfo(formData)
 
