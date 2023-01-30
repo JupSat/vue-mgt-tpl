@@ -97,7 +97,7 @@
               <div class="user-info">
                 <div>
                   <img class="user-img" src="~@/assets/img/doge.jpg" alt="" />
-                  <span>JupSat</span>
+                  <span>{{ username || '请登录' }}</span>
                   <el-icon class="el-icon--right">
                     <caret-bottom />
                   </el-icon>
@@ -153,7 +153,8 @@ const data = reactive({
   menuValue: '',
   loading: false,
   messagesList: tempList,
-  emailsList: tempList
+  emailsList: tempList,
+  username: ''
 })
 
 // 回到首页
@@ -161,13 +162,14 @@ const navigateHome = () => {
   // router.push({ path: '/' })
 }
 
+const userStore = useUserStore()
 // 退出
 const signOut = async () => {
   const res = await logoutApi()
   const { code = null, msg = '' } = res.result || {}
   if (code === 1) {
     message(msg)
-    useUserStore().clearUserInfo()
+    userStore.clearUserInfo()
     router.push({ path: '/' })
   }
 }
@@ -206,10 +208,13 @@ const remoteMethod = (query) => {
 onMounted(() => {
   data.language = commonStore.language
   data.theme = commonStore.theme
+
+  data.username = userStore.user.username
   changeTheme()
 })
 
-const { theme, language, color, list, colorList, menuList, menuValue, loading, messagesList, emailsList } = toRefs(data)
+const { theme, language, color, list, colorList, menuList, menuValue, loading, messagesList, emailsList, username } =
+  toRefs(data)
 </script>
 
 <style scoped lang="scss">
