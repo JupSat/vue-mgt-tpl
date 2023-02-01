@@ -67,6 +67,74 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
         ]
       },
       {
+        key: 'purchase',
+        id: 'purchase',
+        path: '/purchase',
+        name: 'Purchase',
+        icon: 'ShoppingCartFull',
+        component: '',
+        componentName: 'Purchase',
+        hidden: false,
+        breadcrumb: false,
+        keepAlive: false,
+        fixed: false,
+        redirect: '/purchase/workplace',
+        children: [
+          {
+            key: 'ingredientsClassification',
+            id: 'ingredientsClassification',
+            path: '/purchase/ingredientsClassification',
+            name: 'Ingredients Classification',
+            icon: '',
+            component: 'Purchase/IngredientsClassification',
+            componentName: 'IngredientsClassification',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
+            key: 'sku',
+            id: 'sku',
+            path: '/purchase/sku',
+            name: 'SKU',
+            icon: '',
+            component: 'Purchase/SKU',
+            componentName: 'SKU',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
+            key: 'vendor',
+            id: 'vendor',
+            path: '/purchase/Vendor',
+            name: 'Vendor',
+            icon: '',
+            component: 'Purchase/Vendor',
+            componentName: 'Vendor',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
+            key: 'purchaseRecords',
+            id: 'purchaseRecords',
+            path: '/purchase/purchaseRecords',
+            name: 'Purchase records',
+            icon: '',
+            component: 'Purchase/PurchaseRecords',
+            componentName: 'PurchaseRecords',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          }
+        ]
+      },
+      {
         key: 'dashboard',
         id: 'dashboard',
         path: '/dashboard',
