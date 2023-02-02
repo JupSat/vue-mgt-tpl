@@ -128,6 +128,7 @@ export default {
     })
 
     const firstCharChange = (item) => {
+      if (item.name === 'SKU') return item.name.toLowerCase()
       const [char] = item.name
       return item.name.replace(char, char.toLowerCase())
     }
