@@ -128,6 +128,7 @@ export default {
     })
 
     const firstCharChange = (item) => {
+      if (item.name === 'SKU') return item.name.toLowerCase()
       const [char] = item.name
       return item.name.replace(char, char.toLowerCase())
     }
@@ -217,7 +218,7 @@ export default {
   .operate {
     display: inline-block;
     position: absolute;
-    right: 17%;
+    right: 2vw;
     top: 15px;
     .el-icon {
       color: #fff;

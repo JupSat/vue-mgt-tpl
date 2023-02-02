@@ -1,3 +1,12 @@
+<!--
+ * @Description:
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-10 19:48:03
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-02-02 12:42:00
+-->
 <template>
   <div class="bread-crumb">
     <el-breadcrumb :separator-icon="ArrowRight">
@@ -30,6 +39,7 @@ const getBreadcrumb = () => {
 }
 
 const firstCharChange = (item) => {
+  if (item.name === 'SKU') return item.name.toLowerCase()
   const [char] = item.name
   return item.name.replace(char, char.toLowerCase())
 }

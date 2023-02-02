@@ -1,8 +1,8 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import Layout from '@/views/Basics/Layout'
 import { useMenuStore } from '@/pinia/modules/menu'
-import { useUserStore } from '@/pinia/modules/user'
 import { message } from '@/utils/message'
+import { getToken } from '@/utils/token'
 
 const routes = [
   {
@@ -97,9 +97,8 @@ router.beforeEach(async (to, from, next) => {
     document.title = to.meta.title
   }
 
-  const userStore = useUserStore()
-  const { username } = userStore.user
-  if (to.name !== 'Home' && !username) {
+  const token = getToken()
+  if (to.name !== 'Home' && !token) {
     message('请先登录！', 'warning')
     next({ name: 'Home', replace: true })
   }

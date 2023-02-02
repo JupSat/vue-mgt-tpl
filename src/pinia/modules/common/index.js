@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-20 16:28:09
+ * @LastEditTime: 2023-02-02 14:58:02
  */
 import { defineStore } from 'pinia'
 
@@ -13,7 +13,8 @@ export const useCommonStore = defineStore('common', {
   state: () => {
     return {
       language: 'zh',
-      theme: 'blue'
+      theme: 'blue',
+      isCollapse: false
     }
   },
   getters: {},
@@ -23,6 +24,9 @@ export const useCommonStore = defineStore('common', {
     },
     setTheme(theme) {
       this.theme = theme
+    },
+    setCollapse(param) {
+      this.isCollapse = param
     }
   }
 })
