@@ -1,5 +1,5 @@
 <template>
-  <el-aside :width="isCollapse ? '64px' : '217.37px'">
+  <el-aside :width="isCollapse ? '0' : '217.37px'">
     <el-scrollbar always>
       <el-menu
         :default-active="route.path"

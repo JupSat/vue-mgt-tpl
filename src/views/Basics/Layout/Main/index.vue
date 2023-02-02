@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-19 16:56:21
+ * @LastEditTime: 2023-02-02 14:45:05
 -->
 <template>
   <el-container>
@@ -58,7 +58,6 @@ import Tabs from '@/views/Basics/Layout/Tabs'
     width: 100%;
     top: 62px;
     z-index: 100;
-    padding-left: 8px;
     @include bg_color('mainBodyColor');
 
     .main-breadcrumb {
