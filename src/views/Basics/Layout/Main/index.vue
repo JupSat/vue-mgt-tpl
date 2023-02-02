@@ -5,12 +5,12 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-02 14:45:05
+ * @LastEditTime: 2023-02-02 15:13:25
 -->
 <template>
   <el-container>
     <el-main class="main-layout">
-      <div class="fixed-views">
+      <div class="fixed-views" :style="{ width: isCollapse ? '98vw' : '83vw' }">
         <Breadcrumb class="main-breadcrumb"></Breadcrumb>
         <Tabs></Tabs>
       </div>
@@ -46,6 +46,11 @@ export default {
 <script setup>
 import Breadcrumb from '@/views/Basics/Layout/Breadcrumb'
 import Tabs from '@/views/Basics/Layout/Tabs'
+import { useCommonStore } from '@/pinia/modules/common'
+import { computed } from 'vue'
+
+const commonStore = useCommonStore()
+const isCollapse = computed(() => commonStore.isCollapse)
 </script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
@@ -55,7 +60,6 @@ import Tabs from '@/views/Basics/Layout/Tabs'
 
   .fixed-views {
     position: fixed;
-    width: 100%;
     top: 62px;
     z-index: 100;
     @include bg_color('mainBodyColor');

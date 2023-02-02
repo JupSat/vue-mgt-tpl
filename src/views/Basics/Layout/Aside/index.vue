@@ -39,7 +39,7 @@
     </el-scrollbar>
   </el-aside>
   <div class="collapse">
-    <span @click="isCollapse = !isCollapse">
+    <span @click="changeCollapse">
       <el-affix>
         <el-icon size="16" :color="'#8f9bb3'">
           <DArrowLeft v-if="!isCollapse" />
@@ -59,6 +59,7 @@ export default {
 import { reactive, toRefs } from 'vue'
 import { useRoute } from 'vue-router'
 import { useMenuStore } from '@/pinia/modules/menu'
+import { useCommonStore } from '@/pinia/modules/common'
 
 const state = reactive({
   isCollapse: false,
@@ -82,6 +83,12 @@ const getMenu = async () => {
 getMenu()
 
 const route = useRoute()
+const commonStore = useCommonStore()
+
+const changeCollapse = () => {
+  state.isCollapse = !state.isCollapse
+  commonStore.setCollapse(state.isCollapse)
+}
 
 const { isCollapse, menuNoChild, menuHasChild } = toRefs(state)
 </script>
