@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 16:18:54
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-02 17:55:29
+ * @LastEditTime: 2023-02-03 11:26:36
  */
 import { rPost } from '@/utils/http/function'
 
@@ -27,4 +27,22 @@ export const addCatalog = () => rPost(`/${prefix}/purchase/addCatalog`, null)
  * @description 获取修改分类
  * @return
  */
-export const editCatalog = () => rPost(`/${prefix}/purchase/editCatalog`, null)
+export const editCatalog = (data) => rPost(`/${prefix}/purchase/editCatalog`, data)
+
+/**
+ * @description 删除分类
+ * @return
+ */
+export const delCatalog = (data) => rPost(`/${prefix}/purchase/deleteCatalog`, data)
+
+/**
+ * @description 通过catalogId获取食材
+ * @return
+ */
+export const getFoodsCatalogId = (id) => rPost(`/${prefix}/purchase/getFoodsCatalogId`, id)
+
+/**
+ * @description 删除食材
+ * @return
+ */
+export const delFood = (id) => rPost(`/${prefix}/purchase/deleteFood`, id)

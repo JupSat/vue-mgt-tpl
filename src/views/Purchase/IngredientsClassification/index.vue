@@ -5,16 +5,14 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-02 22:44:00
+ * @LastEditTime: 2023-02-03 21:42:01
 -->
 <template>
-  <div class="ingredients" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
+  <div class="ingredients-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
         <el-input v-model="catalog" placeholder="请输入分类"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button :color="'#626aef'" @click="query">查询</el-button>
+        <el-button :color="'#626aef'" @click="query" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
     </el-form>
@@ -22,19 +20,20 @@
       ref="ingredientsRef"
       v-loading="loading"
       :data="tableData"
-      max-height="520px"
+      max-height="510px"
       @selection-change="selectChange"
+      stripe
       border
     >
       <!-- <el-table-column :align="align" type="selection" width="50" /> -->
-      <el-table-column :align="align" label="序号" prop="id" width="60" />
+      <!-- <el-table-column :align="align" label="序号" prop="id" width="60" /> -->
       <el-table-column :align="align" label="分类" prop="catalog" />
       <el-table-column :align="align" label="码值" prop="code" />
       <el-table-column :align="align" label="操作" width="180">
         <template v-slot="{ row }">
-          <el-button type="success" size="small" @click="viewDetail(row.id)">查看</el-button>
-          <el-button type="primary" size="small" plain @click="addEdit(row.id)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteRow(row.id)">删除</el-button>
+          <el-button type="success" size="small" @click="viewDetail(row)">查看</el-button>
+          <el-button type="primary" size="small" plain @click="addEdit(row)">编辑</el-button>
+          <el-button type="danger" size="small" @click="deleteCatalog(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -59,39 +58,98 @@
         :fullscreen="false"
         draggable
         :append-to-body="true"
+        align-center
       >
         <template #header>
           <div>
             <h4>{{ title }}</h4>
           </div>
         </template>
-        <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="80px">
+        <el-form
+          ref="addEditForm"
+          :model="formData"
+          :rules="rules"
+          :inline="true"
+          label-width="80px"
+          v-loading="foodsLoading"
+        >
           <el-form-item label="分类" prop="catalog">
-            <el-input v-model="formData.catalog" autocomplete="on" :disabled="oprType === 'edit'" />
+            <el-input
+              v-model="formData.catalog"
+              autocomplete="on"
+              :disabled="formData.catalogEditable || oprType === 'query'"
+            />
           </el-form-item>
           <el-form-item label="码值" prop="label">
-            <el-input v-model="formData.code" autocomplete="on" :disabled="oprType === 'edit'" />
+            <div class="edit-catalog">
+              <el-input
+                v-model="formData.code"
+                autocomplete="on"
+                :disabled="formData.catalogEditable || oprType === 'query'"
+              />
+              <el-button
+                type="primary"
+                size="small"
+                plain
+                @click="formData.catalogEditable = false"
+                v-if="formData.catalogEditable"
+              >
+                编辑
+              </el-button>
+              <el-button type="primary" size="small" @click="modifyCatalog()" v-else>确定</el-button>
+            </div>
           </el-form-item>
-          <el-divider />
-          <div class="foods-info">
+
+          <el-divider v-if="oprType !== 'add'" />
+          <div class="foods-info" v-if="oprType !== 'add'">
             <el-form :inline="true" :model="foodsFormData" :rules="foodsRules">
-              <el-form-item>
-                <el-input v-model="foodName" placeholder="请输入食材名称"></el-input>
+              <el-form-item label="食材名" prop="foodName">
+                <el-input v-model="foodsFormData.foodName" placeholder="请输入食材名称"></el-input>
+              </el-form-item>
+              <el-form-item label="图片url" prop="img">
+                <el-input v-model="foodsFormData.img" placeholder="请输入食材名称"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button :color="'#626aef'" @click="addEditFoods()">添加</el-button>
+                <el-button :color="'#626aef'" size="small" @click="queryFoods()" v-if="oprType === 'query'">
+                  查询
+                </el-button>
+                <el-button :color="'#626aef'" size="small" @click="addEditFoods()" v-if="oprType !== 'query'">
+                  添加
+                </el-button>
               </el-form-item>
             </el-form>
-            <el-table ref="foodsRef" v-loading="foodsLoading" :data="foodsTableData" max-height="380px" border>
-              <el-table-column :align="align" label="序号" prop="id" width="60" />
-              <el-table-column :align="align" label="食材名称" prop="foodName" />
-              <el-table-column :align="align" label="分类" prop="catalogId" />
-              <el-table-column :align="align" label="图片" prop="img" />
-              <el-table-column :align="align" label="描述" prop="desc" />
-              <el-table-column :align="align" label="操作" width="150">
-                <template v-slot="{ row }">
-                  <el-button type="primary" size="small" plain @click="addEditFoods(row.id)">编辑</el-button>
-                  <el-button type="danger" size="small" @click="deleteFood(row.id)">删除</el-button>
+            <el-table ref="foodsRef" :data="foodsTableData" max-height="380px">
+              <!-- <el-table-column :align="align" label="序号" prop="id" width="60" /> -->
+              <el-table-column :align="align" label="食材名称" prop="foodName">
+                <template #default="scope">
+                  <el-input v-model="scope.row.foodName" :disabled="scope.row.disabled"></el-input>
+                </template>
+              </el-table-column>
+              <!-- <el-table-column :align="align" label="分类" prop="catalogId" /> -->
+              <el-table-column :align="align" label="图片" prop="img">
+                <template #default="scope">
+                  <el-input v-model="scope.row.img" :disabled="scope.row.disabled"></el-input>
+                </template>
+              </el-table-column>
+              <el-table-column :align="align" label="描述" prop="desc">
+                <template #default="scope">
+                  <el-input v-model="scope.row.desc" :disabled="scope.row.disabled"></el-input>
+                </template>
+              </el-table-column>
+
+              <el-table-column :align="align" label="操作" width="150" v-if="oprType !== 'query'">
+                <template #default="scope">
+                  <el-button
+                    type="primary"
+                    size="small"
+                    plain
+                    @click="setRowEditable(scope.row)"
+                    v-if="scope.row.disabled"
+                  >
+                    编辑
+                  </el-button>
+                  <el-button type="primary" size="small" @click="addEditFoods(scope.row)" v-else>确定</el-button>
+                  <el-button type="danger" size="small" @click="deleteFood(row)">删除</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -128,8 +186,10 @@ export default {
 </script>
 <script setup>
 import { reactive, ref, toRefs, computed } from 'vue'
+import { ElMessageBox } from 'element-plus'
+
 import { useCommonStore } from '@/pinia/modules/common'
-import { getCatalog, addCatalog, editCatalog } from '@/api/purchase'
+import { getCatalog, addCatalog, editCatalog, delCatalog, getFoodsCatalogId, delFood } from '@/api/purchase'
 
 import { message } from '@/utils/message'
 const commonStore = useCommonStore()
@@ -148,7 +208,9 @@ const data = reactive({
   oprType: '',
   formData: {
     catalog: '',
-    code: ''
+    code: '',
+    catalogEditable: true,
+    catalogEditing: false
   },
   foodsFormData: {
     foodName: '',
@@ -193,21 +255,76 @@ const currentChange = (page) => {
   query()
 }
 
-const viewDetail = (id) => {}
-const addEdit = (id) => {
-  if (!id) {
+const getFoodsByCatalogId = (id) => {
+  getFoodsCatalogId(id)
+    .then((res) => {})
+    .finally(() => {
+      for (let i = 0; i < 100; i++) {
+        data.foodsTableData.push({
+          id: i + 1,
+          foodName: '食材' + (i + 1),
+          catalogId: '分类' + (i + 1),
+          img: '暂无',
+          desc: '描述' + (i + 1),
+          disabled: true
+        })
+      }
+    })
+}
+
+const viewDetail = (row) => {
+  data.dialogVisible = true
+  data.oprType = 'query'
+  data.title = '查看'
+  data.formData.catalog = row.catalog
+  data.formData.code = row.code
+  getFoodsByCatalogId(row.id)
+}
+
+const addEdit = (row) => {
+  if (!row || !row.id) {
     data.oprType = 'add'
     data.title = '新增分类'
   } else {
     data.oprType = 'edit'
     data.title = '修改分类'
+    data.formData.catalog = row.catalog
+    data.formData.code = row.code
+    getFoodsByCatalogId(row.id)
   }
   data.dialogVisible = true
 }
-const deleteRow = (id) => {}
+
+const modifyCatalog = (row) => {
+  editCatalog(row).then((res) => {
+    if (res) {
+      data.formData.catalogEditable = false
+    }
+  })
+}
+const deleteCatalog = (row) => {
+  ElMessageBox.confirm(`确定删除${row.catalog}这个分类吗?(警告，删除分类，此分类下所有食材也将被删除！)`, 'Warning', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      delCatalog(row.id)
+        .then((res) => {
+          if (res) {
+            message('删除分类成功！')
+          }
+        })
+        .catch(() => {
+          message('删除分类失败！', 'warning')
+        })
+    })
+    .catch(() => {})
+}
 
 const closeDialog = () => {
   data.dialogVisible = false
+  data.formData.catalogEditable = true
 }
 
 for (let i = 0; i < 100; i++) {
@@ -238,11 +355,36 @@ const submit = async () => {
 }
 
 const foodsRef = ref(null)
-const addEditFoods = (id) => {}
-const deleteFood = (id) => {}
 
-for (let i = 0; i < 100; i++) {
-  data.foodsTableData.push({ id: i + 1, foodName: '食材' + (i + 1), catalogId: '分类' + (i + 1), code: i + 1 })
+const queryFoods = () => {}
+
+const setRowEditable = (row) => {
+  data.foodsTableData.map((item) => {
+    item.disabled = row.id !== item.id
+    return item
+  })
+}
+
+const addEditFoods = (id) => {}
+
+const deleteFood = (row) => {
+  ElMessageBox.confirm(`确定删除${row.foodName}这个食材吗?`, 'Warning', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
+    .then(() => {
+      delFood(row.id)
+        .then((res) => {
+          if (res) {
+            message('删除食材成功！')
+          }
+        })
+        .catch(() => {
+          message('删除食材失败！', 'warning')
+        })
+    })
+    .catch(() => {})
 }
 
 const foodsRules = ref({
@@ -261,11 +403,19 @@ const {
   total,
   title,
   oprType,
-  foodsTableData
+  foodsTableData,
+  foodsFormData,
+  foodsLoading
 } = toRefs(data)
 </script>
 <style scoped lang="scss">
-.ingredients {
+.ingredients-catalog {
+  .query {
+    margin-left: 10px;
+  }
+  .el-input {
+    width: 100px;
+  }
 }
 
 .page-separate {
@@ -285,6 +435,14 @@ const {
   }
   .el-divider--horizontal {
     margin: 10px 0;
+  }
+}
+
+.edit-catalog {
+  display: flex;
+  align-items: center;
+  .el-button {
+    margin-left: 1px;
   }
 }
 </style>
