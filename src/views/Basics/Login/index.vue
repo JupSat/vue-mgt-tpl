@@ -161,6 +161,7 @@ const { showLogin, doneLoading } = toRefs(state)
   height: 385px;
   background-color: #13152c;
   padding: 40px;
+  margin-right: 30px;
   border-radius: 10px;
 
   .operation {
