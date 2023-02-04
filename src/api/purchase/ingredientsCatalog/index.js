@@ -3,9 +3,9 @@
  * @version:
  * @Author: JupSat
  * @email: jupsat@163.com
- * @Date: 2023-02-02 16:18:54
+ * @Date: 2023-02-04 11:38:43
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-03 11:26:36
+ * @LastEditTime: 2023-02-04 11:41:16
  */
 import { rPost } from '@/utils/http/function'
 
@@ -18,13 +18,13 @@ const prefix = 'api'
 export const getCatalog = () => rPost(`/${prefix}/purchase/getCatalog`, null)
 
 /**
- * @description 获取添加分类
+ * @description 添加分类
  * @return
  */
 export const addCatalog = () => rPost(`/${prefix}/purchase/addCatalog`, null)
 
 /**
- * @description 获取修改分类
+ * @description 修改分类
  * @return
  */
 export const editCatalog = (data) => rPost(`/${prefix}/purchase/editCatalog`, data)

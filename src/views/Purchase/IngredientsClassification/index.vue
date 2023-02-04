@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-03 21:42:01
+ * @LastEditTime: 2023-02-04 11:39:43
 -->
 <template>
   <div class="ingredients-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -189,7 +189,14 @@ import { reactive, ref, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
 
 import { useCommonStore } from '@/pinia/modules/common'
-import { getCatalog, addCatalog, editCatalog, delCatalog, getFoodsCatalogId, delFood } from '@/api/purchase'
+import {
+  getCatalog,
+  addCatalog,
+  editCatalog,
+  delCatalog,
+  getFoodsCatalogId,
+  delFood
+} from '@/api/purchase/ingredientsCatalog'
 
 import { message } from '@/utils/message'
 const commonStore = useCommonStore()
