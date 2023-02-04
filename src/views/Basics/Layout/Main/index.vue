@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-02 15:13:25
+ * @LastEditTime: 2023-02-04 10:11:17
 -->
 <template>
   <el-container>
@@ -57,6 +57,7 @@ const isCollapse = computed(() => commonStore.isCollapse)
 .main-layout {
   padding: 0;
   padding-top: 2px;
+  @include bg_color('mainBodyColor');
 
   .fixed-views {
     position: fixed;
@@ -98,7 +99,9 @@ const isCollapse = computed(() => commonStore.isCollapse)
   }
 
   .put-on-record {
-    padding: 15px 32%;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
     font-size: 13px;
     @include bg_color('mainBodyColor');
     a:first-child {
