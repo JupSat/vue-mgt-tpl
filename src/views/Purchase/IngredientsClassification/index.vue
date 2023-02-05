@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 17:12:39
+ * @LastEditTime: 2023-02-05 18:18:18
 -->
 <template>
   <div class="ingredients-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -108,23 +108,23 @@
 
           <el-divider v-if="oprType !== 'add'" />
           <div class="foods-info" v-if="oprType !== 'add'">
-            <el-form :inline="true" :model="foodsFormData" :rules="foodsRules" label-width="80px">
+            <el-form :inline="true" :model="foodsFormData" ref="foodsRef" :rules="foodsRules" label-width="80px">
               <el-form-item label="食材名" prop="foodName">
                 <el-input v-model="foodsFormData.foodName" placeholder="请输入食材名称"></el-input>
               </el-form-item>
               <el-form-item label="图片url" prop="img">
-                <el-input v-model="foodsFormData.img" placeholder="请输入食材名称"></el-input>
+                <el-input v-model="foodsFormData.img" placeholder="请输入图片url"></el-input>
               </el-form-item>
               <el-form-item>
                 <el-button :color="'#626aef'" size="small" @click="queryFoods()" v-if="oprType === 'query'">
                   查询
                 </el-button>
-                <el-button :color="'#626aef'" size="small" @click="addEditFoods()" v-if="oprType !== 'query'">
+                <el-button :color="'#626aef'" size="small" @click="addEditFood('add', null)" v-if="oprType !== 'query'">
                   添加
                 </el-button>
               </el-form-item>
             </el-form>
-            <el-table ref="foodsRef" :data="foodsTableData" max-height="380px">
+            <el-table :data="foodsTableData" max-height="380px">
               <!-- <el-table-column :align="align" label="序号" prop="id" width="60" /> -->
               <el-table-column :align="align" label="食材名称" prop="foodName">
                 <template #default="scope">
@@ -134,7 +134,14 @@
               <!-- <el-table-column :align="align" label="分类" prop="catalogId" /> -->
               <el-table-column :align="align" label="图片" prop="img">
                 <template #default="scope">
-                  <el-input v-model="scope.row.img" :disabled="scope.row.disabled"></el-input>
+                  <el-image
+                    style="width: 50px; height: 50px"
+                    :src="scope.row.img"
+                    :fit="'cover'"
+                    :preview-src-list="[scope.row.img]"
+                    :preview-teleported="true"
+                    :hide-on-click-modal="true"
+                  />
                 </template>
               </el-table-column>
               <el-table-column :align="align" label="描述" prop="desc">
@@ -154,7 +161,7 @@
                   >
                     编辑
                   </el-button>
-                  <el-button type="primary" size="small" @click="editFoodInfo(scope.row)" v-else>确定</el-button>
+                  <el-button type="primary" size="small" @click="addEditFood('edit', scope.row)" v-else>确定</el-button>
                   <el-button type="danger" size="small" @click="deleteFood(scope.row)">删除</el-button>
                 </template>
               </el-table-column>
@@ -201,6 +208,7 @@ import {
   editCatalog,
   delCatalog,
   getFoodsCatalogId,
+  addFood,
   editFood,
   delFood
 } from '@/api/purchase/ingredientsCatalog'
@@ -278,7 +286,7 @@ const getFoodsByCatalogId = (id) => {
           id: i + 1,
           foodName: '食材' + (i + 1),
           catalogId: '分类' + (i + 1),
-          img: '暂无',
+          img: 'https://img1.baidu.com/it/u=3836050191,1338865719&fm=253&fmt=auto&app=138&f=JPEG?w=762&h=500',
           desc: '描述' + (i + 1),
           disabled: true
         })
@@ -370,8 +378,6 @@ const submit = async () => {
   })
 }
 
-const foodsRef = ref(null)
-
 const queryFoods = () => {}
 
 const setRowEditable = (row) => {
@@ -381,22 +387,48 @@ const setRowEditable = (row) => {
   })
 }
 
-const editFoodInfo = (row) => {
-  const params = {
-    id: '',
-    foodName: row.foodName,
-    img: row.img,
-    desc: row.desc
-  }
-  editFood(params)
-    .then((res) => {
-      if (res) {
-        message('修改食材成功！')
+const foodsRef = ref(null)
+const addEditFood = (type, row) => {
+  if (type === 'add') {
+    foodsRef.value.validate(async (valid) => {
+      if (valid) {
+        const params = {
+          foodName: data.foodsFormData.foodName,
+          img: data.foodsFormData.img,
+          desc: data.foodsFormData.desc
+        }
+        addFood(params)
+          .then((res) => {
+            if (res) {
+              message('新增食材成功！')
+            }
+          })
+          .catch(() => {
+            message('新增食材失败！', 'warning')
+          })
       }
     })
-    .catch(() => {
-      message('修改食材失败！', 'warning')
-    })
+  } else {
+    if (!row.foodName) {
+      message('食材名称不能为空！', 'warning')
+      return
+    }
+    const params = {
+      id: row.id,
+      foodName: row.foodName,
+      img: row.img,
+      desc: row.desc
+    }
+    editFood(params)
+      .then((res) => {
+        if (res) {
+          message('修改食材成功！')
+        }
+      })
+      .catch(() => {
+        message('修改食材失败！', 'warning')
+      })
+  }
 }
 
 const deleteFood = (row) => {
