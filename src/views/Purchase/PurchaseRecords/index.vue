@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 12:56:02
+ * @LastEditTime: 2023-02-05 16:55:55
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -27,10 +27,10 @@
     <el-table ref="purchaseRecordsRef" v-loading="loading" :data="tableData" max-height="510px" stripe>
       <el-table-column :align="align" label="食材名" prop="foodName" />
       <el-table-column :align="align" label="数量" prop="num" />
-      <el-table-column :align="align" label="花费" prop="cost" />
+      <el-table-column :align="align" label="花费" prop="purchaseCost" />
       <el-table-column :align="align" label="操作" width="175" fixed="right">
         <template v-slot="{ row }">
-          <el-button type="success" size="small" @click="viewDetail(row)">查看</el-button>
+          <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
           <el-button type="primary" size="small" plain @click="addEdit(row)">编辑</el-button>
           <el-button type="danger" size="small" @click="deleteRow(row)">删除</el-button>
         </template>
@@ -95,6 +95,7 @@
               :size="size"
               style="width: 48vw !important"
               clearable
+              filterable
             >
               <el-option
                 v-for="item in selectList.foodNameList"
@@ -128,6 +129,7 @@
               :size="size"
               style="width: 48vw !important"
               clearable
+              filterable
             >
               <el-option
                 v-for="item in selectList.unitList"
@@ -159,18 +161,18 @@
               style="width: 48vw !important"
             />
           </el-form-item>
-          <el-form-item label="预算" prop="budget">
+          <el-form-item label="预算" prop="budgetary">
             <div style="width: 48vw !important">
-              <el-input v-model="formData.budget" autocomplete="on" disabled :size="size" clearable />
+              <el-input v-model="formData.budgetary" disabled :size="size" />
               <el-popover
                 placement="top-start"
-                title="提示"
+                title="提示："
                 :width="200"
                 trigger="hover"
                 content="预算 = 数量 x 单价（输入时自动计算）"
               >
                 <template #reference>
-                  <el-button type="warning" circle style="height: 5px; width: 5px; position: absolute; margin-top: 5px">
+                  <el-button type="warning" circle style="width: 3px; height: 3px; position: absolute; margin-top: 8px">
                     ?
                   </el-button>
                 </template>
@@ -200,18 +202,18 @@
             />
           </el-form-item>
 
-          <el-form-item label="花费" prop="cost">
-            <div class="cost" style="width: 48vw !important">
-              <el-input v-model="formData.cost" autocomplete="on" disabled :size="size" clearable />
+          <el-form-item label="花费" prop="purchaseCost">
+            <div class="purchaseCost" style="width: 48vw !important">
+              <el-input v-model="formData.purchaseCost" autocomplete="on" disabled :size="size" clearable />
               <el-popover
                 placement="top-start"
-                title="提示"
+                title="提示："
                 :width="200"
                 trigger="hover"
                 content="花费 = 采购量 x 采购价（输入时自动计算）"
               >
                 <template #reference>
-                  <el-button type="warning" circle style="height: 5px; width: 5px; position: absolute; margin-top: 5px">
+                  <el-button type="warning" circle style="width: 3px; height: 3px; position: absolute; margin-top: 8px">
                     ?
                   </el-button>
                 </template>
@@ -220,17 +222,17 @@
           </el-form-item>
 
           <el-form-item label="毛利" prop="grossProfit">
-            <div class="cost" style="width: 48vw !important">
+            <div class="purchaseCost" style="width: 48vw !important">
               <el-input v-model="formData.grossProfit" autocomplete="on" disabled :size="size" clearable />
               <el-popover
                 placement="top-start"
-                title="提示"
+                title="提示："
                 :width="200"
                 trigger="hover"
                 content="毛利 = 预算 - 花费（输入时自动计算）"
               >
                 <template #reference>
-                  <el-button type="warning" circle style="height: 5px; width: 5px; position: absolute; margin-top: 5px">
+                  <el-button type="warning" circle style="width: 3px; height: 3px; position: absolute; margin-top: 8px">
                     ?
                   </el-button>
                 </template>
@@ -245,6 +247,7 @@
               :size="size"
               style="width: 48vw !important"
               clearable
+              filterable
             >
               <el-option
                 v-for="item in selectList.vendorList"
@@ -262,6 +265,7 @@
               :disabled="oprType === 'query'"
               :size="size"
               clearable
+              style="width: 48vw !important"
             />
           </el-form-item>
 
@@ -351,22 +355,22 @@ const data = reactive({
     foodName: '',
     foodCatalog: '',
     unit: '',
-    num: '',
-    unitPrice: '',
-    budget: '',
-    purchaseNum: '',
-    purchasePrice: '',
-    cost: 0,
-    grossProfit: '',
+    num: 0,
+    unitPrice: 0,
+    budgetary: 0,
+    purchaseNum: 0,
+    purchasePrice: 0,
+    purchaseCost: 0,
+    grossProfit: 0,
     vendor: '',
     purchaser: '', // 采购人为登录者
     note: ''
   }
 })
 
-data.formData.budget = computed(() => data.formData.unitPrice * data.formData.num)
-data.formData.cost = computed(() => data.formData.purchasePrice * data.formData.purchaseNum)
-data.formData.grossProfit = computed(() => data.formData.budget - data.formData.cost)
+data.formData.budgetary = computed(() => data.formData.unitPrice * data.formData.num)
+data.formData.purchaseCost = computed(() => data.formData.purchasePrice * data.formData.purchaseNum)
+data.formData.grossProfit = computed(() => data.formData.budgetary - data.formData.purchaseCost)
 
 const rules = ref({
   purchaseDate: [{ required: true, message: '请选择采购日期', trigger: 'change' }],
@@ -408,11 +412,8 @@ const currentChange = (page) => {
 const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
-  data.title = '查看'
-  data.formData.skuName = row.skuName
-  data.formData.price = row.price
-  data.formData.img = row.img
-  data.formData.note = row.note
+  data.title = '明细'
+  setFormData(row)
 }
 
 const addEdit = (row) => {
@@ -422,10 +423,18 @@ const addEdit = (row) => {
   } else {
     data.oprType = 'edit'
     data.title = '修改采购记录'
-    data.formData.catalog = row.catalog
-    data.formData.code = row.code
+    setFormData(row)
   }
   data.dialogVisible = true
+}
+
+const setFormData = (row) => {
+  Object.keys(row).forEach((key) => {
+    // 'budgetary', 'purchaseCost', 'grossProfit' 是由computed计算，赋值会报错
+    if (!['budgetary', 'purchaseCost', 'grossProfit'].includes(key)) {
+      data.formData[key] = row[key]
+    }
+  })
 }
 
 const deleteRow = (row) => {
@@ -459,26 +468,32 @@ const closeDialog = () => {
 for (let i = 0; i < 100; i++) {
   data.tableData.push({
     id: i + 1,
-    purchaseDate: '日期' + (i + 1),
+    purchaseDate: '2023-02-02',
     foodName: '食材' + (i + 1),
     num: i + 1,
-    cost: i + 1
+    purchaseCost: i + 1,
+
+    unit: '',
+    unitPrice: i + 1,
+    budgetary: i + 1,
+    purchaseNum: i + 1,
+    purchasePrice: i + 1,
+    grossProfit: i + 1,
+    vendor: '',
+    purchaser: '',
+    note: ''
   })
 }
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
-      if (data.operate === 'add') {
+      if (data.oprType === 'add') {
         const res = await addPurchaseRecords(data.formData)
         if (res.code === 0) {
           message('添加采购记录成功！')
         }
       } else {
-        const params = {
-          foodName: '',
-          catalogId: ''
-        }
-        const res = await editPurchaseRecords(params)
+        const res = await editPurchaseRecords(data.formData)
         if (res.code === 0) {
           message('修改采购记录成功！')
         }
@@ -496,6 +511,7 @@ const {
   tableData,
   currentPage,
   pageSize,
+  size,
   dialogVisible,
   formData,
   total,
@@ -530,7 +546,6 @@ const {
 
 .el-button.is-circle {
   border-radius: 50%;
-  padding: 10px;
 }
 .add-edit-form {
   .el-divider--horizontal {
