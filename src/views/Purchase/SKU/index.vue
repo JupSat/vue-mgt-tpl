@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-04 18:35:53
+ * @LastEditTime: 2023-02-05 17:31:34
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -24,7 +24,7 @@
       <el-table-column :align="align" label="备注" prop="note" />
       <el-table-column :align="align" label="操作" width="180" fixed="right">
         <template v-slot="{ row }">
-          <el-button type="success" size="small" @click="viewDetail(row)">查看</el-button>
+          <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
           <el-button type="primary" size="small" plain @click="addEdit(row)">编辑</el-button>
           <el-button type="danger" size="small" @click="deleteRow(row)">删除</el-button>
         </template>
@@ -134,7 +134,7 @@ const rules = ref({
 const query = () => {
   data.loading = true
   const params = {
-    catalog: data.catalog,
+    skuName: data.skuName,
     page: data.currentPage,
     pageSize: data.pageSize
   }
@@ -160,7 +160,7 @@ const currentChange = (page) => {
 const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
-  data.title = '查看'
+  data.title = '明细'
   data.formData.skuName = row.skuName
   data.formData.price = row.price
   data.formData.img = row.img
@@ -171,12 +171,18 @@ const addEdit = (row) => {
   if (!row || !row.id) {
     data.oprType = 'add'
     data.title = '新增Sku信息'
+
+    Object.keys(data.formData).forEach((key) => {
+      data.formData[key] = ''
+    })
   } else {
     data.oprType = 'edit'
     data.title = '修改Sku信息'
-    data.formData.catalog = row.catalog
-    data.formData.code = row.code
+    Object.keys(data.formData).forEach((key) => {
+      data.formData[key] = row[key]
+    })
   }
+
   data.dialogVisible = true
 }
 
@@ -204,7 +210,6 @@ const addEditForm = ref(null)
 
 const closeDialog = () => {
   data.dialogVisible = false
-  data.formData.catalogEditable = true
   addEditForm.value.clearValidate()
 }
 
@@ -220,17 +225,13 @@ for (let i = 0; i < 100; i++) {
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
-      if (data.operate === 'add') {
+      if (data.oprType === 'add') {
         const res = await addSkuInfo(data.formData)
         if (res.code === 0) {
           message('添加成功！')
         }
       } else {
-        const params = {
-          foodName: '',
-          catalogId: ''
-        }
-        const res = await editSkuInfo(params)
+        const res = await editSkuInfo(data.formData)
         if (res.code === 0) {
           message('修改成功！')
         }

@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-04 12:18:33
+ * @LastEditTime: 2023-02-05 17:33:38
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -25,7 +25,7 @@
       <el-table-column :align="align" label="备注" prop="note" /> -->
       <el-table-column :align="align" label="操作" width="180" fixed="right">
         <template v-slot="{ row }">
-          <el-button type="success" size="small" @click="viewDetail(row)">查看</el-button>
+          <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
           <el-button type="primary" size="small" plain @click="addEdit(row)">编辑</el-button>
           <el-button type="danger" size="small" @click="deleteCatalog(row)">删除</el-button>
         </template>
@@ -153,7 +153,7 @@ const rules = ref({
 const query = () => {
   data.loading = true
   const params = {
-    catalog: data.catalog,
+    vendorName: data.vendorName,
     page: data.currentPage,
     pageSize: data.pageSize
   }
@@ -179,24 +179,32 @@ const currentChange = (page) => {
 const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
-  data.title = '查看'
-  data.formData.vendorName = row.vendorName
-  data.formData.vendorAddress = row.vendorAddress
-  data.formData.contact = row.contact
-  data.formData.phone = row.phone
-  data.formData.email = row.email
-  data.formData.note = row.note
+  data.title = '明细'
+  // data.formData.vendorName = row.vendorName
+  // data.formData.vendorAddress = row.vendorAddress
+  // data.formData.contact = row.contact
+  // data.formData.phone = row.phone
+  // data.formData.email = row.email
+  // data.formData.note = row.note
+
+  Object.keys(data.formData).forEach((key) => {
+    data.formData[key] = row[key]
+  })
 }
 
 const addEdit = (row) => {
   if (!row || !row.id) {
     data.oprType = 'add'
     data.title = '新增供应商'
+    Object.keys(data.formData).forEach((key) => {
+      data.formData[key] = ''
+    })
   } else {
     data.oprType = 'edit'
     data.title = '修改供应商'
-    data.formData.catalog = row.catalog
-    data.formData.code = row.code
+    Object.keys(data.formData).forEach((key) => {
+      data.formData[key] = row[key]
+    })
   }
   data.dialogVisible = true
 }
@@ -243,17 +251,13 @@ for (let i = 0; i < 100; i++) {
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
-      if (data.operate === 'add') {
+      if (data.oprType === 'add') {
         const res = await addVendor(data.formData)
         if (res.code === 0) {
           message('添加成功！')
         }
       } else {
-        const params = {
-          foodName: '',
-          catalogId: ''
-        }
-        const res = await editVendor(params)
+        const res = await editVendor(data.formData)
         if (res.code === 0) {
           message('修改成功！')
         }
