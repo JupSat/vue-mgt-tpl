@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 18:18:18
+ * @LastEditTime: 2023-02-05 18:49:48
 -->
 <template>
   <div class="ingredients-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -20,7 +20,7 @@
       ref="ingredientsRef"
       v-loading="loading"
       :data="tableData"
-      max-height="510px"
+      :max-height="450"
       @selection-change="selectChange"
       stripe
     >

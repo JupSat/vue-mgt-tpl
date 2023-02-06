@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 16:55:55
+ * @LastEditTime: 2023-02-05 18:48:19
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -24,7 +24,7 @@
       </el-form-item>
     </el-form>
 
-    <el-table ref="purchaseRecordsRef" v-loading="loading" :data="tableData" max-height="510px" stripe>
+    <el-table ref="purchaseRecordsRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
       <el-table-column :align="align" label="食材名" prop="foodName" />
       <el-table-column :align="align" label="数量" prop="num" />
       <el-table-column :align="align" label="花费" prop="purchaseCost" />

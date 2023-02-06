@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 17:33:38
+ * @LastEditTime: 2023-02-05 18:50:12
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -16,7 +16,7 @@
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table ref="vendorRef" v-loading="loading" :data="tableData" max-height="510px" stripe>
+    <el-table ref="vendorRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
       <el-table-column :align="align" label="供应商名称" prop="vendorName" />
       <!-- <el-table-column :align="align" label="供应商地址" prop="vendorAddress" /> -->
       <el-table-column :align="align" label="联系人" prop="contact" />
@@ -180,13 +180,6 @@ const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
   data.title = '明细'
-  // data.formData.vendorName = row.vendorName
-  // data.formData.vendorAddress = row.vendorAddress
-  // data.formData.contact = row.contact
-  // data.formData.phone = row.phone
-  // data.formData.email = row.email
-  // data.formData.note = row.note
-
   Object.keys(data.formData).forEach((key) => {
     data.formData[key] = row[key]
   })
