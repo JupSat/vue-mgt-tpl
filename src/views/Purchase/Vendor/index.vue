@@ -5,18 +5,18 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 17:33:38
+ * @LastEditTime: 2023-02-06 18:37:02
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
         <el-input v-model="vendorName" placeholder="请输入供应商名称"></el-input>
-        <el-button :color="'#626aef'" @click="query" class="query">查询</el-button>
+        <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table ref="vendorRef" v-loading="loading" :data="tableData" max-height="510px" stripe>
+    <el-table ref="vendorRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
       <el-table-column :align="align" label="供应商名称" prop="vendorName" />
       <!-- <el-table-column :align="align" label="供应商地址" prop="vendorAddress" /> -->
       <el-table-column :align="align" label="联系人" prop="contact" />
@@ -150,7 +150,7 @@ const rules = ref({
   phone: [{ required: true, message: '请输入联系人电话', trigger: 'blur' }]
 })
 
-const query = () => {
+const getTableData = () => {
   data.loading = true
   const params = {
     vendorName: data.vendorName,
@@ -169,24 +169,17 @@ const query = () => {
 }
 const sizeChange = (size) => {
   data.pageSize = size
-  query()
+  getTableData()
 }
 const currentChange = (page) => {
   data.currentPage = page
-  query()
+  getTableData()
 }
 
 const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
   data.title = '明细'
-  // data.formData.vendorName = row.vendorName
-  // data.formData.vendorAddress = row.vendorAddress
-  // data.formData.contact = row.contact
-  // data.formData.phone = row.phone
-  // data.formData.email = row.email
-  // data.formData.note = row.note
-
   Object.keys(data.formData).forEach((key) => {
     data.formData[key] = row[key]
   })
@@ -290,7 +283,6 @@ const {
     width: 120px;
   }
 }
-
 .page-separate {
   display: flex;
   justify-content: flex-end;

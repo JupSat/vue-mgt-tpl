@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 17:31:34
+ * @LastEditTime: 2023-02-05 18:49:58
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -17,7 +17,7 @@
       </el-form-item>
     </el-form>
 
-    <el-table ref="vendorRef" v-loading="loading" :data="tableData" max-height="510px" stripe>
+    <el-table ref="vendorRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
       <el-table-column :align="align" label="sku名称" prop="skuName" />
       <el-table-column :align="align" label="单价" prop="price" />
       <el-table-column :align="align" label="图片" prop="img" />
