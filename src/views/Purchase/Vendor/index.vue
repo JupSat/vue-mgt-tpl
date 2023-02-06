@@ -5,14 +5,14 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 18:50:12
+ * @LastEditTime: 2023-02-06 18:37:02
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
         <el-input v-model="vendorName" placeholder="请输入供应商名称"></el-input>
-        <el-button :color="'#626aef'" @click="query" class="query">查询</el-button>
+        <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
     </el-form>
@@ -150,7 +150,7 @@ const rules = ref({
   phone: [{ required: true, message: '请输入联系人电话', trigger: 'blur' }]
 })
 
-const query = () => {
+const getTableData = () => {
   data.loading = true
   const params = {
     vendorName: data.vendorName,
@@ -169,11 +169,11 @@ const query = () => {
 }
 const sizeChange = (size) => {
   data.pageSize = size
-  query()
+  getTableData()
 }
 const currentChange = (page) => {
   data.currentPage = page
-  query()
+  getTableData()
 }
 
 const viewDetail = (row) => {
@@ -283,7 +283,6 @@ const {
     width: 120px;
   }
 }
-
 .page-separate {
   display: flex;
   justify-content: flex-end;

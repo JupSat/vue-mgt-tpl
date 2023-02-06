@@ -5,9 +5,9 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-05 12:45:13
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 12:45:26
+ * @LastEditTime: 2023-02-06 19:43:25
  */
-import { rPost } from '@/utils/http/function'
+import { rPost, rPostByParams } from '@/utils/http/function'
 
 const prefix = 'api'
 
@@ -15,22 +15,22 @@ const prefix = 'api'
  * @description 获取采购记录
  * @return
  */
-export const getPurchaseRecords = (data) => rPost(`/${prefix}/purchase/getPurchaseRecords`, data)
+export const getPurchaseRecords = (data) => rPost(`/${prefix}/purchaseRecord/find`, data)
 
 /**
  * @description 添加采购记录
  * @return
  */
-export const addPurchaseRecords = (data) => rPost(`/${prefix}/purchase/addPurchaseRecords`, data)
+export const addPurchaseRecord = (data) => rPost(`/${prefix}/purchaseRecord/add`, data)
 
 /**
  * @description 修改采购记录
  * @return
  */
-export const editPurchaseRecords = (data) => rPost(`/${prefix}/purchase/editPurchaseRecords`, data)
+export const editPurchaseRecord = (data) => rPost(`/${prefix}/purchaseRecord/update`, data)
 
 /**
  * @description 删除采购记录
  * @return
  */
-export const delPurchaseRecords = (id) => rPost(`/${prefix}/purchase/deletePurchaseRecords`, id)
+export const delPurchaseRecord = (data) => rPostByParams(`/${prefix}/purchaseRecord/delete`, data)

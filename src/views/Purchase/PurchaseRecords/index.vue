@@ -5,13 +5,13 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 18:48:19
+ * @LastEditTime: 2023-02-06 19:45:46
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="foodName" placeholder="请输入食材名"></el-input>
+        <el-input v-model="foodNameId" placeholder="请输入食材名" clearable></el-input>
         <el-date-picker
           v-model="purchaseDate"
           type="date"
@@ -19,13 +19,13 @@
           format="YYYY/MM/DD"
           value-format="YYYY-MM-DD"
         />
-        <el-button :color="'#626aef'" @click="query" class="query">查询</el-button>
+        <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
     </el-form>
 
     <el-table ref="purchaseRecordsRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
-      <el-table-column :align="align" label="食材名" prop="foodName" />
+      <el-table-column :align="align" label="食材名" prop="foodNameId" />
       <el-table-column :align="align" label="数量" prop="num" />
       <el-table-column :align="align" label="花费" prop="purchaseCost" />
       <el-table-column :align="align" label="操作" width="175" fixed="right">
@@ -87,9 +87,9 @@
               style="width: 48vw !important"
             />
           </el-form-item>
-          <el-form-item label="食材名称" prop="foodName">
+          <el-form-item label="食材名称" prop="foodNameId">
             <el-select
-              v-model="formData.foodName"
+              v-model="formData.foodNameId"
               placeholder="请选择食材名称"
               :disabled="oprType === 'query'"
               :size="size"
@@ -303,9 +303,9 @@ import { ElMessageBox } from 'element-plus'
 import { useCommonStore } from '@/pinia/modules/common'
 import {
   getPurchaseRecords,
-  addPurchaseRecords,
-  editPurchaseRecords,
-  delPurchaseRecords
+  addPurchaseRecord,
+  editPurchaseRecord,
+  delPurchaseRecord
 } from '@/api/purchase/purchaseRecords'
 
 import { message } from '@/utils/message'
@@ -314,7 +314,7 @@ const isCollapse = computed(() => commonStore.isCollapse)
 
 const data = reactive({
   dialogVisible: false,
-  foodName: '',
+  foodNameId: '',
   purchaseDate: '',
   size: 'small',
   loading: false,
@@ -352,7 +352,7 @@ const data = reactive({
   },
   formData: {
     purchaseDate: '',
-    foodName: '',
+    foodNameId: '',
     foodCatalog: '',
     unit: '',
     num: 0,
@@ -374,7 +374,7 @@ data.formData.grossProfit = computed(() => data.formData.budgetary - data.formDa
 
 const rules = ref({
   purchaseDate: [{ required: true, message: '请选择采购日期', trigger: 'change' }],
-  foodName: [{ required: true, message: '请选择食材名', trigger: 'change' }],
+  foodNameId: [{ required: true, message: '请选择食材名', trigger: 'change' }],
   num: [{ required: true, message: '请输入数量', trigger: 'blur' }],
   unitPrice: [{ required: true, message: '请输入单价', trigger: 'blur' }],
   purchaseNum: [{ required: true, message: '请输入采购量', trigger: 'blur' }],
@@ -382,31 +382,30 @@ const rules = ref({
   vendor: [{ required: true, message: '请选择供应商', trigger: 'change' }]
 })
 
-const query = () => {
+const getTableData = () => {
   data.loading = true
   const params = {
-    foodName: data.foodName,
+    foodNameId: data.foodNameId,
     purchaseDate: data.purchaseDate,
     page: data.currentPage,
     pageSize: data.pageSize
   }
   getPurchaseRecords(params)
     .then((res) => {
-      data.tableData = res.records || []
-      data.total = res.total
+      data.tableData = res.result || []
+      // data.total = res.total
     })
     .finally(() => {
-      data.total = 100
       data.loading = false
     })
 }
 const sizeChange = (size) => {
   data.pageSize = size
-  query()
+  getTableData()
 }
 const currentChange = (page) => {
   data.currentPage = page
-  query()
+  getTableData()
 }
 
 const viewDetail = (row) => {
@@ -438,21 +437,19 @@ const setFormData = (row) => {
 }
 
 const deleteRow = (row) => {
-  ElMessageBox.confirm(`确定删除${row.foodName}这条采购记录吗? `, 'Warning', {
+  ElMessageBox.confirm(`确定删除${row.foodNameId}这条采购记录吗? `, 'Warning', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   })
-    .then(() => {
-      delPurchaseRecords(row.id)
-        .then((res) => {
-          if (res) {
-            message('删除采购记录成功！')
-          }
-        })
-        .catch(() => {
-          message('删除采购记录失败！', 'warning')
-        })
+    .then(async () => {
+      const res = await delPurchaseRecord({ id: row.id })
+      if (res && res.status === 200) {
+        getTableData()
+        message(res.msg)
+      } else {
+        message(res.msg)
+      }
     })
     .catch(() => {})
 }
@@ -465,46 +462,33 @@ const closeDialog = () => {
   addEditForm.value.clearValidate()
 }
 
-for (let i = 0; i < 100; i++) {
-  data.tableData.push({
-    id: i + 1,
-    purchaseDate: '2023-02-02',
-    foodName: '食材' + (i + 1),
-    num: i + 1,
-    purchaseCost: i + 1,
-
-    unit: '',
-    unitPrice: i + 1,
-    budgetary: i + 1,
-    purchaseNum: i + 1,
-    purchasePrice: i + 1,
-    grossProfit: i + 1,
-    vendor: '',
-    purchaser: '',
-    note: ''
-  })
-}
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
       if (data.oprType === 'add') {
-        const res = await addPurchaseRecords(data.formData)
-        if (res.code === 0) {
-          message('添加采购记录成功！')
+        const res = await addPurchaseRecord([data.formData])
+        if (res && res.status === 200) {
+          message(res.msg)
+          closeDialog()
+          getTableData()
         }
       } else {
-        const res = await editPurchaseRecords(data.formData)
-        if (res.code === 0) {
-          message('修改采购记录成功！')
+        const res = await editPurchaseRecord(data.formData)
+        if (res && res.status === 200) {
+          message(res.msg)
+          closeDialog()
+          getTableData()
         }
       }
     }
   })
 }
 
+getTableData()
+
 const align = 'center'
 const {
-  foodName,
+  foodNameId,
   purchaseDate,
   selectList,
   loading,
