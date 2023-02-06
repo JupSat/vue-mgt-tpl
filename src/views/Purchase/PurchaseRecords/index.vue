@@ -5,13 +5,13 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-06 19:45:46
+ * @LastEditTime: 2023-02-06 22:27:01
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="foodNameId" placeholder="请输入食材名" clearable></el-input>
+        <el-input v-model="foodName" placeholder="请输入食材名" clearable></el-input>
         <el-date-picker
           v-model="purchaseDate"
           type="date"
@@ -25,7 +25,7 @@
     </el-form>
 
     <el-table ref="purchaseRecordsRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
-      <el-table-column :align="align" label="食材名" prop="foodNameId" />
+      <el-table-column :align="align" label="食材名" prop="foodName" />
       <el-table-column :align="align" label="数量" prop="num" />
       <el-table-column :align="align" label="花费" prop="purchaseCost" />
       <el-table-column :align="align" label="操作" width="175" fixed="right">
@@ -87,9 +87,9 @@
               style="width: 48vw !important"
             />
           </el-form-item>
-          <el-form-item label="食材名称" prop="foodNameId">
+          <el-form-item label="食材名称" prop="foodName">
             <el-select
-              v-model="formData.foodNameId"
+              v-model="formData.foodName"
               placeholder="请选择食材名称"
               :disabled="oprType === 'query'"
               :size="size"
@@ -314,7 +314,7 @@ const isCollapse = computed(() => commonStore.isCollapse)
 
 const data = reactive({
   dialogVisible: false,
-  foodNameId: '',
+  foodName: '',
   purchaseDate: '',
   size: 'small',
   loading: false,
@@ -327,8 +327,8 @@ const data = reactive({
   oprType: '',
   selectList: {
     foodNameList: [
-      { label: '猪肉', value: 'pig' },
-      { label: '牛肉', value: 'beef' }
+      { label: '猪肉', value: '猪肉', key: 'pig' },
+      { label: '牛肉', value: '牛肉', key: 'beef' }
     ],
     vendorList: [
       { label: '供应商1', value: '1' },
@@ -352,7 +352,7 @@ const data = reactive({
   },
   formData: {
     purchaseDate: '',
-    foodNameId: '',
+    foodName: '',
     foodCatalog: '',
     unit: '',
     num: 0,
@@ -374,7 +374,7 @@ data.formData.grossProfit = computed(() => data.formData.budgetary - data.formDa
 
 const rules = ref({
   purchaseDate: [{ required: true, message: '请选择采购日期', trigger: 'change' }],
-  foodNameId: [{ required: true, message: '请选择食材名', trigger: 'change' }],
+  foodName: [{ required: true, message: '请选择食材名', trigger: 'change' }],
   num: [{ required: true, message: '请输入数量', trigger: 'blur' }],
   unitPrice: [{ required: true, message: '请输入单价', trigger: 'blur' }],
   purchaseNum: [{ required: true, message: '请输入采购量', trigger: 'blur' }],
@@ -385,7 +385,7 @@ const rules = ref({
 const getTableData = () => {
   data.loading = true
   const params = {
-    foodNameId: data.foodNameId,
+    foodName: data.foodName,
     purchaseDate: data.purchaseDate,
     page: data.currentPage,
     pageSize: data.pageSize
@@ -437,7 +437,7 @@ const setFormData = (row) => {
 }
 
 const deleteRow = (row) => {
-  ElMessageBox.confirm(`确定删除${row.foodNameId}这条采购记录吗? `, 'Warning', {
+  ElMessageBox.confirm(`确定删除${row.foodName}这条采购记录吗? `, 'Warning', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
@@ -488,7 +488,7 @@ getTableData()
 
 const align = 'center'
 const {
-  foodNameId,
+  foodName,
   purchaseDate,
   selectList,
   loading,
