@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-07 09:23:39
+ * @LastEditTime: 2023-02-07 10:03:24
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -16,7 +16,7 @@
           v-model="purchaseDate"
           type="date"
           placeholder="请选择日期"
-          format="YYYY/MM/DD"
+          format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
         />
         <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
@@ -24,17 +24,28 @@
       </el-form-item>
     </el-form>
 
-    <el-table ref="purchaseRecordsRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
+    <el-table
+      ref="purchaseRecordsRef"
+      v-loading="loading"
+      :data="
+        tableData.slice(
+          (pagination.currentPage - 1) * pagination.pageSize,
+          pagination.currentPage * pagination.pageSize
+        )
+      "
+      :max-height="450"
+      stripe
+    >
       <el-table-column
         v-for="item in tableFields"
         :key="item.prop"
-        align="'center'"
+        :align="'center'"
         :label="item.label"
         :prop="item.prop"
         :width="item.width"
       />
 
-      <el-table-column :align="align" label="操作" width="175" fixed="right">
+      <el-table-column :align="'center'" label="操作" width="175" fixed="right">
         <template v-slot="{ row }">
           <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
           <el-button type="primary" size="small" plain @click="addEdit(row)">编辑</el-button>
@@ -44,13 +55,13 @@
     </el-table>
     <div class="page-separate">
       <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[50, 100, 150, 200]"
+        v-model:current-page="pagination.currentPage"
+        v-model:page-size="pagination.pageSize"
+        :page-sizes="pagination.pageSizes"
         :small="'small'"
         background
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+        :total="pagination.total"
         @size-change="sizeChange"
         @current-change="currentChange"
       />
@@ -85,7 +96,7 @@
               v-model="formData.purchaseDate"
               type="date"
               placeholder="请选择日期"
-              format="YYYY/MM/DD"
+              format="YYYY-MM-DD"
               value-format="YYYY-MM-DD"
               :disabled="oprType === 'query'"
               :size="size"
@@ -159,6 +170,7 @@
             <el-input-number
               v-model="formData.unitPrice"
               :min="0"
+              :precision="2"
               :disabled="oprType === 'query'"
               :size="size"
               controls-position="right"
@@ -199,6 +211,7 @@
             <el-input-number
               v-model="formData.purchasePrice"
               :min="0"
+              :precision="2"
               :disabled="oprType === 'query'"
               :size="size"
               controls-position="right"
@@ -389,9 +402,12 @@ const data = reactive({
     }
   ],
   selection: [],
-  currentPage: 1,
-  pageSize: 50,
-  total: 0,
+  pagination: {
+    currentPage: 1,
+    pageSize: 20,
+    pageSizes: [10, 20, 50, 100],
+    total: 0
+  },
   title: '',
   oprType: '',
   selectList: {
@@ -455,25 +471,30 @@ const getTableData = () => {
   data.loading = true
   const params = {
     foodName: data.foodName,
-    purchaseDate: data.purchaseDate,
-    page: data.currentPage,
-    pageSize: data.pageSize
+    purchaseDate: data.purchaseDate
+    // page: data.pagination.currentPage,
+    // pageSize: data.pagination.pageSize
   }
   getPurchaseRecords(params)
     .then((res) => {
-      data.tableData = res.result || []
-      // data.total = res.total
+      const records = res.result || []
+      data.tableData = records
+      data.pagination.total = records.length
+    })
+    .catch(() => {
+      message('查询失败！', 'warning')
     })
     .finally(() => {
       data.loading = false
     })
 }
 const sizeChange = (size) => {
-  data.pageSize = size
+  data.pagination.currentPage = 1
+  data.pagination.pageSize = size
   getTableData()
 }
 const currentChange = (page) => {
-  data.currentPage = page
+  data.pagination.currentPage = page
   getTableData()
 }
 
@@ -555,7 +576,6 @@ const submit = async () => {
 
 getTableData()
 
-const align = 'center'
 const {
   foodName,
   purchaseDate,
@@ -563,12 +583,10 @@ const {
   loading,
   tableData,
   tableFields,
-  currentPage,
-  pageSize,
+  pagination,
   size,
   dialogVisible,
   formData,
-  total,
   title,
   oprType,
   purchaseRecordsLoading
