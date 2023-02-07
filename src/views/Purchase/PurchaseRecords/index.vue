@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-06 22:27:01
+ * @LastEditTime: 2023-02-07 09:23:39
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -25,9 +25,15 @@
     </el-form>
 
     <el-table ref="purchaseRecordsRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
-      <el-table-column :align="align" label="食材名" prop="foodName" />
-      <el-table-column :align="align" label="数量" prop="num" />
-      <el-table-column :align="align" label="花费" prop="purchaseCost" />
+      <el-table-column
+        v-for="item in tableFields"
+        :key="item.prop"
+        align="'center'"
+        :label="item.label"
+        :prop="item.prop"
+        :width="item.width"
+      />
+
       <el-table-column :align="align" label="操作" width="175" fixed="right">
         <template v-slot="{ row }">
           <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
@@ -58,12 +64,10 @@
         draggable
         :append-to-body="true"
         align-center
+        class="add-edit-dialog"
       >
         <template #header>
-          <div>
-            <h4>{{ title }}</h4>
-          </div>
-          <el-divider />
+          <h4>{{ title }}</h4>
         </template>
 
         <el-form
@@ -73,6 +77,7 @@
           :inline="true"
           label-width="100px"
           v-loading="purchaseRecordsLoading"
+          style="margin-top: -22px"
         >
           <!-- 日期、食材名称、食材分类、单位、数量、单价、预算、采购量、采购价、花费、备注摘要、毛利、供应商、采购人 -->
           <el-form-item label="日期" prop="purchaseDate">
@@ -319,6 +324,70 @@ const data = reactive({
   size: 'small',
   loading: false,
   tableData: [],
+  tableFields: [
+    {
+      prop: 'id',
+      label: '序号',
+      width: 60
+    },
+    {
+      prop: 'purchaseDate',
+      label: '日期',
+      width: 115
+    },
+    {
+      prop: 'foodName',
+      label: '食材名'
+    },
+    {
+      prop: 'foodCatalog',
+      label: '分类'
+    },
+    {
+      prop: 'unit',
+      label: '单位'
+    },
+    {
+      prop: 'num',
+      label: '数量'
+    },
+    {
+      prop: 'unitPrice',
+      label: '单价'
+    },
+    {
+      prop: 'budgetary',
+      label: '预算'
+    },
+    {
+      prop: 'purchaseNum',
+      label: '采购量'
+    },
+    {
+      prop: 'purchasePrice',
+      label: '采购价'
+    },
+    {
+      prop: 'purchaseCost',
+      label: '花费'
+    },
+    {
+      prop: 'grossProfit',
+      label: '毛利'
+    },
+    {
+      prop: 'vendor',
+      label: '供应商'
+    },
+    {
+      prop: 'purchaser',
+      label: '采购人'
+    },
+    {
+      prop: 'note',
+      label: '备注'
+    }
+  ],
   selection: [],
   currentPage: 1,
   pageSize: 50,
@@ -493,6 +562,7 @@ const {
   selectList,
   loading,
   tableData,
+  tableFields,
   currentPage,
   pageSize,
   size,
@@ -531,9 +601,9 @@ const {
 .el-button.is-circle {
   border-radius: 50%;
 }
-.add-edit-form {
-  .el-divider--horizontal {
-    margin: 10px 0;
-  }
+
+.dialog-footer {
+  display: flex;
+  justify-content: center;
 }
 </style>
