@@ -1,17 +1,17 @@
 <!--
- * @Description:
+ * @Description: 食材分类
  * @version:
  * @Author: JupSat
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-07 22:38:23
+ * @LastEditTime: 2023-02-08 11:01:05
 -->
 <template>
   <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="ingredientCategory" placeholder="请输入分类"></el-input>
+        <el-input v-model="ingredientCategory" placeholder="请输入分类" clearable></el-input>
         <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
@@ -74,124 +74,18 @@
             <h4>{{ title }}</h4>
           </div>
         </template>
-        <el-form
-          ref="addEditForm"
-          :model="formData"
-          :rules="rules"
-          :inline="true"
-          label-width="80px"
-          v-loading="foodsLoading"
-        >
+        <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="80px">
           <el-form-item label="分类" prop="ingredientCategory">
-            <el-input
-              v-model="formData.ingredientCategory"
-              autocomplete="on"
-              :disabled="oprType !== 'add' && (formData.catalogEditable || oprType === 'query')"
-            />
+            <el-input v-model="formData.ingredientCategory" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
           <el-form-item label="码值" prop="label">
-            <div class="edit-ingredientCategory">
-              <el-input
-                v-model="formData.code"
-                autocomplete="on"
-                :disabled="oprType !== 'add' && (formData.catalogEditable || oprType === 'query')"
-              />
-              <el-button
-                type="primary"
-                size="small"
-                plain
-                @click="formData.catalogEditable = false"
-                v-if="oprType === 'edit' && formData.catalogEditable"
-              >
-                编辑
-              </el-button>
-              <el-button
-                type="primary"
-                size="small"
-                @click="modifyCatalog()"
-                v-if="oprType === 'edit' && !formData.catalogEditable"
-              >
-                确定
-              </el-button>
+            <div class="edit-ingredient-category">
+              <el-input v-model="formData.code" autocomplete="on" :disabled="oprType === 'query'" />
             </div>
           </el-form-item>
-
-          <el-divider v-if="oprType !== 'add'" />
-          <div class="foods-info" v-if="oprType !== 'add'">
-            <el-form :inline="true" :model="foodsFormData" ref="foodsRef" :rules="foodsRules" label-width="80px">
-              <el-form-item label="食材名" prop="foodName">
-                <el-input v-model="foodsFormData.foodName" placeholder="请输入食材名称"></el-input>
-              </el-form-item>
-              <el-form-item label="图片url" prop="img">
-                <el-input v-model="foodsFormData.img" placeholder="请输入图片url"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button :color="'#626aef'" size="small" @click="queryFoods()" v-if="oprType === 'query'">
-                  查询
-                </el-button>
-                <el-button :color="'#626aef'" size="small" @click="addEditFood('add', null)" v-if="oprType !== 'query'">
-                  添加
-                </el-button>
-              </el-form-item>
-            </el-form>
-            <el-table :data="foodsTableData" max-height="380px">
-              <el-table-column :align="align" label="序号" prop="id" width="60" />
-              <el-table-column :align="align" label="食材名称" prop="foodName">
-                <template #default="scope">
-                  <el-input v-model="scope.row.foodName" :disabled="scope.row.disabled"></el-input>
-                </template>
-              </el-table-column>
-              <el-table-column :align="align" label="图片" prop="img">
-                <template #default="scope">
-                  <el-image
-                    style="width: 50px; height: 50px"
-                    :src="scope.row.img"
-                    :fit="'cover'"
-                    :preview-src-list="[scope.row.img]"
-                    :preview-teleported="true"
-                    :hide-on-click-modal="true"
-                  />
-                </template>
-              </el-table-column>
-              <el-table-column :align="align" label="描述" prop="desc">
-                <template #default="scope">
-                  <el-input v-model="scope.row.desc" :disabled="scope.row.disabled"></el-input>
-                </template>
-              </el-table-column>
-
-              <el-table-column :align="align" label="操作" width="150" v-if="oprType !== 'query'" fixed="right">
-                <template #default="scope">
-                  <el-button
-                    type="primary"
-                    size="small"
-                    plain
-                    @click="setRowEditable(scope.row)"
-                    v-if="scope.row.disabled"
-                  >
-                    编辑
-                  </el-button>
-                  <el-button type="primary" size="small" @click="addEditFood('edit', scope.row)" v-else>确定</el-button>
-                  <el-button type="danger" size="small" @click="deleteFood(scope.row)">删除</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div class="page-separate">
-              <el-pagination
-                v-model:current-page="currentPage"
-                v-model:page-size="pageSize"
-                :page-sizes="[50, 100, 150, 200]"
-                :small="'small'"
-                background
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="total"
-                @size-change="sizeChange"
-                @current-change="currentChange"
-              />
-            </div>
-          </div>
         </el-form>
         <template #footer>
-          <div class="dialog-footer" v-if="oprType === 'add'">
+          <div class="dialog-footer" v-if="oprType !== 'query'">
             <el-button size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="submit">确 定</el-button>
           </div>
@@ -209,18 +103,8 @@ export default {
 <script setup>
 import { reactive, ref, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
-
 import { useCommonStore } from '@/pinia/modules/common'
-import {
-  getCatalog,
-  addCatalog,
-  editCatalog,
-  delCatalog,
-  getFoodsCatalogId,
-  addFood,
-  editFood,
-  delFood
-} from '@/api/purchase/ingredientsCatalog'
+import { getCatalog, addCatalog, editCatalog, delCatalog } from '@/api/purchase/ingredientsCatalog'
 
 import { message } from '@/utils/message'
 const commonStore = useCommonStore()
@@ -258,15 +142,7 @@ const data = reactive({
   formData: {
     id: 0,
     ingredientCategory: '',
-    code: '',
-    catalogEditable: true,
-    catalogEditing: false
-  },
-  foodsFormData: {
-    foodName: '',
-    ingredientCategory: '',
-    img: '',
-    desc: ''
+    code: ''
   },
   foodsLoading: false,
   foodsTableData: []
@@ -305,30 +181,12 @@ const currentChange = (page) => {
   getTableData()
 }
 
-const getFoodsByCatalogId = (id) => {
-  getFoodsCatalogId(id)
-    .then((res) => {})
-    .finally(() => {
-      for (let i = 0; i < 100; i++) {
-        data.foodsTableData.push({
-          id: i + 1,
-          foodName: '食材' + (i + 1),
-          catalogId: '分类' + (i + 1),
-          img: 'https://img1.baidu.com/it/u=3836050191,1338865719&fm=253&fmt=auto&app=138&f=JPEG?w=762&h=500',
-          desc: '描述' + (i + 1),
-          disabled: true
-        })
-      }
-    })
-}
-
 const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
   data.title = '明细'
   data.formData.ingredientCategory = row.ingredientCategory
   data.formData.code = row.code
-  getFoodsByCatalogId(row.id)
 }
 
 const addEdit = (row) => {
@@ -341,38 +199,22 @@ const addEdit = (row) => {
     data.formData.id = row.id
     data.formData.ingredientCategory = row.ingredientCategory
     data.formData.code = row.code
-    getFoodsByCatalogId(row.id)
   }
   data.dialogVisible = true
 }
 
-const modifyCatalog = () => {
-  const params = {
-    id: data.formData.id,
-    ingredientCategory: data.formData.ingredientCategory,
-    code: data.formData.code
-  }
-  editCatalog(params).then((res) => {
-    if (res.code) {
-      data.formData.catalogEditable = false
-    }
-  })
-}
 const deleteCatalog = (row) => {
-  ElMessageBox.confirm(
-    `确定删除${row.ingredientCategory}这个分类吗?(警告，删除分类，此分类下所有食材也将被删除！)`,
-    'Warning',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-  )
+  ElMessageBox.confirm(`确定删除${row.ingredientCategory}这个分类吗?`, 'Warning', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  })
     .then(() => {
       delCatalog({ id: row.id })
         .then((res) => {
-          if (res) {
-            message('删除成功！')
+          if (res && res.status === 200) {
+            message(res.msg)
+            getTableData()
           }
         })
         .catch(() => {
@@ -400,106 +242,32 @@ const submit = async () => {
           redundancy: ''
         }
         const res = await addCatalog([params])
-        if (res.code === 0) {
-          message('新增成功！')
+        if (res && res.status === 200) {
+          message(res.msg)
+          closeDialog()
+          getTableData()
         }
-      }
-    }
-  })
-}
-
-const queryFoods = () => {}
-
-const setRowEditable = (row) => {
-  data.foodsTableData.map((item) => {
-    item.disabled = row.id !== item.id
-    return item
-  })
-}
-
-const foodsRef = ref(null)
-const addEditFood = (type, row) => {
-  if (type === 'add') {
-    foodsRef.value.validate(async (valid) => {
-      if (valid) {
+      } else {
         const params = {
-          foodName: data.foodsFormData.foodName,
-          img: data.foodsFormData.img,
-          desc: data.foodsFormData.desc
+          id: data.formData.id,
+          ingredientCategory: data.formData.ingredientCategory,
+          code: data.formData.code,
+          redundancy: ''
         }
-        addFood(params)
-          .then((res) => {
-            if (res) {
-              message('新增食材成功！')
-            }
-          })
-          .catch(() => {
-            message('新增食材失败！', 'warning')
-          })
+        const res = await editCatalog(params)
+        if (res && res.status === 200) {
+          message(res.msg)
+          closeDialog()
+          getTableData()
+        }
       }
-    })
-  } else {
-    if (!row.foodName) {
-      message('食材名称不能为空！', 'warning')
-      return
     }
-    const params = {
-      id: row.id,
-      foodName: row.foodName,
-      img: row.img,
-      desc: row.desc
-    }
-    editFood(params)
-      .then((res) => {
-        if (res) {
-          message('修改食材成功！')
-        }
-      })
-      .catch(() => {
-        message('修改食材失败！', 'warning')
-      })
-  }
-}
-
-const deleteFood = (row) => {
-  ElMessageBox.confirm(`确定删除${row.foodName}这个食材吗?`, 'Warning', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
   })
-    .then(() => {
-      delFood(row.id)
-        .then((res) => {
-          if (res) {
-            message('删除食材成功！')
-          }
-        })
-        .catch(() => {
-          message('删除食材失败！', 'warning')
-        })
-    })
-    .catch(() => {})
 }
+getTableData()
 
-const foodsRules = ref({
-  foodName: [{ required: true, message: '请输入食材名称', trigger: 'blur' }]
-})
-
-const align = 'center'
-const {
-  ingredientCategory,
-  loading,
-  tableFields,
-  tableData,
-  pagination,
-  dialogVisible,
-  formData,
-  title,
-  oprType,
-  foodsTableData,
-  foodsFormData,
-  foodsLoading
-} = toRefs(data)
+const { ingredientCategory, loading, tableFields, tableData, pagination, dialogVisible, formData, title, oprType } =
+  toRefs(data)
 </script>
 <style scoped lang="scss">
 .ingredient-catalog {
@@ -529,11 +297,15 @@ const {
   }
 }
 
-.edit-ingredientCategory {
+.edit-ingredient-category {
   display: flex;
   align-items: center;
   .el-button {
     margin-left: 1px;
   }
+}
+.dialog-footer {
+  display: flex;
+  justify-content: center;
 }
 </style>
