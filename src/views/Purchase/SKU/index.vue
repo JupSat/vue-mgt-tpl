@@ -5,23 +5,38 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 18:49:58
+ * @LastEditTime: 2023-02-08 22:17:50
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="skuName" placeholder="请输入sku名称"></el-input>
-        <el-button :color="'#626aef'" @click="query" class="query">查询</el-button>
+        <el-input v-model="skuName" placeholder="请输入sku名称" clearable></el-input>
+        <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
     </el-form>
 
-    <el-table ref="vendorRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
-      <el-table-column :align="align" label="sku名称" prop="skuName" />
-      <el-table-column :align="align" label="单价" prop="price" />
-      <el-table-column :align="align" label="图片" prop="img" />
-      <el-table-column :align="align" label="备注" prop="note" />
+    <el-table
+      ref="vendorRef"
+      v-loading="loading"
+      :data="
+        tableData.slice(
+          (pagination.currentPage - 1) * pagination.pageSize,
+          pagination.currentPage * pagination.pageSize
+        )
+      "
+      :max-height="450"
+      stripe
+    >
+      <el-table-column
+        v-for="item in tableFields"
+        :key="item.prop"
+        :align="'center'"
+        :label="item.label"
+        :prop="item.prop"
+        :width="item.width"
+      />
       <el-table-column :align="align" label="操作" width="180" fixed="right">
         <template v-slot="{ row }">
           <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
@@ -32,13 +47,13 @@
     </el-table>
     <div class="page-separate">
       <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[50, 100, 150, 200]"
+        v-model:current-page="pagination.currentPage"
+        v-model:page-size="pagination.pageSize"
+        :page-sizes="pagination.pageSizes"
         :small="'small'"
         background
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+        :total="pagination.total"
         @size-change="sizeChange"
         @current-change="currentChange"
       />
@@ -60,22 +75,27 @@
           <el-divider />
         </template>
 
-        <el-form
-          ref="addEditForm"
-          :model="formData"
-          :rules="rules"
-          :inline="true"
-          label-width="100px"
-          v-loading="foodsLoading"
-        >
-          <el-form-item label="sku名称" prop="skuName">
+        <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="100px">
+          <el-form-item label="名称" prop="skuName">
             <el-input v-model="formData.skuName" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
-          <el-form-item label="单价" prop="price">
-            <el-input v-model="formData.price" autocomplete="on" :disabled="oprType === 'query'" />
+          <el-form-item label="数量" prop="skuNum">
+            <el-input v-model="formData.skuNum" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
-          <el-form-item label="图片" prop="img">
-            <el-input v-model="formData.img" autocomplete="on" :disabled="oprType === 'query'" />
+          <el-form-item label="单位" prop="skuUnit">
+            <el-input v-model="formData.skuUnit" autocomplete="on" :disabled="oprType === 'query'" />
+          </el-form-item>
+          <el-form-item label="转化率" prop="conversionRate">
+            <el-input v-model="formData.conversionRate" autocomplete="on" :disabled="oprType === 'query'" />
+          </el-form-item>
+          <el-form-item label="可选价格" prop="optionalPrice">
+            <el-input v-model="formData.optionalPrice" autocomplete="on" :disabled="oprType === 'query'" />
+          </el-form-item>
+          <el-form-item label="含税单价" prop="unitPrice">
+            <el-input v-model="formData.unitPrice" autocomplete="on" :disabled="oprType === 'query'" />
+          </el-form-item>
+          <el-form-item label="含税金额" prop="amount">
+            <el-input v-model="formData.amount" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
           <el-form-item label="备注" prop="note">
             <el-input v-model="formData.note" autocomplete="on" :disabled="oprType === 'query'" />
@@ -112,26 +132,74 @@ const data = reactive({
   dialogVisible: false,
   skuName: '',
   loading: false,
+  tableFields: [
+    {
+      prop: 'id',
+      label: '序号',
+      width: 60
+    },
+    {
+      prop: 'skuName',
+      label: '名称'
+    },
+    {
+      prop: 'skuNum',
+      label: '数量'
+    },
+    {
+      prop: 'skuUnit',
+      label: '单位'
+    },
+    {
+      prop: 'conversionRate',
+      label: '转化率'
+    },
+    {
+      prop: 'optionalPrice',
+      label: '可选价格'
+    },
+    {
+      prop: 'unitPrice',
+      label: '含税单价'
+    },
+    {
+      prop: 'amount',
+      label: '含税金额'
+    },
+    {
+      prop: 'note',
+      label: '备注'
+    }
+  ],
   tableData: [],
   selection: [],
-  currentPage: 1,
-  pageSize: 50,
-  total: 0,
+  pagination: {
+    currentPage: 1,
+    pageSize: 20,
+    pageSizes: [10, 20, 50, 100],
+    total: 0
+  },
   title: '',
   oprType: '',
   formData: {
+    id: null,
     skuName: '',
-    price: '',
-    img: '',
+    skuNum: null,
+    skuUnit: '',
+    conversionRate: null,
+    optionalPrice: null,
+    unitPrice: null,
+    amount: null,
     note: ''
-  }
+  },
+  align: 'center'
 })
 
 const rules = ref({
   skuName: [{ required: true, message: '请输入sku名称', trigger: 'blur' }]
 })
 
-const query = () => {
+const getTableData = () => {
   data.loading = true
   const params = {
     skuName: data.skuName,
@@ -140,31 +208,47 @@ const query = () => {
   }
   getSkuInfo(params)
     .then((res) => {
-      data.tableData = res.records || []
-      data.total = res.total
+      const records = res.result || []
+      data.tableData = records
+      data.pagination.total = records.length
+    })
+    .catch(() => {
+      message('查询失败！', 'warning')
     })
     .finally(() => {
-      data.total = 100
       data.loading = false
     })
 }
 const sizeChange = (size) => {
-  data.pageSize = size
-  query()
+  data.pagination.currentPage = 1
+  data.pagination.pageSize = size
+  getTableData()
 }
 const currentChange = (page) => {
-  data.currentPage = page
-  query()
+  data.pagination.currentPage = page
+  getTableData()
+}
+
+const setFormData = (row) => {
+  // data.formData.skuName = row.skuName
+  // data.formData.skuNum = row.skuNum
+  // data.formData.skuUnit = row.skuUnit
+  // data.formData.conversionRate = row.conversionRate
+  // data.formData.optionalPrice = row.optionalPrice
+  // data.formData.unitPrice = row.unitPrice
+  // data.formData.amount = row.amount
+  // data.formData.note = row.note
+
+  Object.keys(data.formData).forEach((key) => {
+    data.formData[key] = row[key]
+  })
 }
 
 const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
   data.title = '明细'
-  data.formData.skuName = row.skuName
-  data.formData.price = row.price
-  data.formData.img = row.img
-  data.formData.note = row.note
+  setFormData(row)
 }
 
 const addEdit = (row) => {
@@ -173,14 +257,12 @@ const addEdit = (row) => {
     data.title = '新增Sku信息'
 
     Object.keys(data.formData).forEach((key) => {
-      data.formData[key] = ''
+      data.formData[key] = null
     })
   } else {
     data.oprType = 'edit'
     data.title = '修改Sku信息'
-    Object.keys(data.formData).forEach((key) => {
-      data.formData[key] = row[key]
-    })
+    setFormData(row)
   }
 
   data.dialogVisible = true
@@ -193,14 +275,17 @@ const deleteRow = (row) => {
     type: 'warning'
   })
     .then(() => {
-      delSkuInfo(row.id)
+      delSkuInfo({ id: row.id })
         .then((res) => {
-          if (res) {
-            message('删除Sku信息成功！')
+          if (res && res.status === 200) {
+            getTableData()
+            message(res.msg)
+          } else {
+            message(res.msg)
           }
         })
         .catch(() => {
-          message('删除Sku信息失败！', 'warning')
+          message('删除失败！', 'warning')
         })
     })
     .catch(() => {})
@@ -213,47 +298,31 @@ const closeDialog = () => {
   addEditForm.value.clearValidate()
 }
 
-for (let i = 0; i < 100; i++) {
-  data.tableData.push({
-    id: i + 1,
-    skuName: 'sku名称' + (i + 1),
-    price: '单价' + (i + 1),
-    img: '图片' + (i + 1),
-    note: '备注' + (i + 1)
-  })
-}
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
       if (data.oprType === 'add') {
-        const res = await addSkuInfo(data.formData)
-        if (res.code === 0) {
-          message('添加成功！')
+        const res = await addSkuInfo([data.formData])
+        if (res && res.status === 200) {
+          message(res.msg)
+          closeDialog()
+          getTableData()
         }
       } else {
         const res = await editSkuInfo(data.formData)
-        if (res.code === 0) {
-          message('修改成功！')
+        if (res && res.status === 200) {
+          message(res.msg)
+          closeDialog()
+          getTableData()
         }
       }
     }
   })
 }
+getTableData()
 
-const align = 'center'
-const {
-  skuName,
-  loading,
-  tableData,
-  currentPage,
-  pageSize,
-  dialogVisible,
-  formData,
-  total,
-  title,
-  oprType,
-  foodsLoading
-} = toRefs(data)
+const { skuName, loading, tableFields, tableData, pagination, dialogVisible, formData, title, oprType, align } =
+  toRefs(data)
 </script>
 <style scoped lang="scss">
 .sku {
@@ -281,5 +350,9 @@ const {
   .el-divider--horizontal {
     margin: 10px 0;
   }
+}
+.dialog-footer {
+  display: flex;
+  justify-content: center;
 }
 </style>

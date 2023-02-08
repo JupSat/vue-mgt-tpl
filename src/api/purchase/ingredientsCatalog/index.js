@@ -5,9 +5,9 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-04 11:38:43
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-05 18:00:21
+ * @LastEditTime: 2023-02-08 18:06:36
  */
-import { rPost } from '@/utils/http/function'
+import { rPost, rPostByParams } from '@/utils/http/function'
 
 const prefix = 'api'
 
@@ -15,46 +15,28 @@ const prefix = 'api'
  * @description 获取分类列表
  * @return
  */
-export const getCatalog = (data) => rPost(`/${prefix}/purchase/getCatalog`, data)
+export const getCatalog = (data) => rPost(`/${prefix}/food/find`, data)
 
 /**
  * @description 添加分类
  * @return
  */
-export const addCatalog = (data) => rPost(`/${prefix}/purchase/addCatalog`, data)
+export const addCatalog = (data) => rPost(`/${prefix}/food/add`, data)
 
 /**
  * @description 修改分类
  * @return
  */
-export const editCatalog = (data) => rPost(`/${prefix}/purchase/editCatalog`, data)
+export const editCatalog = (data) => rPost(`/${prefix}/food/update`, data)
 
 /**
  * @description 删除分类
  * @return
  */
-export const delCatalog = (data) => rPost(`/${prefix}/purchase/deleteCatalog`, data)
+export const delCatalog = (data) => rPostByParams(`/${prefix}/food/delete`, data)
 
 /**
  * @description 通过catalogId获取食材
  * @return
  */
-export const getFoodsCatalogId = (id) => rPost(`/${prefix}/purchase/getFoodsCatalogId`, id)
-
-/**
- * @description 添加食材
- * @return
- */
-export const addFood = (data) => rPost(`/${prefix}/purchase/addFood`, data)
-
-/**
- * @description 修改食材
- * @return
- */
-export const editFood = (data) => rPost(`/${prefix}/purchase/editFood`, data)
-
-/**
- * @description 删除食材
- * @return
- */
-export const delFood = (id) => rPost(`/${prefix}/purchase/deleteFood`, id)
+export const getFoodsCatalogId = (id) => rPost(`/${prefix}/food/getFoodsCatalogId`, id)

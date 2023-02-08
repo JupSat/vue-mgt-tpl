@@ -1,17 +1,25 @@
 <!--
- * @Description: 食材分类
+ * @Description: 食材列表
  * @version:
  * @Author: JupSat
  * @email: jupsat@163.com
- * @Date: 2023-02-02 12:16:58
+ * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-08 11:01:05
+ * @LastEditTime: 2023-02-08 18:25:33
 -->
 <template>
-  <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
+  <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="ingredientCategory" placeholder="请输入分类" clearable></el-input>
+        <el-input v-model="ingredientName" placeholder="请输入食材名" clearable></el-input>
+        <el-select v-model="catalogId" placeholder="请选择分类" :size="size" clearable filterable>
+          <el-option
+            v-for="item in [{ label: '蔬菜', value: 34 }]"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
         <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
@@ -29,20 +37,27 @@
       :max-height="450"
       stripe
     >
-      <el-table-column
-        v-for="item in tableFields"
-        :key="item.prop"
-        :align="'center'"
-        :label="item.label"
-        :prop="item.prop"
-        :width="item.width"
-      />
-
+      <el-table-column :align="align" label="序号" prop="id" width="60" />
+      <el-table-column :align="align" label="食材名称" prop="ingredientName" />
+      <el-table-column :align="align" label="食材分类" prop="catalogId" />
+      <el-table-column :align="align" label="图片" prop="ingredientImg">
+        <template #default="scope">
+          <el-image
+            style="width: 50px; height: 50px"
+            :src="scope.row.ingredientImg"
+            :fit="'cover'"
+            :preview-src-list="[scope.row.ingredientImg]"
+            :preview-teleported="true"
+            :hide-on-click-modal="true"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column :align="align" label="描述" prop="ingredientDesc" />
       <el-table-column :align="'center'" label="操作" width="175" fixed="right">
         <template v-slot="{ row }">
           <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
           <el-button type="primary" size="small" plain @click="addEdit(row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteCatalog(row)">删除</el-button>
+          <el-button type="danger" size="small" @click="deleteIngredient(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -70,22 +85,38 @@
         align-center
       >
         <template #header>
-          <div>
-            <h4>{{ title }}</h4>
-          </div>
+          <h4>{{ title }}</h4>
         </template>
         <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="80px">
-          <el-form-item label="分类" prop="ingredientCategory">
-            <el-input v-model="formData.ingredientCategory" autocomplete="on" :disabled="oprType === 'query'" />
+          <el-form-item label="食材名称" prop="ingredientName">
+            <el-input v-model="formData.ingredientName" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
-          <el-form-item label="码值" prop="label">
-            <div class="edit-ingredient-category">
-              <el-input v-model="formData.code" autocomplete="on" :disabled="oprType === 'query'" />
-            </div>
+          <el-form-item label="食材分类" prop="catalogId">
+            <el-select
+              v-model="formData.catalogId"
+              placeholder="请选择分类"
+              :size="size"
+              clearable
+              filterable
+              style="width: 46vw !important"
+            >
+              <el-option
+                v-for="item in [{ label: '蔬菜', value: 34 }]"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="图片" prop="ingredientImg">
+            <el-input v-model="formData.ingredientImg" autocomplete="on" :disabled="oprType === 'query'" />
+          </el-form-item>
+          <el-form-item label="描述" prop="ingredientDesc">
+            <el-input v-model="formData.ingredientDesc" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
         </el-form>
         <template #footer>
-          <div class="dialog-footer" v-if="oprType !== 'query'">
+          <div class="dialog-footer" v-if="oprType === 'add'">
             <el-button size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="submit">确 定</el-button>
           </div>
@@ -97,14 +128,14 @@
 
 <script>
 export default {
-  name: 'IngredientsClassification'
+  name: 'IngredientList'
 }
 </script>
 <script setup>
 import { reactive, ref, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { useCommonStore } from '@/pinia/modules/common'
-import { getCatalog, addCatalog, editCatalog, delCatalog } from '@/api/purchase/ingredientsCatalog'
+import { getIngredientList, addIngredient, editIngredient, delIngredient } from '@/api/purchase/ingredientList'
 
 import { message } from '@/utils/message'
 const commonStore = useCommonStore()
@@ -112,7 +143,8 @@ const isCollapse = computed(() => commonStore.isCollapse)
 
 const data = reactive({
   dialogVisible: false,
-  ingredientCategory: '',
+  ingredientName: '',
+  catalogId: null,
   loading: false,
   tableFields: [
     {
@@ -121,7 +153,7 @@ const data = reactive({
       width: 60
     },
     {
-      prop: 'ingredientCategory',
+      prop: 'catalogId',
       label: '分类'
     },
     {
@@ -141,24 +173,25 @@ const data = reactive({
   oprType: '',
   formData: {
     id: 0,
-    ingredientCategory: '',
-    code: ''
-  },
-  foodsLoading: false,
-  foodsTableData: []
+    ingredientName: '',
+    catalogId: '',
+    ingredientImg: '',
+    ingredientDesc: ''
+  }
 })
 
 const rules = ref({
-  ingredientCategory: [{ required: true, message: '请输入分类', trigger: 'blur' }],
-  code: [{ required: true, message: '请输入码值', trigger: 'blur' }]
+  ingredientName: [{ required: true, message: '请输入食材名称', trigger: 'blur' }],
+  catalogId: [{ required: true, message: '请输入分类', trigger: 'blur' }]
 })
 
 const getTableData = () => {
   data.loading = true
   const params = {
-    ingredientCategory: data.ingredientCategory
+    ingredientName: data.ingredientName,
+    catalogId: data.catalogId
   }
-  getCatalog(params)
+  getIngredientList(params)
     .then((res) => {
       const records = res.result || []
       data.tableData = records
@@ -185,32 +218,37 @@ const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
   data.title = '明细'
-  data.formData.ingredientCategory = row.ingredientCategory
-  data.formData.code = row.code
+  data.formData.ingredientName = row.ingredientName
+  data.formData.catalogId = row.catalogId
+  data.formData.id = row.id
+  data.formData.ingredientImg = row.ingredientImg
+  data.formData.ingredientDesc = row.ingredientDesc
 }
 
 const addEdit = (row) => {
   if (!row || !row.id) {
     data.oprType = 'add'
-    data.title = '新增分类'
+    data.title = '新增食材'
   } else {
     data.oprType = 'edit'
-    data.title = '修改分类'
+    data.title = '修改食材'
+    data.formData.ingredientName = row.ingredientName
+    data.formData.catalogId = row.catalogId
     data.formData.id = row.id
-    data.formData.ingredientCategory = row.ingredientCategory
-    data.formData.code = row.code
+    data.formData.ingredientImg = row.ingredientImg
+    data.formData.ingredientDesc = row.ingredientDesc
   }
   data.dialogVisible = true
 }
 
-const deleteCatalog = (row) => {
-  ElMessageBox.confirm(`确定删除${row.ingredientCategory}这个分类吗?`, 'Warning', {
+const deleteIngredient = (row) => {
+  ElMessageBox.confirm(`确定删除${row.ingredientName}这个食材吗?`, 'Warning', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   })
     .then(() => {
-      delCatalog({ id: row.id })
+      delIngredient({ id: row.id })
         .then((res) => {
           if (res && res.status === 200) {
             message(res.msg)
@@ -226,22 +264,30 @@ const deleteCatalog = (row) => {
 
 const closeDialog = () => {
   data.dialogVisible = false
-  data.formData.catalogEditable = true
-  data.formData.ingredientCategory = ''
-  data.formData.code = ''
+  data.formData.ingredientName = ''
+  data.formData.catalogId = ''
 }
 
 const addEditForm = ref(null)
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
+      if (!data.formData.ingredientName) {
+        message('食材名称不能为空！', 'warning')
+        return
+      }
+      if (!data.formData.catalogId) {
+        message('食材分类不能为空！', 'warning')
+        return
+      }
       if (data.oprType === 'add') {
         const params = {
-          ingredientCategory: data.formData.ingredientCategory,
-          code: data.formData.code,
-          redundancy: ''
+          catalogId: data.formData.catalogId,
+          ingredientName: data.formData.ingredientName,
+          ingredientImg: data.formData.ingredientImg,
+          ingredientDesc: data.formData.ingredientDesc
         }
-        const res = await addCatalog([params])
+        const res = await addIngredient([params])
         if (res && res.status === 200) {
           message(res.msg)
           closeDialog()
@@ -250,11 +296,13 @@ const submit = async () => {
       } else {
         const params = {
           id: data.formData.id,
-          ingredientCategory: data.formData.ingredientCategory,
-          code: data.formData.code,
-          redundancy: ''
+          catalogId: data.formData.catalogId,
+          ingredientName: data.formData.ingredientName,
+          ingredientImg: data.formData.ingredientImg,
+          ingredientDesc: data.formData.ingredientDesc
         }
-        const res = await editCatalog(params)
+
+        const res = await editIngredient(params)
         if (res && res.status === 200) {
           message(res.msg)
           closeDialog()
@@ -264,18 +312,24 @@ const submit = async () => {
     }
   })
 }
+
 getTableData()
 
-const { ingredientCategory, loading, tableFields, tableData, pagination, dialogVisible, formData, title, oprType } =
+const { ingredientName, catalogId, loading, tableData, pagination, dialogVisible, formData, title, oprType } =
   toRefs(data)
 </script>
 <style scoped lang="scss">
-.ingredient-catalog {
+.ingredient-list {
   .query {
     margin-left: 10px;
   }
   .el-input {
-    width: 100px;
+    width: 110px;
+  }
+
+  .el-select {
+    width: 120px;
+    margin-left: 2px;
   }
 }
 
@@ -297,13 +351,14 @@ const { ingredientCategory, loading, tableFields, tableData, pagination, dialogV
   }
 }
 
-.edit-ingredient-category {
+.edit-catalogId {
   display: flex;
   align-items: center;
   .el-button {
     margin-left: 1px;
   }
 }
+
 .dialog-footer {
   display: flex;
   justify-content: center;
