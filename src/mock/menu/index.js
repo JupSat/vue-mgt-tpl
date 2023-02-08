@@ -94,6 +94,19 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
             fixed: false
           },
           {
+            key: 'ingredientList',
+            id: 'ingredientList',
+            path: '/purchase/ingredientList',
+            name: 'IngredientList',
+            icon: '',
+            component: 'Purchase/IngredientList',
+            componentName: 'IngredientList',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
             key: 'sku',
             id: 'sku',
             path: '/purchase/sku',
