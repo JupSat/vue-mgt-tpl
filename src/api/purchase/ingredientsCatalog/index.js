@@ -7,7 +7,7 @@
  * @LastEditors: JupSat
  * @LastEditTime: 2023-02-08 18:06:36
  */
-import { rPost, rPostByParams } from '@/utils/http/function'
+import { rPost } from '@/utils/http/function'
 
 const prefix = 'api'
 
@@ -33,7 +33,7 @@ export const editCatalog = (data) => rPost(`/${prefix}/food/update`, data)
  * @description 删除分类
  * @return
  */
-export const delCatalog = (data) => rPostByParams(`/${prefix}/food/delete`, data)
+export const delCatalog = (data) => rPost(`/${prefix}/food/delete`, data)
 
 /**
  * @description 通过catalogId获取食材

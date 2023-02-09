@@ -5,24 +5,38 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-06 18:37:02
+ * @LastEditTime: 2023-02-09 16:04:00
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="vendorName" placeholder="请输入供应商名称"></el-input>
+        <el-input v-model="vendorName" placeholder="请输入供应商名称" clearable></el-input>
         <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table ref="vendorRef" v-loading="loading" :data="tableData" :max-height="450" stripe>
-      <el-table-column :align="align" label="供应商名称" prop="vendorName" />
-      <!-- <el-table-column :align="align" label="供应商地址" prop="vendorAddress" /> -->
-      <el-table-column :align="align" label="联系人" prop="contact" />
-      <!-- <el-table-column :align="align" label="联系人电话" prop="phone" /> -->
-      <!-- <el-table-column :align="align" label="邮箱" prop="email" />
-      <el-table-column :align="align" label="备注" prop="note" /> -->
+    <el-table
+      ref="vendorRef"
+      v-loading="loading"
+      :data="
+        tableData.slice(
+          (pagination.currentPage - 1) * pagination.pageSize,
+          pagination.currentPage * pagination.pageSize
+        )
+      "
+      :max-height="450"
+      stripe
+    >
+      <el-table-column
+        v-for="item in tableFields"
+        :key="item.prop"
+        :align="'center'"
+        :label="item.label"
+        :prop="item.prop"
+        :width="item.width"
+      />
+
       <el-table-column :align="align" label="操作" width="180" fixed="right">
         <template v-slot="{ row }">
           <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
@@ -33,13 +47,13 @@
     </el-table>
     <div class="page-separate">
       <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
-        :page-sizes="[50, 100, 150, 200]"
+        v-model:current-page="pagination.currentPage"
+        v-model:page-size="pagination.pageSize"
+        :page-sizes="pagination.pageSizes"
         :small="'small'"
         background
         layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
+        :total="pagination.total"
         @size-change="sizeChange"
         @current-change="currentChange"
       />
@@ -61,19 +75,12 @@
           <el-divider />
         </template>
 
-        <el-form
-          ref="addEditForm"
-          :model="formData"
-          :rules="rules"
-          :inline="true"
-          label-width="100px"
-          v-loading="foodsLoading"
-        >
-          <el-form-item label="供应商名称" prop="vendorName">
-            <el-input v-model="formData.vendorName" autocomplete="on" :disabled="oprType === 'query'" />
+        <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="100px">
+          <el-form-item label="供应商名称" prop="name">
+            <el-input v-model="formData.name" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
-          <el-form-item label="供应商地址" prop="vendorAddress">
-            <el-input v-model="formData.vendorAddress" autocomplete="on" :disabled="oprType === 'query'" />
+          <el-form-item label="供应商地址" prop="address">
+            <el-input v-model="formData.address" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
           <el-form-item label="联系人" prop="contact">
             <el-input v-model="formData.contact" autocomplete="on" :disabled="oprType === 'query'" />
@@ -84,8 +91,8 @@
           <el-form-item label="邮箱" prop="email">
             <el-input v-model="formData.email" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
-          <el-form-item label="备注" prop="note">
-            <el-input v-model="formData.note" autocomplete="on" :disabled="oprType === 'query'" />
+          <el-form-item label="备注" prop="remarks">
+            <el-input v-model="formData.remarks" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
         </el-form>
         <template #footer>
@@ -119,33 +126,60 @@ const data = reactive({
   dialogVisible: false,
   vendorName: '',
   loading: false,
+  tableFields: [
+    {
+      prop: 'id',
+      label: '序号',
+      width: 60
+    },
+    {
+      prop: 'name',
+      label: '供应商名称'
+    },
+    {
+      prop: 'address',
+      label: '供应商地址'
+    },
+    {
+      prop: 'contact',
+      label: '联系人'
+    },
+    {
+      prop: 'phone',
+      label: '联系人电话'
+    },
+    {
+      prop: 'email',
+      label: '邮箱'
+    },
+    {
+      prop: 'remarks',
+      label: '备注'
+    }
+  ],
   tableData: [],
+  pagination: {
+    currentPage: 1,
+    pageSize: 20,
+    pageSizes: [10, 20, 50, 100],
+    total: 0
+  },
   selection: [],
-  currentPage: 1,
-  pageSize: 50,
-  total: 0,
   title: '',
   oprType: '',
   formData: {
-    vendorName: '',
-    vendorAddress: '',
+    id: null,
+    name: '',
+    address: '',
     contact: '',
     phone: '',
     email: '',
-    note: ''
-  },
-  foodsFormData: {
-    vendorName: '',
-    foodName: '',
-    img: '',
-    desc: ''
-  },
-  foodsLoading: false,
-  foodsTableData: []
+    remarks: ''
+  }
 })
 
 const rules = ref({
-  vendorName: [{ required: true, message: '请输入供应商', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入供应商', trigger: 'blur' }],
   contact: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
   phone: [{ required: true, message: '请输入联系人电话', trigger: 'blur' }]
 })
@@ -153,26 +187,33 @@ const rules = ref({
 const getTableData = () => {
   data.loading = true
   const params = {
-    vendorName: data.vendorName,
-    page: data.currentPage,
-    pageSize: data.pageSize
+    name: data.vendorName.trim()
+    // page: data.currentPage,
+    // pageSize: data.pageSize
   }
   getVendors(params)
     .then((res) => {
-      data.tableData = res.records || []
-      data.total = res.total
+      const records = res.result || []
+      data.tableData = records
+      data.pagination.total = records.length
+    })
+    .catch(() => {
+      message('查询失败！', 'warning')
     })
     .finally(() => {
-      data.total = 100
       data.loading = false
     })
 }
+
+getTableData()
+
 const sizeChange = (size) => {
-  data.pageSize = size
+  data.pagination.currentPage = 1
+  data.pagination.pageSize = size
   getTableData()
 }
 const currentChange = (page) => {
-  data.currentPage = page
+  data.pagination.currentPage = page
   getTableData()
 }
 
@@ -190,7 +231,7 @@ const addEdit = (row) => {
     data.oprType = 'add'
     data.title = '新增供应商'
     Object.keys(data.formData).forEach((key) => {
-      data.formData[key] = ''
+      data.formData[key] = null
     })
   } else {
     data.oprType = 'edit'
@@ -203,20 +244,21 @@ const addEdit = (row) => {
 }
 
 const deleteCatalog = (row) => {
-  ElMessageBox.confirm(`确定删除${row.vendorName}这个供应商吗? `, 'Warning', {
+  ElMessageBox.confirm(`确定删除${row.name}这个供应商吗? `, 'Warning', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
   })
     .then(() => {
-      delVendor(row.id)
+      delVendor({ id: row.id })
         .then((res) => {
-          if (res) {
-            message('删除供应商成功！')
+          if (res && res.status === 200) {
+            message(res.msg)
+            getTableData()
           }
         })
         .catch(() => {
-          message('删除供应商失败！', 'warning')
+          message('删除失败！', 'warning')
         })
     })
     .catch(() => {})
@@ -226,33 +268,25 @@ const addEditForm = ref(null)
 
 const closeDialog = () => {
   data.dialogVisible = false
-  data.formData.catalogEditable = true
   addEditForm.value.clearValidate()
 }
 
-for (let i = 0; i < 100; i++) {
-  data.tableData.push({
-    id: i + 1,
-    vendorName: '供应商名称' + (i + 1),
-    vendorAddress: '供应商地址' + (i + 1),
-    contact: '联系人' + (i + 1),
-    phone: '联系人电话' + (i + 1),
-    email: '邮箱' + (i + 1),
-    note: '备注' + (i + 1)
-  })
-}
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
       if (data.oprType === 'add') {
         const res = await addVendor(data.formData)
-        if (res.code === 0) {
-          message('添加成功！')
+        if (res && res.status === 200) {
+          message(res.msg)
+          closeDialog()
+          getTableData()
         }
       } else {
         const res = await editVendor(data.formData)
-        if (res.code === 0) {
-          message('修改成功！')
+        if (res && res.status === 200) {
+          message(res.msg, res.result === 'error' ? 'error' : 'success')
+          closeDialog()
+          getTableData()
         }
       }
     }
@@ -260,19 +294,8 @@ const submit = async () => {
 }
 
 const align = 'center'
-const {
-  vendorName,
-  loading,
-  tableData,
-  currentPage,
-  pageSize,
-  dialogVisible,
-  formData,
-  total,
-  title,
-  oprType,
-  foodsLoading
-} = toRefs(data)
+const { vendorName, loading, tableFields, tableData, pagination, dialogVisible, formData, title, oprType } =
+  toRefs(data)
 </script>
 <style scoped lang="scss">
 .vendor {
@@ -299,5 +322,10 @@ const {
   .el-divider--horizontal {
     margin: 10px 0;
   }
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: center;
 }
 </style>

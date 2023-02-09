@@ -7,7 +7,7 @@
  * @LastEditors: JupSat
  * @LastEditTime: 2023-02-08 18:05:52
  */
-import { rPost, rPostByParams } from '@/utils/http/function'
+import { rPost } from '@/utils/http/function'
 
 const prefix = 'api'
 
@@ -33,4 +33,4 @@ export const editIngredient = (data) => rPost(`/${prefix}/ingredients/update`, d
  * @description 删除食材
  * @return
  */
-export const delIngredient = (id) => rPostByParams(`/${prefix}/ingredients/delete`, id)
+export const delIngredient = (id) => rPost(`/${prefix}/ingredients/delete`, id)
