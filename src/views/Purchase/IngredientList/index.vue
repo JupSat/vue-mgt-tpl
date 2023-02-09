@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 15:17:37
+ * @LastEditTime: 2023-02-09 16:14:05
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -295,7 +295,6 @@ const submit = async () => {
         }
       } else {
         params.id = data.formData.id
-
         const res = await editIngredient(params)
         if (res && res.status === 200) {
           message(res.msg)

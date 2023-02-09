@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-04 11:38:43
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-08 18:06:36
+ * @LastEditTime: 2023-02-09 16:13:09
  */
 import { rPost } from '@/utils/http/function'
 
@@ -33,7 +33,7 @@ export const editCatalog = (data) => rPost(`/${prefix}/food/update`, data)
  * @description 删除分类
  * @return
  */
-export const delCatalog = (data) => rPost(`/${prefix}/food/delete`, data)
+export const delCatalog = (params) => rPost(`/${prefix}/food/delete`, null, params)
 
 /**
  * @description 通过catalogId获取食材

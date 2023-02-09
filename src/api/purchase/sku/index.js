@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-04 18:26:13
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 15:48:27
+ * @LastEditTime: 2023-02-09 16:12:43
  */
 import { rPost } from '@/utils/http/function'
 
@@ -33,4 +33,4 @@ export const editSkuInfo = (data) => rPost(`/${prefix}/skuInfo/update`, data)
  * @description 删除Sku信息
  * @return
  */
-export const delSkuInfo = (data) => rPost(`/${prefix}/skuInfo/delete`, data)
+export const delSkuInfo = (params) => rPost(`/${prefix}/skuInfo/delete`, null, params)

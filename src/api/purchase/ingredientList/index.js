@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 18:03:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-08 18:05:52
+ * @LastEditTime: 2023-02-09 16:13:27
  */
 import { rPost } from '@/utils/http/function'
 
@@ -33,4 +33,4 @@ export const editIngredient = (data) => rPost(`/${prefix}/ingredients/update`, d
  * @description 删除食材
  * @return
  */
-export const delIngredient = (id) => rPost(`/${prefix}/ingredients/delete`, id)
+export const delIngredient = (params) => rPost(`/${prefix}/ingredients/delete`, null, params)
