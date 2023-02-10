@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-08 22:17:50
+ * @LastEditTime: 2023-02-10 17:46:41
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -26,9 +26,12 @@
           pagination.currentPage * pagination.pageSize
         )
       "
+      :summary-method="getSummaries"
+      show-summary
       :max-height="450"
       stripe
     >
+      <el-table-column type="index" width="60" label="序号" :align="'center'" />
       <el-table-column
         v-for="item in tableFields"
         :key="item.prop"
@@ -39,9 +42,9 @@
       />
       <el-table-column :align="align" label="操作" width="180" fixed="right">
         <template v-slot="{ row }">
-          <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
-          <el-button type="primary" size="small" plain @click="addEdit(row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteRow(row)">删除</el-button>
+          <el-button type="success" :size="'small'" @click="viewDetail(row)">明细</el-button>
+          <el-button type="primary" :size="'small'" plain @click="addEdit(row)">编辑</el-button>
+          <el-button type="danger" :size="'small'" @click="deleteRow(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -83,7 +86,22 @@
             <el-input v-model="formData.skuNum" autocomplete="on" :disabled="oprType === 'query'" />
           </el-form-item>
           <el-form-item label="单位" prop="skuUnit">
-            <el-input v-model="formData.skuUnit" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-select
+              v-model="formData.skuUnit"
+              placeholder="请选择单位"
+              :disabled="oprType === 'query'"
+              :size="'small'"
+              style="width: 46vw !important"
+              clearable
+              filterable
+            >
+              <el-option
+                v-for="item in selectList.unitList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
           <el-form-item label="转化率" prop="conversionRate">
             <el-input v-model="formData.conversionRate" autocomplete="on" :disabled="oprType === 'query'" />
@@ -103,8 +121,8 @@
         </el-form>
         <template #footer>
           <div class="dialog-footer" v-if="oprType !== 'query'">
-            <el-button size="small" @click="closeDialog">取 消</el-button>
-            <el-button size="small" type="primary" @click="submit">确 定</el-button>
+            <el-button :size="'small'" @click="closeDialog">取 消</el-button>
+            <el-button :size="'small'" type="primary" @click="submit">确 定</el-button>
           </div>
         </template>
       </el-dialog>
@@ -120,11 +138,10 @@ export default {
 <script setup>
 import { reactive, ref, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
-
 import { useCommonStore } from '@/pinia/modules/common'
 import { getSkuInfo, addSkuInfo, editSkuInfo, delSkuInfo } from '@/api/purchase/sku'
-
 import { message } from '@/utils/message'
+
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
 
@@ -133,11 +150,6 @@ const data = reactive({
   skuName: '',
   loading: false,
   tableFields: [
-    {
-      prop: 'id',
-      label: '序号',
-      width: 60
-    },
     {
       prop: 'skuName',
       label: '名称'
@@ -172,7 +184,13 @@ const data = reactive({
     }
   ],
   tableData: [],
-  selection: [],
+  selectList: {
+    unitList: [
+      { label: 'KG/公斤', value: 'kg' },
+      { label: '箱', value: 'box' },
+      { label: '无', value: '' }
+    ]
+  },
   pagination: {
     currentPage: 1,
     pageSize: 20,
@@ -219,6 +237,8 @@ const getTableData = () => {
       data.loading = false
     })
 }
+getTableData()
+
 const sizeChange = (size) => {
   data.pagination.currentPage = 1
   data.pagination.pageSize = size
@@ -319,10 +339,50 @@ const submit = async () => {
     }
   })
 }
-getTableData()
 
-const { skuName, loading, tableFields, tableData, pagination, dialogVisible, formData, title, oprType, align } =
-  toRefs(data)
+const getSummaries = (param) => {
+  const { columns, data } = param
+  const sums = []
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      sums[index] = '合计'
+      return
+    }
+    if (['skuName', 'skuUnit', 'conversionRate', 'note'].includes(column.property)) {
+      sums[index] = ''
+      return
+    }
+    const values = data.map((item) => Number(item[column.property]))
+    if (!values.every((value) => Number.isNaN(value))) {
+      sums[index] = `${values.reduce((prev, curr) => {
+        const value = Number(curr)
+        if (!Number.isNaN(value)) {
+          return prev + curr
+        } else {
+          return prev
+        }
+      }, 0)}`
+    } else {
+      sums[index] = ''
+    }
+  })
+
+  return sums
+}
+
+const {
+  skuName,
+  loading,
+  tableFields,
+  selectList,
+  tableData,
+  pagination,
+  dialogVisible,
+  formData,
+  title,
+  oprType,
+  align
+} = toRefs(data)
 </script>
 <style scoped lang="scss">
 .sku {

@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 21:39:27
+ * @LastEditTime: 2023-02-10 17:12:01
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -32,7 +32,7 @@
       :max-height="450"
       stripe
     >
-      <el-table-column :align="align" label="序号" prop="id" width="60" />
+      <el-table-column type="index" width="60" label="序号" :align="align" />
       <el-table-column :align="align" label="食材名称" prop="ingredientName" />
       <el-table-column :align="align" label="食材分类" prop="catalogId">
         <template #default="scope">

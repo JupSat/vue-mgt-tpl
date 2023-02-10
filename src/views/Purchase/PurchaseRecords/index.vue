@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 16:35:43
+ * @LastEditTime: 2023-02-10 17:39:04
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -33,9 +33,12 @@
           pagination.currentPage * pagination.pageSize
         )
       "
+      :summary-method="getSummaries"
+      show-summary
       :max-height="450"
       stripe
     >
+      <el-table-column type="index" width="60" label="序号" :align="'center'" />
       <el-table-column
         v-for="item in tableFields"
         :key="item.prop"
@@ -345,7 +348,6 @@ import { getVendors } from '@/api/purchase/vendor'
 import { message } from '@/utils/message'
 import { getCatalog } from '@/api/purchase/ingredientsCatalog'
 import { getPurchasers } from '@/api/purchase/purchaser'
-
 import { translateParam } from '@/utils/common'
 
 const commonStore = useCommonStore()
@@ -359,11 +361,6 @@ const data = reactive({
   loading: false,
   tableData: [],
   tableFields: [
-    {
-      prop: 'id',
-      label: '序号',
-      width: 60
-    },
     {
       prop: 'purchaseDate',
       label: '日期',
@@ -607,6 +604,41 @@ const getAllIngredient = () => {
       message('获取食材下拉参数失败！', 'warning')
     })
 }
+
+const getSummaries = (param) => {
+  const { columns, data } = param
+  const sums = []
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      sums[index] = '合计'
+      return
+    }
+    if (
+      ['purchaseDate', 'ingredientId', 'ingredientCatalogId', 'unit', 'vendor', 'purchaser', 'note'].includes(
+        column.property
+      )
+    ) {
+      sums[index] = ''
+      return
+    }
+    const values = data.map((item) => Number(item[column.property]))
+    if (!values.every((value) => Number.isNaN(value))) {
+      sums[index] = `${values.reduce((prev, curr) => {
+        const value = Number(curr)
+        if (!Number.isNaN(value)) {
+          return prev + curr
+        } else {
+          return prev
+        }
+      }, 0)}`
+    } else {
+      sums[index] = ''
+    }
+  })
+
+  return sums
+}
+
 const getAllCatalog = () => {
   getCatalog({ ingredientCategory: '' })
     .then((res) => {
@@ -654,7 +686,7 @@ const getAllPurchaserInfo = () => {
       })
     })
     .catch(() => {
-      message('获取供应商下拉参数失败！', 'warning')
+      message('获取采购人下拉参数失败！', 'warning')
     })
 }
 

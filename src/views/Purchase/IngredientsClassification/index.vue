@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 20:23:16
+ * @LastEditTime: 2023-02-10 17:12:27
 -->
 <template>
   <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -29,6 +29,7 @@
       :max-height="450"
       stripe
     >
+      <el-table-column type="index" width="60" label="序号" :align="'center'" />
       <el-table-column
         v-for="item in tableFields"
         :key="item.prop"
@@ -115,11 +116,6 @@ const data = reactive({
   ingredientCategory: '',
   loading: false,
   tableFields: [
-    {
-      prop: 'id',
-      label: '序号',
-      width: 60
-    },
     {
       prop: 'ingredientCategory',
       label: '分类'

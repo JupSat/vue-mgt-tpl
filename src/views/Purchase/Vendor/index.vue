@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 16:04:00
+ * @LastEditTime: 2023-02-10 17:12:53
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -28,6 +28,7 @@
       :max-height="450"
       stripe
     >
+      <el-table-column type="index" width="60" label="序号" :align="align" />
       <el-table-column
         v-for="item in tableFields"
         :key="item.prop"
@@ -127,11 +128,6 @@ const data = reactive({
   vendorName: '',
   loading: false,
   tableFields: [
-    {
-      prop: 'id',
-      label: '序号',
-      width: 60
-    },
     {
       prop: 'name',
       label: '供应商名称'
