@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 17:12:53
+ * @LastEditTime: 2023-02-10 19:20:29
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -270,20 +270,15 @@ const closeDialog = () => {
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
-      if (data.oprType === 'add') {
-        const res = await addVendor(data.formData)
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
+      const doFunction = data.oprType === 'add' ? addVendor : editVendor
+      const res = await doFunction(data.formData)
+      const { status = null } = res
+      if (status === 200) {
+        message(res.msg)
+        closeDialog()
+        getTableData()
       } else {
-        const res = await editVendor(data.formData)
-        if (res && res.status === 200) {
-          message(res.msg, res.result === 'error' ? 'error' : 'success')
-          closeDialog()
-          getTableData()
-        }
+        message(res.msg, 'warning')
       }
     }
   })

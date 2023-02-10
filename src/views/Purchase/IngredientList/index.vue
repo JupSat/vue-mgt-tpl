@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 17:12:01
+ * @LastEditTime: 2023-02-10 18:57:16
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -287,21 +287,17 @@ const submit = async () => {
         ingredientImg: data.formData.ingredientImg,
         ingredientDesc: data.formData.ingredientDesc
       }
-      if (data.oprType === 'add') {
-        const res = await addIngredient([params])
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
+
+      params.id = data.oprType === 'add' ? '' : data.formData.id
+      const doFunction = data.oprType === 'add' ? addIngredient([params]) : editIngredient(params)
+      const res = await doFunction
+      const { status = null } = res
+      if (status === 200) {
+        message(res.msg)
+        closeDialog()
+        getTableData()
       } else {
-        params.id = data.formData.id
-        const res = await editIngredient(params)
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
+        message(res.msg, 'warning')
       }
     }
   })

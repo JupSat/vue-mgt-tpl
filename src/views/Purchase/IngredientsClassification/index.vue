@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 17:12:27
+ * @LastEditTime: 2023-02-10 18:59:06
 -->
 <template>
   <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -231,31 +231,22 @@ const addEditForm = ref(null)
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
-      if (data.oprType === 'add') {
-        const params = {
-          ingredientCategory: data.formData.ingredientCategory,
-          code: data.formData.code,
-          redundancy: ''
-        }
-        const res = await addCatalog([params])
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
+      const params = {
+        ingredientCategory: data.formData.ingredientCategory,
+        code: data.formData.code,
+        redundancy: ''
+      }
+
+      params.id = data.oprType === 'add' ? '' : data.formData.id
+      const doFunction = data.oprType === 'add' ? addCatalog([params]) : editCatalog(params)
+      const res = await doFunction
+      const { status = null } = res
+      if (status === 200) {
+        message(res.msg)
+        closeDialog()
+        getTableData()
       } else {
-        const params = {
-          id: data.formData.id,
-          ingredientCategory: data.formData.ingredientCategory,
-          code: data.formData.code,
-          redundancy: ''
-        }
-        const res = await editCatalog(params)
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
+        message(res.msg, 'warning')
       }
     }
   })
