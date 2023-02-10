@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 16:05:17
+ * @LastEditTime: 2023-02-10 18:59:06
 -->
 <template>
   <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -29,6 +29,7 @@
       :max-height="450"
       stripe
     >
+      <el-table-column type="index" width="60" label="序号" :align="'center'" />
       <el-table-column
         v-for="item in tableFields"
         :key="item.prop"
@@ -116,11 +117,6 @@ const data = reactive({
   loading: false,
   tableFields: [
     {
-      prop: 'id',
-      label: '序号',
-      width: 60
-    },
-    {
       prop: 'ingredientCategory',
       label: '分类'
     },
@@ -169,6 +165,9 @@ const getTableData = () => {
       data.loading = false
     })
 }
+
+getTableData()
+
 const sizeChange = (size) => {
   data.pagination.currentPage = 1
   data.pagination.pageSize = size
@@ -232,36 +231,26 @@ const addEditForm = ref(null)
 const submit = async () => {
   addEditForm.value.validate(async (valid) => {
     if (valid) {
-      if (data.oprType === 'add') {
-        const params = {
-          ingredientCategory: data.formData.ingredientCategory,
-          code: data.formData.code,
-          redundancy: ''
-        }
-        const res = await addCatalog([params])
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
+      const params = {
+        ingredientCategory: data.formData.ingredientCategory,
+        code: data.formData.code,
+        redundancy: ''
+      }
+
+      params.id = data.oprType === 'add' ? '' : data.formData.id
+      const doFunction = data.oprType === 'add' ? addCatalog([params]) : editCatalog(params)
+      const res = await doFunction
+      const { status = null } = res
+      if (status === 200) {
+        message(res.msg)
+        closeDialog()
+        getTableData()
       } else {
-        const params = {
-          id: data.formData.id,
-          ingredientCategory: data.formData.ingredientCategory,
-          code: data.formData.code,
-          redundancy: ''
-        }
-        const res = await editCatalog(params)
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
+        message(res.msg, 'warning')
       }
     }
   })
 }
-getTableData()
 
 const { ingredientCategory, loading, tableFields, tableData, pagination, dialogVisible, formData, title, oprType } =
   toRefs(data)

@@ -5,13 +5,13 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-07 10:03:24
+ * @LastEditTime: 2023-02-10 17:39:04
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="foodName" placeholder="请输入食材名" clearable></el-input>
+        <el-input v-model="ingredientId" placeholder="请输入食材名" clearable></el-input>
         <el-date-picker
           v-model="purchaseDate"
           type="date"
@@ -20,7 +20,7 @@
           value-format="YYYY-MM-DD"
         />
         <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
-        <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
+        <el-button :color="'#626aef'" @click="addEdit()" class="query">添加</el-button>
       </el-form-item>
     </el-form>
 
@@ -33,9 +33,12 @@
           pagination.currentPage * pagination.pageSize
         )
       "
+      :summary-method="getSummaries"
+      show-summary
       :max-height="450"
       stripe
     >
+      <el-table-column type="index" width="60" label="序号" :align="'center'" />
       <el-table-column
         v-for="item in tableFields"
         :key="item.prop"
@@ -43,7 +46,14 @@
         :label="item.label"
         :prop="item.prop"
         :width="item.width"
-      />
+      >
+        <template v-slot="{ row }">
+          <span v-if="['ingredientId', 'ingredientCatalogId', 'vendor', 'unit', 'purchaser'].includes(item.prop)">
+            {{ translateParam(data.selectList[item.prop + 'List'], row[item.prop]) }}
+          </span>
+          <span v-else>{{ row[item.prop] }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column :align="'center'" label="操作" width="175" fixed="right">
         <template v-slot="{ row }">
@@ -103,34 +113,35 @@
               style="width: 48vw !important"
             />
           </el-form-item>
-          <el-form-item label="食材名称" prop="foodName">
+          <el-form-item label="食材名称" prop="ingredientId">
             <el-select
-              v-model="formData.foodName"
+              v-model="formData.ingredientId"
               placeholder="请选择食材名称"
               :disabled="oprType === 'query'"
               :size="size"
               style="width: 48vw !important"
               clearable
               filterable
+              @change="changeIngredient()"
             >
               <el-option
-                v-for="item in selectList.foodNameList"
+                v-for="item in selectList.ingredientIdList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="分类" prop="foodCatalog">
+          <el-form-item label="分类" prop="ingredientCatalogId">
             <el-select
-              v-model="formData.foodCatalog"
+              v-model="formData.ingredientCatalogId"
               placeholder="无"
               disabled
               :size="size"
               style="width: 48vw !important"
             >
               <el-option
-                v-for="item in selectList.foodCatalogList"
+                v-for="item in selectList.ingredientCatalogIdList"
                 :key="item.value"
                 :label="item.label"
                 :value="item.value"
@@ -276,15 +287,23 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="采购人" prop="purchaser" v-if="oprType !== 'add'">
-            <el-input
+          <el-form-item label="采购人" prop="purchaser">
+            <el-select
               v-model="formData.purchaser"
-              autocomplete="on"
+              placeholder="请选择采购人"
               :disabled="oprType === 'query'"
               :size="size"
-              clearable
               style="width: 48vw !important"
-            />
+              clearable
+              filterable
+            >
+              <el-option
+                v-for="item in selectList.purchaserList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
 
           <el-form-item label="备注" prop="note">
@@ -317,7 +336,6 @@ export default {
 <script setup>
 import { reactive, ref, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
-
 import { useCommonStore } from '@/pinia/modules/common'
 import {
   getPurchaseRecords,
@@ -325,35 +343,35 @@ import {
   editPurchaseRecord,
   delPurchaseRecord
 } from '@/api/purchase/purchaseRecords'
-
+import { getIngredientList } from '@/api/purchase/ingredientList'
+import { getVendors } from '@/api/purchase/vendor'
 import { message } from '@/utils/message'
+import { getCatalog } from '@/api/purchase/ingredientsCatalog'
+import { getPurchasers } from '@/api/purchase/purchaser'
+import { translateParam } from '@/utils/common'
+
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
 
 const data = reactive({
   dialogVisible: false,
-  foodName: '',
+  ingredientId: null,
   purchaseDate: '',
   size: 'small',
   loading: false,
   tableData: [],
   tableFields: [
     {
-      prop: 'id',
-      label: '序号',
-      width: 60
-    },
-    {
       prop: 'purchaseDate',
       label: '日期',
       width: 115
     },
     {
-      prop: 'foodName',
+      prop: 'ingredientId',
       label: '食材名'
     },
     {
-      prop: 'foodCatalog',
+      prop: 'ingredientCatalogId',
       label: '分类'
     },
     {
@@ -411,34 +429,20 @@ const data = reactive({
   title: '',
   oprType: '',
   selectList: {
-    foodNameList: [
-      { label: '猪肉', value: '猪肉', key: 'pig' },
-      { label: '牛肉', value: '牛肉', key: 'beef' }
-    ],
-    vendorList: [
-      { label: '供应商1', value: '1' },
-      { label: '供应商2', value: '2' }
-    ],
+    ingredientIdList: [],
+    ingredientCatalogIdList: [],
     unitList: [
       { label: 'KG/公斤', value: 'kg' },
-      { label: '箱', value: 'box' }
+      { label: '箱', value: 'box' },
+      { label: '无', value: '' }
     ],
-    foodCatalogList: [
-      { label: '肉类', value: 'meat' },
-      { label: '蔬菜类', value: 'vegetable' },
-      { label: '水果类', value: 'fruit' },
-      { label: '冻品类', value: 'frozenProduct' },
-      { label: '菌菇类', value: ' fungus' },
-      { label: '豆制品类', value: 'beanProducts;' },
-      { label: '米面粮油', value: 'riceFlourGrainOil' },
-      { label: '调料类', value: 'seasoning' },
-      { label: '禽蛋类', value: 'poultry ' }
-    ]
+    vendorList: [],
+    purchaserList: []
   },
   formData: {
     purchaseDate: '',
-    foodName: '',
-    foodCatalog: '',
+    ingredientId: '',
+    ingredientCatalogId: '',
     unit: '',
     num: 0,
     unitPrice: 0,
@@ -459,7 +463,7 @@ data.formData.grossProfit = computed(() => data.formData.budgetary - data.formDa
 
 const rules = ref({
   purchaseDate: [{ required: true, message: '请选择采购日期', trigger: 'change' }],
-  foodName: [{ required: true, message: '请选择食材名', trigger: 'change' }],
+  ingredientId: [{ required: true, message: '请选择食材名', trigger: 'change' }],
   num: [{ required: true, message: '请输入数量', trigger: 'blur' }],
   unitPrice: [{ required: true, message: '请输入单价', trigger: 'blur' }],
   purchaseNum: [{ required: true, message: '请输入采购量', trigger: 'blur' }],
@@ -470,7 +474,7 @@ const rules = ref({
 const getTableData = () => {
   data.loading = true
   const params = {
-    foodName: data.foodName,
+    ingredientId: data.ingredientId,
     purchaseDate: data.purchaseDate
     // page: data.pagination.currentPage,
     // pageSize: data.pagination.pageSize
@@ -488,6 +492,8 @@ const getTableData = () => {
       data.loading = false
     })
 }
+getTableData()
+
 const sizeChange = (size) => {
   data.pagination.currentPage = 1
   data.pagination.pageSize = size
@@ -527,7 +533,7 @@ const setFormData = (row) => {
 }
 
 const deleteRow = (row) => {
-  ElMessageBox.confirm(`确定删除${row.foodName}这条采购记录吗? `, 'Warning', {
+  ElMessageBox.confirm(`确定删除${row.ingredientId}这条采购记录吗? `, 'Warning', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
@@ -574,10 +580,123 @@ const submit = async () => {
   })
 }
 
-getTableData()
+const changeIngredient = () => {
+  const ingredientId = data.formData.ingredientId
+  const ll = data.selectList.ingredientIdList
+  const el = data.selectList.ingredientIdList.find((item) => item.value === ingredientId)
+  data.formData.ingredientCatalogId = el ? el.catalogId : null
+}
+
+const getAllIngredient = () => {
+  getIngredientList({ ingredientName: '', catalogId: '' })
+    .then((res) => {
+      const records = res.result || []
+      data.selectList.ingredientIdList = records.map((item) => {
+        const option = {
+          label: item.ingredientName,
+          value: item.id,
+          catalogId: item.catalogId
+        }
+        return option
+      })
+    })
+    .catch(() => {
+      message('获取食材下拉参数失败！', 'warning')
+    })
+}
+
+const getSummaries = (param) => {
+  const { columns, data } = param
+  const sums = []
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      sums[index] = '合计'
+      return
+    }
+    if (
+      ['purchaseDate', 'ingredientId', 'ingredientCatalogId', 'unit', 'vendor', 'purchaser', 'note'].includes(
+        column.property
+      )
+    ) {
+      sums[index] = ''
+      return
+    }
+    const values = data.map((item) => Number(item[column.property]))
+    if (!values.every((value) => Number.isNaN(value))) {
+      sums[index] = `${values.reduce((prev, curr) => {
+        const value = Number(curr)
+        if (!Number.isNaN(value)) {
+          return prev + curr
+        } else {
+          return prev
+        }
+      }, 0)}`
+    } else {
+      sums[index] = ''
+    }
+  })
+
+  return sums
+}
+
+const getAllCatalog = () => {
+  getCatalog({ ingredientCategory: '' })
+    .then((res) => {
+      const records = res.result || []
+      data.selectList.ingredientCatalogIdList = records.map((item) => {
+        const option = {
+          label: item.ingredientCategory,
+          value: item.id
+        }
+        return option
+      })
+    })
+    .catch(() => {
+      message('获取分类下拉参数失败！', 'warning')
+    })
+}
+
+const getAllVendor = () => {
+  getVendors({ name: '' })
+    .then((res) => {
+      const records = res.result || []
+      data.selectList.vendorList = records.map((item) => {
+        const option = {
+          label: item.name,
+          value: item.id
+        }
+        return option
+      })
+    })
+    .catch(() => {
+      message('获取供应商下拉参数失败！', 'warning')
+    })
+}
+
+const getAllPurchaserInfo = () => {
+  getPurchasers()
+    .then((res) => {
+      const records = res.result || []
+      data.selectList.purchaserList = records.map((item) => {
+        const option = {
+          label: item.purchaserName,
+          value: item.purchaserId
+        }
+        return option
+      })
+    })
+    .catch(() => {
+      message('获取采购人下拉参数失败！', 'warning')
+    })
+}
+
+getAllIngredient()
+getAllCatalog()
+getAllVendor()
+getAllPurchaserInfo()
 
 const {
-  foodName,
+  ingredientId,
   purchaseDate,
   selectList,
   loading,
@@ -595,15 +714,16 @@ const {
 <style scoped lang="scss">
 .purchase-records {
   .query {
-    margin-left: 2px;
+    margin-left: 10px;
   }
   .el-input {
-    width: 105px;
+    width: 115px;
   }
 }
 
 ::v-deep(.el-date-editor) {
-  width: 130px !important;
+  width: 130px;
+  margin-left: 1px;
 }
 
 .page-separate {
@@ -612,8 +732,10 @@ const {
   margin-top: 10px;
 }
 
-.el-button + .el-button {
-  margin-left: 1px !important;
+.el-table {
+  .el-button + .el-button {
+    margin-left: 1px;
+  }
 }
 
 .el-button.is-circle {
