@@ -433,7 +433,7 @@ const data = reactive({
     ingredientCatalogIdList: [],
     unitList: [
       { label: 'KG/公斤', value: 'kg' },
-      { label: '箱', value: 'box' },
+      { label: 'Box/盒', value: 'box' },
       { label: '无', value: '' }
     ],
     vendorList: [],
