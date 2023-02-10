@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-08 11:01:05
+ * @LastEditTime: 2023-02-09 16:05:17
 -->
 <template>
   <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -143,9 +143,7 @@ const data = reactive({
     id: 0,
     ingredientCategory: '',
     code: ''
-  },
-  foodsLoading: false,
-  foodsTableData: []
+  }
 })
 
 const rules = ref({
@@ -226,7 +224,6 @@ const deleteCatalog = (row) => {
 
 const closeDialog = () => {
   data.dialogVisible = false
-  data.formData.catalogEditable = true
   data.formData.ingredientCategory = ''
   data.formData.code = ''
 }

@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-08 18:25:33
+ * @LastEditTime: 2023-02-09 16:14:05
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -280,13 +280,13 @@ const submit = async () => {
         message('食材分类不能为空！', 'warning')
         return
       }
+      const params = {
+        catalogId: data.formData.catalogId,
+        ingredientName: data.formData.ingredientName,
+        ingredientImg: data.formData.ingredientImg,
+        ingredientDesc: data.formData.ingredientDesc
+      }
       if (data.oprType === 'add') {
-        const params = {
-          catalogId: data.formData.catalogId,
-          ingredientName: data.formData.ingredientName,
-          ingredientImg: data.formData.ingredientImg,
-          ingredientDesc: data.formData.ingredientDesc
-        }
         const res = await addIngredient([params])
         if (res && res.status === 200) {
           message(res.msg)
@@ -294,14 +294,7 @@ const submit = async () => {
           getTableData()
         }
       } else {
-        const params = {
-          id: data.formData.id,
-          catalogId: data.formData.catalogId,
-          ingredientName: data.formData.ingredientName,
-          ingredientImg: data.formData.ingredientImg,
-          ingredientDesc: data.formData.ingredientDesc
-        }
-
+        params.id = data.formData.id
         const res = await editIngredient(params)
         if (res && res.status === 200) {
           message(res.msg)

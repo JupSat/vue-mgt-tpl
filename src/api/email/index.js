@@ -1,4 +1,4 @@
-import { rPostByParams } from '@/utils/http/function'
+import { rPost } from '@/utils/http/function'
 
 const prefix = 'api'
 
@@ -7,4 +7,4 @@ const prefix = 'api'
  * @param {*} params
  * @return
  */
-export const sendVerificationCodeApi = (params) => rPostByParams(`/${prefix}/user/sendVerificationCodeToEmail`, params)
+export const sendVerificationCodeApi = (params) => rPost(`/${prefix}/user/sendVerificationCodeToEmail`, params)

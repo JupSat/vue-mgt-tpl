@@ -5,9 +5,9 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-05 12:45:13
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-06 19:43:25
+ * @LastEditTime: 2023-02-09 16:12:52
  */
-import { rPost, rPostByParams } from '@/utils/http/function'
+import { rPost } from '@/utils/http/function'
 
 const prefix = 'api'
 
@@ -33,4 +33,4 @@ export const editPurchaseRecord = (data) => rPost(`/${prefix}/purchaseRecord/upd
  * @description 删除采购记录
  * @return
  */
-export const delPurchaseRecord = (data) => rPostByParams(`/${prefix}/purchaseRecord/delete`, data)
+export const delPurchaseRecord = (params) => rPost(`/${prefix}/purchaseRecord/delete`, null, params)

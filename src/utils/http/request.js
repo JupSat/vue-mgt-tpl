@@ -5,12 +5,12 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-29 22:34:00
+ * @LastEditTime: 2023-02-09 17:47:00
  */
 import axios from 'axios'
 import router from '@/router'
 import Qs from 'qs'
-import { getToken } from '@/utils/token'
+import { getToken, clearToken } from '@/utils/token'
 import { message } from '@/utils/message'
 
 // 创建axios实例
@@ -43,7 +43,14 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (res) => {
     removePendingRequest(res.config)
-    if (res.status === 200) {
+    const { status, data } = res
+    if (status === 200) {
+      if (!data) {
+        clearToken()
+        message('登录过期，请重新登录！', 'error')
+        router.replace('/')
+        return null
+      }
       return res.data
     }
   },

@@ -5,24 +5,26 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:49:10
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-29 22:38:17
+ * @LastEditTime: 2023-02-09 16:03:02
  */
 import request from '@/utils/http/request'
 import { message } from '@/utils/message'
 
-export const rGet = (url, data) => {
+export const rGet = (url, data = {}, params = {}) => {
   return request({
     method: 'get',
     url,
-    data
+    data,
+    params
   })
 }
 
-export const rPost = (url, data) => {
+export const rPost = (url, data = {}, params = {}) => {
   return request({
     method: 'post',
     url,
-    data
+    data,
+    params
   })
 }
 
@@ -43,18 +45,11 @@ export const rPut = (url, data) => {
   })
 }
 
-export const rDelete = (url, data) => {
+export const rDelete = (url, data = {}, params = {}) => {
   return request({
     method: 'delete',
     url,
-    data
-  })
-}
-
-export const rPostByParams = (url, params) => {
-  return request({
-    method: 'post',
-    url,
+    data,
     params
   })
 }
