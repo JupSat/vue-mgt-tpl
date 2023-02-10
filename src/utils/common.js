@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-12 22:07:21
  * @LastEditors: JupSat
- * @LastEditTime: 2023-01-17 10:21:22
+ * @LastEditTime: 2023-02-09 21:59:58
  */
 /**
  * @author JupSat
@@ -44,4 +44,16 @@ export const throttle = (fn, delay = 1000) => {
       valid = true
     }, delay)
   }
+}
+
+/**
+ * @description 下拉参数翻译
+ * @param {*} list
+ * @param {*} val
+ * @return
+ */
+export const translateParam = (list, val) => {
+  if (!Array.isArray(list) || !list) return val
+  const item = list.find((el) => el.value === val)
+  return item ? item.label : val
 }

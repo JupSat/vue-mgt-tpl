@@ -5,20 +5,15 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 16:14:05
+ * @LastEditTime: 2023-02-09 21:39:27
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
         <el-input v-model="ingredientName" placeholder="请输入食材名" clearable></el-input>
-        <el-select v-model="catalogId" placeholder="请选择分类" :size="size" clearable filterable>
-          <el-option
-            v-for="item in [{ label: '蔬菜', value: 34 }]"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
+        <el-select v-model="catalogId" placeholder="请选择分类" clearable filterable>
+          <el-option v-for="item in categoryList" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
         <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()">添加</el-button>
@@ -39,7 +34,12 @@
     >
       <el-table-column :align="align" label="序号" prop="id" width="60" />
       <el-table-column :align="align" label="食材名称" prop="ingredientName" />
-      <el-table-column :align="align" label="食材分类" prop="catalogId" />
+      <el-table-column :align="align" label="食材分类" prop="catalogId">
+        <template #default="scope">
+          <span>{{ translateParam(data.categoryList, scope.row.catalogId) }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column :align="align" label="图片" prop="ingredientImg">
         <template #default="scope">
           <el-image
@@ -89,7 +89,7 @@
         </template>
         <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="80px">
           <el-form-item label="食材名称" prop="ingredientName">
-            <el-input v-model="formData.ingredientName" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input v-model="formData.ingredientName" autocomplete="on" :disabled="oprType === 'query'" clearable />
           </el-form-item>
           <el-form-item label="食材分类" prop="catalogId">
             <el-select
@@ -100,23 +100,18 @@
               filterable
               style="width: 46vw !important"
             >
-              <el-option
-                v-for="item in [{ label: '蔬菜', value: 34 }]"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
+              <el-option v-for="item in categoryList" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
-          <el-form-item label="图片" prop="ingredientImg">
-            <el-input v-model="formData.ingredientImg" autocomplete="on" :disabled="oprType === 'query'" />
+          <el-form-item label="图片url" prop="ingredientImg">
+            <el-input v-model="formData.ingredientImg" autocomplete="on" :disabled="oprType === 'query'" clearable />
           </el-form-item>
           <el-form-item label="描述" prop="ingredientDesc">
-            <el-input v-model="formData.ingredientDesc" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input v-model="formData.ingredientDesc" autocomplete="on" :disabled="oprType === 'query'" clearable />
           </el-form-item>
         </el-form>
         <template #footer>
-          <div class="dialog-footer" v-if="oprType === 'add'">
+          <div class="dialog-footer" v-if="oprType !== 'query'">
             <el-button size="small" @click="closeDialog">取 消</el-button>
             <el-button size="small" type="primary" @click="submit">确 定</el-button>
           </div>
@@ -136,8 +131,10 @@ import { reactive, ref, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { useCommonStore } from '@/pinia/modules/common'
 import { getIngredientList, addIngredient, editIngredient, delIngredient } from '@/api/purchase/ingredientList'
-
+import { getCatalog } from '@/api/purchase/ingredientsCatalog'
 import { message } from '@/utils/message'
+import { translateParam } from '@/utils/common'
+
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
 
@@ -145,7 +142,9 @@ const data = reactive({
   dialogVisible: false,
   ingredientName: '',
   catalogId: null,
+  categoryList: [],
   loading: false,
+  align: 'center',
   tableFields: [
     {
       prop: 'id',
@@ -204,6 +203,8 @@ const getTableData = () => {
       data.loading = false
     })
 }
+getTableData()
+
 const sizeChange = (size) => {
   data.pagination.currentPage = 1
   data.pagination.pageSize = size
@@ -306,10 +307,37 @@ const submit = async () => {
   })
 }
 
-getTableData()
+const getAllCatalog = () => {
+  getCatalog({ ingredientCategory: '' })
+    .then((res) => {
+      const records = res.result || []
+      data.categoryList = records.map((item) => {
+        const option = {
+          label: item.ingredientCategory,
+          value: item.id
+        }
+        return option
+      })
+    })
+    .catch(() => {
+      message('获取分类下拉参数失败！', 'warning')
+    })
+}
+getAllCatalog()
 
-const { ingredientName, catalogId, loading, tableData, pagination, dialogVisible, formData, title, oprType } =
-  toRefs(data)
+const {
+  ingredientName,
+  catalogId,
+  categoryList,
+  loading,
+  align,
+  tableData,
+  pagination,
+  dialogVisible,
+  formData,
+  title,
+  oprType
+} = toRefs(data)
 </script>
 <style scoped lang="scss">
 .ingredient-list {
@@ -335,12 +363,6 @@ const { ingredientName, catalogId, loading, tableData, pagination, dialogVisible
 .el-table {
   .el-button + .el-button {
     margin-left: 1px;
-  }
-}
-
-.add-edit-form {
-  .el-divider--horizontal {
-    margin: 10px 0;
   }
 }
 

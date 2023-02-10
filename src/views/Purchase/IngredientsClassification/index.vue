@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 16:05:17
+ * @LastEditTime: 2023-02-09 20:23:16
 -->
 <template>
   <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -169,6 +169,9 @@ const getTableData = () => {
       data.loading = false
     })
 }
+
+getTableData()
+
 const sizeChange = (size) => {
   data.pagination.currentPage = 1
   data.pagination.pageSize = size
@@ -261,7 +264,6 @@ const submit = async () => {
     }
   })
 }
-getTableData()
 
 const { ingredientCategory, loading, tableFields, tableData, pagination, dialogVisible, formData, title, oprType } =
   toRefs(data)
