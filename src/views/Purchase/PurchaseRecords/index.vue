@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 10:12:03
+ * @LastEditTime: 2023-02-10 16:35:43
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -45,7 +45,7 @@
         :width="item.width"
       >
         <template v-slot="{ row }">
-          <span v-if="['ingredientId', 'ingredientCatalogId', 'vendor', 'unit'].includes(item.prop)">
+          <span v-if="['ingredientId', 'ingredientCatalogId', 'vendor', 'unit', 'purchaser'].includes(item.prop)">
             {{ translateParam(data.selectList[item.prop + 'List'], row[item.prop]) }}
           </span>
           <span v-else>{{ row[item.prop] }}</span>
@@ -284,15 +284,23 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="采购人" prop="purchaser" v-if="oprType !== 'add'">
-            <el-input
+          <el-form-item label="采购人" prop="purchaser">
+            <el-select
               v-model="formData.purchaser"
-              autocomplete="on"
+              placeholder="请选择采购人"
               :disabled="oprType === 'query'"
               :size="size"
-              clearable
               style="width: 48vw !important"
-            />
+              clearable
+              filterable
+            >
+              <el-option
+                v-for="item in selectList.purchaserList"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
+            </el-select>
           </el-form-item>
 
           <el-form-item label="备注" prop="note">
@@ -336,6 +344,8 @@ import { getIngredientList } from '@/api/purchase/ingredientList'
 import { getVendors } from '@/api/purchase/vendor'
 import { message } from '@/utils/message'
 import { getCatalog } from '@/api/purchase/ingredientsCatalog'
+import { getPurchasers } from '@/api/purchase/purchaser'
+
 import { translateParam } from '@/utils/common'
 
 const commonStore = useCommonStore()
@@ -429,7 +439,8 @@ const data = reactive({
       { label: '箱', value: 'box' },
       { label: '无', value: '' }
     ],
-    vendorList: []
+    vendorList: [],
+    purchaserList: []
   },
   formData: {
     purchaseDate: '',
@@ -630,9 +641,27 @@ const getAllVendor = () => {
     })
 }
 
+const getAllPurchaserInfo = () => {
+  getPurchasers()
+    .then((res) => {
+      const records = res.result || []
+      data.selectList.purchaserList = records.map((item) => {
+        const option = {
+          label: item.purchaserName,
+          value: item.purchaserId
+        }
+        return option
+      })
+    })
+    .catch(() => {
+      message('获取供应商下拉参数失败！', 'warning')
+    })
+}
+
 getAllIngredient()
 getAllCatalog()
 getAllVendor()
+getAllPurchaserInfo()
 
 const {
   ingredientId,
