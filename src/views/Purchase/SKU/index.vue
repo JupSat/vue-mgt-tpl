@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 17:46:41
+ * @LastEditTime: 2023-02-10 19:37:57
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -104,16 +104,52 @@
             </el-select>
           </el-form-item>
           <el-form-item label="转化率" prop="conversionRate">
-            <el-input v-model="formData.conversionRate" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input-number
+              v-model="formData.conversionRate"
+              :min="0"
+              :precision="2"
+              :disabled="oprType === 'query'"
+              :size="size"
+              controls-position="right"
+              clearable
+              style="width: 46vw !important"
+            />
           </el-form-item>
           <el-form-item label="可选价格" prop="optionalPrice">
-            <el-input v-model="formData.optionalPrice" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input-number
+              v-model="formData.optionalPrice"
+              :min="0"
+              :precision="2"
+              :disabled="oprType === 'query'"
+              :size="size"
+              controls-position="right"
+              clearable
+              style="width: 46vw !important"
+            />
           </el-form-item>
           <el-form-item label="含税单价" prop="unitPrice">
-            <el-input v-model="formData.unitPrice" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input-number
+              v-model="formData.unitPrice"
+              :min="0"
+              :precision="2"
+              :disabled="oprType === 'query'"
+              :size="size"
+              controls-position="right"
+              clearable
+              style="width: 46vw !important"
+            />
           </el-form-item>
           <el-form-item label="含税金额" prop="amount">
-            <el-input v-model="formData.amount" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input-number
+              v-model="formData.amount"
+              :min="0"
+              :precision="2"
+              :disabled="oprType === 'query'"
+              :size="size"
+              controls-position="right"
+              clearable
+              style="width: 46vw !important"
+            />
           </el-form-item>
           <el-form-item label="备注" prop="note">
             <el-input v-model="formData.note" autocomplete="on" :disabled="oprType === 'query'" />
@@ -187,7 +223,7 @@ const data = reactive({
   selectList: {
     unitList: [
       { label: 'KG/公斤', value: 'kg' },
-      { label: '箱', value: 'box' },
+      { label: 'Box/盒', value: 'box' },
       { label: '无', value: '' }
     ]
   },
