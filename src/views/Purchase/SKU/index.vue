@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 19:37:57
+ * @LastEditTime: 2023-02-11 09:59:20
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -72,18 +72,25 @@
         align-center
       >
         <template #header>
-          <div>
-            <h4>{{ title }}</h4>
-          </div>
-          <el-divider />
+          <h4>{{ title }}</h4>
         </template>
 
         <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="100px">
           <el-form-item label="名称" prop="skuName">
-            <el-input v-model="formData.skuName" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input
+              v-model="formData.skuName"
+              autocomplete="on"
+              :disabled="oprType === 'query'"
+              style="width: 46vw !important"
+            />
           </el-form-item>
           <el-form-item label="数量" prop="skuNum">
-            <el-input v-model="formData.skuNum" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input
+              v-model="formData.skuNum"
+              autocomplete="on"
+              :disabled="oprType === 'query'"
+              style="width: 46vw !important"
+            />
           </el-form-item>
           <el-form-item label="单位" prop="skuUnit">
             <el-select
@@ -91,9 +98,9 @@
               placeholder="请选择单位"
               :disabled="oprType === 'query'"
               :size="'small'"
-              style="width: 46vw !important"
               clearable
               filterable
+              style="width: 46vw !important"
             >
               <el-option
                 v-for="item in selectList.unitList"
@@ -109,7 +116,7 @@
               :min="0"
               :precision="2"
               :disabled="oprType === 'query'"
-              :size="size"
+              :size="'small'"
               controls-position="right"
               clearable
               style="width: 46vw !important"
@@ -121,7 +128,7 @@
               :min="0"
               :precision="2"
               :disabled="oprType === 'query'"
-              :size="size"
+              :size="'small'"
               controls-position="right"
               clearable
               style="width: 46vw !important"
@@ -133,7 +140,7 @@
               :min="0"
               :precision="2"
               :disabled="oprType === 'query'"
-              :size="size"
+              :size="'small'"
               controls-position="right"
               clearable
               style="width: 46vw !important"
@@ -145,14 +152,19 @@
               :min="0"
               :precision="2"
               :disabled="oprType === 'query'"
-              :size="size"
+              :size="'small'"
               controls-position="right"
               clearable
               style="width: 46vw !important"
             />
           </el-form-item>
           <el-form-item label="备注" prop="note">
-            <el-input v-model="formData.note" autocomplete="on" :disabled="oprType === 'query'" />
+            <el-input
+              v-model="formData.note"
+              autocomplete="on"
+              :disabled="oprType === 'query'"
+              style="width: 46vw !important"
+            />
           </el-form-item>
         </el-form>
         <template #footer>
@@ -384,7 +396,7 @@ const getSummaries = (param) => {
       sums[index] = '合计'
       return
     }
-    if (['skuName', 'skuUnit', 'conversionRate', 'note'].includes(column.property)) {
+    if (!['amount'].includes(column.property)) {
       sums[index] = ''
       return
     }

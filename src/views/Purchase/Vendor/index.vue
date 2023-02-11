@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 19:33:08
+ * @LastEditTime: 2023-02-11 10:10:19
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -70,32 +70,21 @@
         align-center
       >
         <template #header>
-          <div>
-            <h4>{{ title }}</h4>
-          </div>
-          <el-divider />
+          <h4>{{ title }}</h4>
         </template>
 
         <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="100px">
-          <el-form-item label="供应商名称" prop="name">
-            <el-input v-model="formData.name" autocomplete="on" :disabled="oprType === 'query'" />
-          </el-form-item>
-          <el-form-item label="供应商地址" prop="address">
-            <el-input v-model="formData.address" autocomplete="on" :disabled="oprType === 'query'" />
-          </el-form-item>
-          <el-form-item label="联系人" prop="contact">
-            <el-input v-model="formData.contact" autocomplete="on" :disabled="oprType === 'query'" />
-          </el-form-item>
-          <el-form-item label="联系人电话" prop="phone">
-            <el-input v-model="formData.phone" autocomplete="on" :disabled="oprType === 'query'" />
-          </el-form-item>
-          <el-form-item label="邮箱" prop="email">
-            <el-input v-model="formData.email" autocomplete="on" :disabled="oprType === 'query'" />
-          </el-form-item>
-          <el-form-item label="备注" prop="remarks">
-            <el-input v-model="formData.remarks" autocomplete="on" :disabled="oprType === 'query'" />
+          <el-form-item v-for="item in tableFields" :key="item.prop" :label="item.label">
+            <el-input
+              v-model="formData[item.prop]"
+              :prop="item.prop"
+              autocomplete="on"
+              :disabled="oprType === 'query'"
+              style="width: 46vw !important"
+            />
           </el-form-item>
         </el-form>
+
         <template #footer>
           <div class="dialog-footer" v-if="oprType !== 'query'">
             <el-button size="small" @click="closeDialog">取 消</el-button>

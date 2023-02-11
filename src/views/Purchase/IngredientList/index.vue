@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 18:57:16
+ * @LastEditTime: 2023-02-11 09:57:44
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -89,13 +89,19 @@
         </template>
         <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="80px">
           <el-form-item label="食材名称" prop="ingredientName">
-            <el-input v-model="formData.ingredientName" autocomplete="on" :disabled="oprType === 'query'" clearable />
+            <el-input
+              v-model="formData.ingredientName"
+              autocomplete="on"
+              :disabled="oprType === 'query'"
+              clearable
+              style="width: 46vw !important"
+            />
           </el-form-item>
           <el-form-item label="食材分类" prop="catalogId">
             <el-select
               v-model="formData.catalogId"
               placeholder="请选择分类"
-              :size="size"
+              size="small"
               clearable
               filterable
               style="width: 46vw !important"
@@ -104,10 +110,22 @@
             </el-select>
           </el-form-item>
           <el-form-item label="图片url" prop="ingredientImg">
-            <el-input v-model="formData.ingredientImg" autocomplete="on" :disabled="oprType === 'query'" clearable />
+            <el-input
+              v-model="formData.ingredientImg"
+              autocomplete="on"
+              :disabled="oprType === 'query'"
+              clearable
+              style="width: 46vw !important"
+            />
           </el-form-item>
           <el-form-item label="描述" prop="ingredientDesc">
-            <el-input v-model="formData.ingredientDesc" autocomplete="on" :disabled="oprType === 'query'" clearable />
+            <el-input
+              v-model="formData.ingredientDesc"
+              autocomplete="on"
+              :disabled="oprType === 'query'"
+              clearable
+              style="width: 46vw !important"
+            />
           </el-form-item>
         </el-form>
         <template #footer>

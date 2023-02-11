@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 18:59:06
+ * @LastEditTime: 2023-02-11 09:54:40
 -->
 <template>
   <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -209,9 +209,12 @@ const deleteCatalog = (row) => {
     .then(() => {
       delCatalog({ id: row.id })
         .then((res) => {
-          if (res && res.status === 200) {
+          const { status = null } = res
+          if (status === 200) {
             message(res.msg)
             getTableData()
+          } else {
+            message(res.msg, 'warning')
           }
         })
         .catch(() => {
