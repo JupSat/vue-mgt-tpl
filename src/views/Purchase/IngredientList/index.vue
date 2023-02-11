@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 09:57:44
+ * @LastEditTime: 2023-02-11 21:29:00
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -61,19 +61,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page-separate">
-      <el-pagination
-        v-model:current-page="pagination.currentPage"
-        v-model:page-size="pagination.pageSize"
-        :page-sizes="pagination.pageSizes"
-        :small="'small'"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="sizeChange"
-        @current-change="currentChange"
-      />
-    </div>
+    <Pagination @page-size-change="sizeChange" @current-change="currentChange" :pagination="pagination"></Pagination>
 
     <div class="add-edit-form">
       <el-dialog
@@ -152,6 +140,7 @@ import { getIngredientList, addIngredient, editIngredient, delIngredient } from 
 import { getCatalog } from '@/api/purchase/ingredientsCatalog'
 import { message } from '@/utils/message'
 import { translateParam } from '@/utils/common'
+import Pagination from '@/components/Pagination'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)

@@ -63,19 +63,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page-separate">
-      <el-pagination
-        v-model:current-page="pagination.currentPage"
-        v-model:page-size="pagination.pageSize"
-        :page-sizes="pagination.pageSizes"
-        :small="'small'"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="sizeChange"
-        @current-change="currentChange"
-      />
-    </div>
+    <Pagination @page-size-change="sizeChange" @current-change="currentChange" :pagination="pagination"></Pagination>
 
     <div class="add-edit-form">
       <el-dialog
@@ -349,6 +337,7 @@ import { message } from '@/utils/message'
 import { getCatalog } from '@/api/purchase/ingredientsCatalog'
 import { getPurchasers } from '@/api/purchase/purchaser'
 import { translateParam } from '@/utils/common'
+import Pagination from '@/components/Pagination'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
