@@ -9,7 +9,8 @@ const reg = {
   money: /^(([1-9]\d{0,9})|0)(\.\d{1,2})?$/,
   address: /^[\u4e00-\u9fa5A-Za-z0-9_-]{5,100}$/,
   userName: /^[\u4e00-\u9fa5A-Za-z0-9_-]{2,20}$/,
-  intNumber: /^(([1-9]\d{0,9})|0)?$/
+  intNumber: /^(([1-9]\d{0,9})|0)?$/,
+  email: /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/
 }
 
 /**
@@ -36,7 +37,7 @@ export const regPhone = (rule, value, cb) => {
   if (reg.phone.test(value)) {
     return cb()
   }
-  cb(new Error($t('XXX'))) // '请输入正确的手机号'
+  cb(new Error($t('plzEnterCorrectMobileNumber'))) // '请输入正确的手机号'
 }
 
 /**
@@ -121,4 +122,18 @@ export const regIntNumber = (rule, value, cb) => {
     return cb()
   }
   cb(new Error($t('XXX'))) // '请输入整数'
+}
+
+/**
+ * @description 校验邮箱
+ * @param {*} rule
+ * @param {*} value
+ * @param {*} cb
+ * @return
+ */
+export const regEmail = (rule, value, cb) => {
+  if (reg.email.test(value)) {
+    return cb()
+  }
+  cb(new Error($t('plzEnterCorrectEmail')))
 }

@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-10 17:39:04
+ * @LastEditTime: 2023-02-11 09:33:04
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -613,11 +613,7 @@ const getSummaries = (param) => {
       sums[index] = '合计'
       return
     }
-    if (
-      ['purchaseDate', 'ingredientId', 'ingredientCatalogId', 'unit', 'vendor', 'purchaser', 'note'].includes(
-        column.property
-      )
-    ) {
+    if (!['budgetary', 'purchaseCost', 'grossProfit'].includes(column.property)) {
       sums[index] = ''
       return
     }
