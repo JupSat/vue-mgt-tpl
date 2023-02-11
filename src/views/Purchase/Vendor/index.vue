@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 10:10:19
+ * @LastEditTime: 2023-02-11 11:16:09
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -74,13 +74,13 @@
         </template>
 
         <el-form ref="addEditForm" :model="formData" :rules="rules" :inline="true" label-width="100px">
-          <el-form-item v-for="item in tableFields" :key="item.prop" :label="item.label">
+          <el-form-item v-for="item in tableFields" :key="item.prop" :label="item.label" :prop="item.prop">
             <el-input
               v-model="formData[item.prop]"
-              :prop="item.prop"
               autocomplete="on"
               :disabled="oprType === 'query'"
               style="width: 46vw !important"
+              :placeholder="'请输入' + item.label"
             />
           </el-form-item>
         </el-form>
@@ -104,11 +104,12 @@ export default {
 <script setup>
 import { reactive, ref, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
-
 import { useCommonStore } from '@/pinia/modules/common'
 import { getVendors, addVendor, editVendor, delVendor } from '@/api/purchase/vendor'
-
 import { message } from '@/utils/message'
+import { getValidator, regPhone } from '@/utils/validate'
+import { useI18n } from 'vue-i18n'
+
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
 
@@ -163,10 +164,19 @@ const data = reactive({
   }
 })
 
+const { t } = useI18n()
 const rules = ref({
-  name: [{ required: true, message: '请输入供应商', trigger: 'blur' }],
-  contact: [{ required: true, message: '请输入联系人', trigger: 'blur' }],
-  phone: [{ required: true, message: '请输入联系人电话', trigger: 'blur' }]
+  name: [getValidator()],
+  contact: [getValidator()],
+  phone: [{ validator: regPhone, trigger: 'blur' }],
+  email: [
+    getValidator('plzEnterEmail'),
+    {
+      type: 'email',
+      message: t('plzEnterCorrectEmail'),
+      trigger: ['blur', 'change']
+    }
+  ]
 })
 
 const getTableData = () => {
