@@ -9,7 +9,7 @@
  */
 export default {
   purchase: '采购',
-  ingredientsClassification: '食材分类',
+  ingredientClassification: '食材分类',
   sku: 'SKU',
   vendor: '供应商',
   purchaseRecords: '采购记录',

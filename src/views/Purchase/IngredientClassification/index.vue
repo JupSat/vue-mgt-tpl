@@ -98,7 +98,7 @@
 
 <script>
 export default {
-  name: 'IngredientsClassification'
+  name: 'IngredientClassification'
 }
 </script>
 <script setup>

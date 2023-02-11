@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 17:47:00
+ * @LastEditTime: 2023-02-11 15:38:54
  */
 import axios from 'axios'
 import router from '@/router'
@@ -55,23 +55,35 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    removePendingRequest(error.config || {})
-    if (error.response.status === 401) {
-      message('请先登录', 'error')
-      router.replace('/')
-    } else if (error.response.status === 403) {
-      message('没有权限!', 'error')
-      router.push({ path: '/noAuth' })
-    } else if (error.response.status === 404) {
-      message('未找到！', 'error')
-    } else if (error.response.status === 504) {
-      message('网关超时！', 'error')
-    } else {
-      message('未知错误！', 'error')
+    if (error) {
+      error.config && removePendingRequest(error.config || {})
+      if (error.response) {
+        const { status = null } = error.response
+        dealError(status)
+      } else {
+        message('未知错误！', 'error')
+      }
     }
     return Promise.reject(error)
   }
 )
+
+const dealError = (status) => {
+  const errorObj = {
+    401: '请先登录！',
+    403: '没有权限！',
+    404: '未找到！',
+    500: '程序异常！',
+    504: '网关超时！'
+  }
+
+  message(errorObj[status] || '未知错误！', 'error')
+  if (status === 401) {
+    router.replace('/')
+  } else if (status === 403) {
+    router.push({ path: '/noAuth' })
+  }
+}
 
 // CancelToken 防止重复请求（防抖）
 // 创建pendingRequest

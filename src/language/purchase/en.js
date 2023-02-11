@@ -9,7 +9,7 @@
  */
 export default {
   purchase: 'Purchase',
-  ingredientsClassification: 'Ingredients Classification',
+  ingredientClassification: 'Ingredient Classification',
   sku: 'SKU',
   vendor: 'Vendor',
   purchaseRecords: 'Purchase records',
