@@ -5,13 +5,26 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 09:33:04
+ * @LastEditTime: 2023-02-12 10:57:09
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="ingredientId" placeholder="请输入食材名" clearable></el-input>
+        <el-select
+          v-model="ingredientId"
+          placeholder="请选择食材名"
+          :disabled="oprType === 'query'"
+          clearable
+          filterable
+        >
+          <el-option
+            v-for="item in selectList.ingredientIdList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
         <el-date-picker
           v-model="purchaseDate"
           type="date"
@@ -703,6 +716,10 @@ const {
   }
   .el-input {
     width: 115px;
+  }
+  .el-select {
+    width: 128px;
+    margin-left: 2px;
   }
 }
 
