@@ -5,13 +5,26 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 09:33:04
+ * @LastEditTime: 2023-02-12 10:57:09
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <el-form :inline="true">
       <el-form-item>
-        <el-input v-model="ingredientId" placeholder="请输入食材名" clearable></el-input>
+        <el-select
+          v-model="ingredientId"
+          placeholder="请选择食材名"
+          :disabled="oprType === 'query'"
+          clearable
+          filterable
+        >
+          <el-option
+            v-for="item in selectList.ingredientIdList"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
         <el-date-picker
           v-model="purchaseDate"
           type="date"
@@ -63,19 +76,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page-separate">
-      <el-pagination
-        v-model:current-page="pagination.currentPage"
-        v-model:page-size="pagination.pageSize"
-        :page-sizes="pagination.pageSizes"
-        :small="'small'"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="sizeChange"
-        @current-change="currentChange"
-      />
-    </div>
+    <Pagination @page-size-change="sizeChange" @current-change="currentChange" :pagination="pagination"></Pagination>
 
     <div class="add-edit-form">
       <el-dialog
@@ -349,6 +350,7 @@ import { message } from '@/utils/message'
 import { getCatalog } from '@/api/purchase/ingredientsCatalog'
 import { getPurchasers } from '@/api/purchase/purchaser'
 import { translateParam } from '@/utils/common'
+import Pagination from '@/components/Pagination'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
@@ -714,6 +716,10 @@ const {
   }
   .el-input {
     width: 115px;
+  }
+  .el-select {
+    width: 128px;
+    margin-left: 2px;
   }
 }
 

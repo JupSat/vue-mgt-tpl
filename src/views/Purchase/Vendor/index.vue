@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 11:16:09
+ * @LastEditTime: 2023-02-11 21:32:01
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -46,19 +46,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page-separate">
-      <el-pagination
-        v-model:current-page="pagination.currentPage"
-        v-model:page-size="pagination.pageSize"
-        :page-sizes="pagination.pageSizes"
-        :small="'small'"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="sizeChange"
-        @current-change="currentChange"
-      />
-    </div>
+    <Pagination @page-size-change="sizeChange" @current-change="currentChange" :pagination="pagination"></Pagination>
 
     <div class="add-edit-form">
       <el-dialog
@@ -109,6 +97,7 @@ import { getVendors, addVendor, editVendor, delVendor } from '@/api/purchase/ven
 import { message } from '@/utils/message'
 import { getValidator, regPhone } from '@/utils/validate'
 import { useI18n } from 'vue-i18n'
+import Pagination from '@/components/Pagination'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)

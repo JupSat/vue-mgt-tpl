@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 09:54:40
+ * @LastEditTime: 2023-02-11 21:24:54
 -->
 <template>
   <div class="ingredient-catalog" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -47,19 +47,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="page-separate">
-      <el-pagination
-        v-model:current-page="pagination.currentPage"
-        v-model:page-size="pagination.pageSize"
-        :page-sizes="pagination.pageSizes"
-        :small="'small'"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="sizeChange"
-        @current-change="currentChange"
-      />
-    </div>
+    <Pagination @page-size-change="sizeChange" @current-change="currentChange" :pagination="pagination"></Pagination>
 
     <div class="add-edit-form">
       <el-dialog
@@ -106,8 +94,9 @@ import { reactive, ref, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { useCommonStore } from '@/pinia/modules/common'
 import { getCatalog, addCatalog, editCatalog, delCatalog } from '@/api/purchase/ingredientsCatalog'
-
 import { message } from '@/utils/message'
+import Pagination from '@/components/Pagination'
+
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
 
@@ -266,12 +255,6 @@ const { ingredientCategory, loading, tableFields, tableData, pagination, dialogV
   .el-input {
     width: 100px;
   }
-}
-
-.page-separate {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
 }
 
 .el-table {
