@@ -71,8 +71,8 @@ const state = reactive({
 })
 
 const formData = reactive({
-  username: 'admin',
-  password: '123456',
+  username: '',
+  password: '',
   captcha: ''
 })
 
