@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-04 10:11:17
+ * @LastEditTime: 2023-02-13 11:59:17
 -->
 <template>
   <el-container>
@@ -18,7 +18,11 @@
         <div class="main-body">
           <div class="main-container">
             <div class="main-content">
-              <router-view />
+              <router-view v-slot="{ Component }">
+                <keep-alive include="PurchaseRecords,SKU">
+                  <component :is="Component" />
+                </keep-alive>
+              </router-view>
               <el-backtop target=".main-layout .el-scrollbar__wrap" :bottom="90">
                 <el-icon><Top /></el-icon>
               </el-backtop>
@@ -47,10 +51,17 @@ export default {
 import Breadcrumb from '@/views/Basics/Layout/Breadcrumb'
 import Tabs from '@/views/Basics/Layout/Tabs'
 import { useCommonStore } from '@/pinia/modules/common'
-import { computed } from 'vue'
+import { computed, onActivated, onDeactivated } from 'vue'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
+
+onActivated(() => {
+  debugger
+})
+onDeactivated(() => {
+  debugger
+})
 </script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
