@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-13 11:08:48
+ * @LastEditTime: 2023-02-13 16:54:02
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -40,12 +40,7 @@
     <el-table
       ref="purchaseRecordsRef"
       v-loading="loading"
-      :data="
-        tableData.slice(
-          (pagination.currentPage - 1) * pagination.pageSize,
-          pagination.currentPage * pagination.pageSize
-        )
-      "
+      :data="tableData"
       :summary-method="getSummaries"
       show-summary
       :max-height="450"
@@ -512,15 +507,15 @@ const getTableData = () => {
   data.loading = true
   const params = {
     ingredientId: data.ingredientId,
-    purchaseDate: data.purchaseDate
-    // page: data.pagination.currentPage,
-    // pageSize: data.pagination.pageSize
+    purchaseDate: data.purchaseDate,
+    pageNum: data.pagination.currentPage,
+    pageSize: data.pagination.pageSize
   }
   getPurchaseRecords(params)
     .then((res) => {
-      const records = res.result || []
+      const { records = [], total = 0 } = res.result || []
       data.tableData = records
-      data.pagination.total = records.length
+      data.pagination.total = total
     })
     .catch(() => {
       message('查询失败！', 'warning')
