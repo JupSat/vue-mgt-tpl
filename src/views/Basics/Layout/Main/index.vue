@@ -51,17 +51,10 @@ export default {
 import Breadcrumb from '@/views/Basics/Layout/Breadcrumb'
 import Tabs from '@/views/Basics/Layout/Tabs'
 import { useCommonStore } from '@/pinia/modules/common'
-import { computed, onActivated, onDeactivated } from 'vue'
+import { computed } from 'vue'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
-
-onActivated(() => {
-  debugger
-})
-onDeactivated(() => {
-  debugger
-})
 </script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';

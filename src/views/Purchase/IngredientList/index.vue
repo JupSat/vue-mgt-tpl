@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 21:29:00
+ * @LastEditTime: 2023-02-13 12:08:15
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -101,6 +101,7 @@
             <el-input
               v-model="formData.ingredientImg"
               autocomplete="on"
+              maxlength="200"
               :disabled="oprType === 'query'"
               clearable
               style="width: 46vw !important"
