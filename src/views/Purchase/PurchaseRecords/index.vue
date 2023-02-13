@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-13 16:54:02
+ * @LastEditTime: 2023-02-13 19:38:16
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -73,282 +73,15 @@
     </el-table>
     <Pagination @page-size-change="sizeChange" @current-change="currentChange" :pagination="pagination"></Pagination>
 
-    <div class="add-edit-form">
-      <el-dialog
-        v-model="dialogVisible"
-        :before-close="closeDialog"
-        :fullscreen="true"
-        draggable
-        :append-to-body="true"
-        align-center
-        class="add-edit-dialog"
-      >
-        <template #header>
-          <h4>{{ title }}</h4>
-        </template>
-
-        <el-form
-          ref="addEditForm"
-          :model="formData"
-          :rules="rules"
-          :inline="true"
-          label-width="100px"
-          v-loading="purchaseRecordsLoading"
-          style="margin-top: -22px"
-        >
-          <!-- 日期、食材名称、食材分类、单位、数量、单价、预算、采购量、采购价、花费、备注摘要、毛利、供应商、采购人 -->
-          <el-form-item label="日期" prop="purchaseDate">
-            <el-date-picker
-              v-model="formData.purchaseDate"
-              type="date"
-              placeholder="请选择日期"
-              format="YYYY-MM-DD"
-              value-format="YYYY-MM-DD"
-              :disabled="oprType === 'query'"
-              :size="size"
-              style="width: 48vw !important"
-            />
-          </el-form-item>
-          <el-form-item label="食材名称" prop="ingredientId">
-            <el-select
-              v-model="formData.ingredientId"
-              placeholder="请选择食材名称"
-              :disabled="oprType === 'query'"
-              :size="size"
-              style="width: 48vw !important"
-              clearable
-              filterable
-              @change="changeIngredient()"
-            >
-              <el-option
-                v-for="item in selectList.ingredientIdList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="分类" prop="ingredientCatalogId">
-            <el-select
-              v-model="formData.ingredientCatalogId"
-              placeholder="无"
-              disabled
-              :size="size"
-              style="width: 48vw !important"
-            >
-              <el-option
-                v-for="item in selectList.ingredientCatalogIdList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="单位" prop="unit">
-            <el-select
-              v-model="formData.unit"
-              placeholder="请选择单位"
-              :disabled="oprType === 'query'"
-              :size="size"
-              style="width: 48vw !important"
-              clearable
-              filterable
-            >
-              <el-option
-                v-for="item in selectList.unitList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="数量" prop="num">
-            <el-input-number
-              v-model="formData.num"
-              :min="0"
-              :precision="2"
-              :disabled="oprType === 'query'"
-              :size="size"
-              controls-position="right"
-              clearable
-              style="width: 48vw !important"
-            />
-          </el-form-item>
-          <el-form-item label="单价" prop="unitPrice">
-            <el-input-number
-              v-model="formData.unitPrice"
-              :min="0"
-              :precision="2"
-              :disabled="oprType === 'query'"
-              :size="size"
-              controls-position="right"
-              clearable
-              style="width: 48vw !important"
-            />
-          </el-form-item>
-          <el-form-item label="预算" prop="budgetary">
-            <div style="width: 48vw !important">
-              <el-input-number
-                v-model="formData.budgetary"
-                :min="0"
-                :precision="2"
-                disabled
-                :size="size"
-                controls-position="right"
-                clearable
-                style="width: 48vw !important"
-              />
-              <el-popover
-                placement="top-start"
-                title="提示："
-                :width="200"
-                trigger="hover"
-                content="预算 = 数量 x 单价（输入时自动计算）"
-              >
-                <template #reference>
-                  <el-button type="warning" circle style="width: 3px; height: 3px; position: absolute; margin-top: 8px">
-                    ?
-                  </el-button>
-                </template>
-              </el-popover>
-            </div>
-          </el-form-item>
-          <el-form-item label="采购量" prop="purchaseNum">
-            <el-input-number
-              v-model="formData.purchaseNum"
-              :min="0"
-              :disabled="oprType === 'query'"
-              :size="size"
-              controls-position="right"
-              clearable
-              style="width: 48vw !important"
-            />
-          </el-form-item>
-          <el-form-item label="采购价" prop="purchasePrice">
-            <el-input-number
-              v-model="formData.purchasePrice"
-              :min="0"
-              :precision="2"
-              :disabled="oprType === 'query'"
-              :size="size"
-              controls-position="right"
-              clearable
-              style="width: 48vw !important"
-            />
-          </el-form-item>
-
-          <el-form-item label="花费" prop="purchaseCost">
-            <div class="purchaseCost" style="width: 48vw !important">
-              <el-input-number
-                v-model="formData.purchaseCost"
-                :min="0"
-                :precision="2"
-                disabled
-                :size="size"
-                controls-position="right"
-                clearable
-                style="width: 48vw !important"
-              />
-              <el-popover
-                placement="top-start"
-                title="提示："
-                :width="200"
-                trigger="hover"
-                content="花费 = 采购量 x 采购价（输入时自动计算）"
-              >
-                <template #reference>
-                  <el-button type="warning" circle style="width: 3px; height: 3px; position: absolute; margin-top: 8px">
-                    ?
-                  </el-button>
-                </template>
-              </el-popover>
-            </div>
-          </el-form-item>
-
-          <el-form-item label="毛利" prop="grossProfit">
-            <div class="purchaseCost" style="width: 48vw !important">
-              <el-input-number
-                v-model="formData.grossProfit"
-                :min="0"
-                :precision="2"
-                disabled
-                :size="size"
-                controls-position="right"
-                clearable
-                style="width: 48vw !important"
-              />
-
-              <el-popover
-                placement="top-start"
-                title="提示："
-                :width="200"
-                trigger="hover"
-                content="毛利 = 预算 - 花费（输入时自动计算）"
-              >
-                <template #reference>
-                  <el-button type="warning" circle style="width: 3px; height: 3px; position: absolute; margin-top: 8px">
-                    ?
-                  </el-button>
-                </template>
-              </el-popover>
-            </div>
-          </el-form-item>
-          <el-form-item label="供应商" prop="vendor">
-            <el-select
-              v-model="formData.vendor"
-              placeholder="请选择供应商"
-              :disabled="oprType === 'query'"
-              :size="size"
-              style="width: 48vw !important"
-              clearable
-              filterable
-            >
-              <el-option
-                v-for="item in selectList.vendorList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="采购人" prop="purchaser">
-            <el-select
-              v-model="formData.purchaser"
-              placeholder="请选择采购人"
-              :disabled="oprType === 'query'"
-              :size="size"
-              style="width: 48vw !important"
-              clearable
-              filterable
-            >
-              <el-option
-                v-for="item in selectList.purchaserList"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="备注" prop="note">
-            <el-input
-              v-model="formData.note"
-              autocomplete="on"
-              :disabled="oprType === 'query'"
-              :size="size"
-              clearable
-              style="width: 48vw"
-            />
-          </el-form-item>
-        </el-form>
-        <template #footer>
-          <div class="dialog-footer" v-if="oprType !== 'query'">
-            <el-button size="small" @click="closeDialog">取 消</el-button>
-            <el-button size="small" type="primary" @click="submit">确 定</el-button>
-          </div>
-        </template>
-      </el-dialog>
+    <div class="add-edit-form" v-if="dialogVisible">
+      <AddPurchaseRecord
+        :selectList="selectList"
+        :dialogVisible="dialogVisible"
+        :oprType="oprType"
+        :title="title"
+        :rowData="rowData"
+        @on-close-dialog="closeDialog"
+      ></AddPurchaseRecord>
     </div>
   </div>
 </template>
@@ -359,15 +92,10 @@ export default {
 }
 </script>
 <script setup>
-import { reactive, ref, toRefs, computed } from 'vue'
+import { reactive, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { useCommonStore } from '@/pinia/modules/common'
-import {
-  getPurchaseRecords,
-  addPurchaseRecord,
-  editPurchaseRecord,
-  delPurchaseRecord
-} from '@/api/purchase/purchaseRecords'
+import { getPurchaseRecords, delPurchaseRecord } from '@/api/purchase/purchaseRecords'
 import { getIngredientList } from '@/api/purchase/ingredientList'
 import { getVendors } from '@/api/purchase/vendor'
 import { message } from '@/utils/message'
@@ -375,6 +103,7 @@ import { getCatalog } from '@/api/purchase/ingredientsCatalog'
 import { getPurchasers } from '@/api/purchase/purchaser'
 import { isMobileTerminal, translateParam } from '@/utils/common'
 import Pagination from '@/components/Pagination'
+import AddPurchaseRecord from './Widgets/AddPurchaseRecord'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
@@ -480,28 +209,13 @@ const data = reactive({
     vendor: '',
     purchaser: '',
     note: ''
-  }
+  },
+  rowData: null
 })
-
-data.formData.budgetary = computed(() => Number((data.formData.unitPrice * data.formData.num).toFixed(2)))
-data.formData.purchaseCost = computed(() =>
-  Number((data.formData.purchasePrice * data.formData.purchaseNum).toFixed(2))
-)
-data.formData.grossProfit = computed(() => Number((data.formData.budgetary - data.formData.purchaseCost).toFixed(2)))
 
 const btSize = computed(() => (isMobileTerminal() ? 'small' : 'default'))
 const isText = computed(() => !isMobileTerminal())
 const colWidth = computed(() => (isMobileTerminal() ? '175' : '200'))
-
-const rules = ref({
-  purchaseDate: [{ required: true, message: '请选择采购日期', trigger: 'change' }],
-  ingredientId: [{ required: true, message: '请选择食材名', trigger: 'change' }],
-  num: [{ required: true, message: '请输入数量', trigger: 'blur' }],
-  unitPrice: [{ required: true, message: '请输入单价', trigger: 'blur' }],
-  purchaseNum: [{ required: true, message: '请输入采购量', trigger: 'blur' }],
-  purchasePrice: [{ required: true, message: '请输入采购价', trigger: 'blur' }],
-  vendor: [{ required: true, message: '请选择供应商', trigger: 'change' }]
-})
 
 const getTableData = () => {
   data.loading = true
@@ -540,32 +254,21 @@ const viewDetail = (row) => {
   data.dialogVisible = true
   data.oprType = 'query'
   data.title = '明细'
-  setFormData(row)
+  data.rowData = row
 }
 
-const copyFormData = JSON.parse(JSON.stringify(data.formData))
 const addEdit = (row) => {
   if (!row || !row.id) {
     data.oprType = 'add'
     data.title = '新增采购记录'
-    setFormData(copyFormData)
+    data.rowData = null
   } else {
     data.oprType = 'edit'
     data.title = '修改采购记录'
-    setFormData(row)
+    data.rowData = row
   }
   data.dialogVisible = true
 }
-
-const setFormData = (row) => {
-  Object.keys(row).forEach((key) => {
-    // 'budgetary', 'purchaseCost', 'grossProfit' 是由computed计算，赋值会报错
-    if (!['budgetary', 'purchaseCost', 'grossProfit'].includes(key)) {
-      data.formData[key] = row[key]
-    }
-  })
-}
-
 const deleteRow = (row) => {
   ElMessageBox.confirm(`确定删除${row.ingredientId}这条采购记录吗? `, 'Warning', {
     confirmButtonText: '确定',
@@ -583,43 +286,6 @@ const deleteRow = (row) => {
     })
     .catch(() => {})
 }
-
-const addEditForm = ref(null)
-
-const closeDialog = () => {
-  data.dialogVisible = false
-  addEditForm.value.clearValidate()
-}
-
-const submit = async () => {
-  addEditForm.value.validate(async (valid) => {
-    if (valid) {
-      if (data.oprType === 'add') {
-        const res = await addPurchaseRecord([data.formData])
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
-      } else {
-        const res = await editPurchaseRecord(data.formData)
-        if (res && res.status === 200) {
-          message(res.msg)
-          closeDialog()
-          getTableData()
-        }
-      }
-    }
-  })
-}
-
-const changeIngredient = () => {
-  const ingredientId = data.formData.ingredientId
-  const ll = data.selectList.ingredientIdList
-  const el = data.selectList.ingredientIdList.find((item) => item.value === ingredientId)
-  data.formData.ingredientCatalogId = el ? el.catalogId : null
-}
-
 const getAllIngredient = () => {
   getIngredientList({ ingredientName: '', catalogId: '' })
     .then((res) => {
@@ -667,6 +333,11 @@ const getSummaries = (param) => {
   })
 
   return sums
+}
+
+const closeDialog = () => {
+  data.dialogVisible = false
+  getTableData()
 }
 
 const getAllCatalog = () => {
@@ -733,12 +404,10 @@ const {
   tableData,
   tableFields,
   pagination,
-  size,
   dialogVisible,
-  formData,
-  title,
   oprType,
-  purchaseRecordsLoading
+  rowData,
+  title
 } = toRefs(data)
 </script>
 <style scoped lang="scss">
