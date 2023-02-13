@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-12 10:57:09
+ * @LastEditTime: 2023-02-13 10:40:50
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -171,6 +171,7 @@
             <el-input-number
               v-model="formData.num"
               :min="0"
+              :precision="2"
               :disabled="oprType === 'query'"
               :size="size"
               controls-position="right"
@@ -192,7 +193,16 @@
           </el-form-item>
           <el-form-item label="预算" prop="budgetary">
             <div style="width: 48vw !important">
-              <el-input v-model="formData.budgetary" disabled :size="size" />
+              <el-input-number
+                v-model="formData.budgetary"
+                :min="0"
+                :precision="2"
+                disabled
+                :size="size"
+                controls-position="right"
+                clearable
+                style="width: 48vw !important"
+              />
               <el-popover
                 placement="top-start"
                 title="提示："
@@ -234,7 +244,16 @@
 
           <el-form-item label="花费" prop="purchaseCost">
             <div class="purchaseCost" style="width: 48vw !important">
-              <el-input v-model="formData.purchaseCost" autocomplete="on" disabled :size="size" clearable />
+              <el-input-number
+                v-model="formData.purchaseCost"
+                :min="0"
+                :precision="2"
+                disabled
+                :size="size"
+                controls-position="right"
+                clearable
+                style="width: 48vw !important"
+              />
               <el-popover
                 placement="top-start"
                 title="提示："
@@ -253,7 +272,17 @@
 
           <el-form-item label="毛利" prop="grossProfit">
             <div class="purchaseCost" style="width: 48vw !important">
-              <el-input v-model="formData.grossProfit" autocomplete="on" disabled :size="size" clearable />
+              <el-input-number
+                v-model="formData.grossProfit"
+                :min="0"
+                :precision="2"
+                disabled
+                :size="size"
+                controls-position="right"
+                clearable
+                style="width: 48vw !important"
+              />
+
               <el-popover
                 placement="top-start"
                 title="提示："
@@ -454,14 +483,16 @@ const data = reactive({
     purchaseCost: 0,
     grossProfit: 0,
     vendor: '',
-    purchaser: '', // 采购人为登录者
+    purchaser: '',
     note: ''
   }
 })
 
-data.formData.budgetary = computed(() => data.formData.unitPrice * data.formData.num)
-data.formData.purchaseCost = computed(() => data.formData.purchasePrice * data.formData.purchaseNum)
-data.formData.grossProfit = computed(() => data.formData.budgetary - data.formData.purchaseCost)
+data.formData.budgetary = computed(() => Number((data.formData.unitPrice * data.formData.num).toFixed(2)))
+data.formData.purchaseCost = computed(() =>
+  Number((data.formData.purchasePrice * data.formData.purchaseNum).toFixed(2))
+)
+data.formData.grossProfit = computed(() => Number((data.formData.budgetary - data.formData.purchaseCost).toFixed(2)))
 
 const rules = ref({
   purchaseDate: [{ required: true, message: '请选择采购日期', trigger: 'change' }],
@@ -513,10 +544,12 @@ const viewDetail = (row) => {
   setFormData(row)
 }
 
+const copyFormData = JSON.parse(JSON.stringify(data.formData))
 const addEdit = (row) => {
   if (!row || !row.id) {
     data.oprType = 'add'
     data.title = '新增采购记录'
+    setFormData(copyFormData)
   } else {
     data.oprType = 'edit'
     data.title = '修改采购记录'
@@ -556,7 +589,6 @@ const addEditForm = ref(null)
 
 const closeDialog = () => {
   data.dialogVisible = false
-  data.formData.catalogEditable = true
   addEditForm.value.clearValidate()
 }
 
@@ -621,7 +653,7 @@ const getSummaries = (param) => {
     }
     const values = data.map((item) => Number(item[column.property]))
     if (!values.every((value) => Number.isNaN(value))) {
-      sums[index] = `${values.reduce((prev, curr) => {
+      const tempTotal = `${values.reduce((prev, curr) => {
         const value = Number(curr)
         if (!Number.isNaN(value)) {
           return prev + curr
@@ -629,6 +661,7 @@ const getSummaries = (param) => {
           return prev
         }
       }, 0)}`
+      sums[index] = Number(tempTotal).toFixed(2)
     } else {
       sums[index] = ''
     }
