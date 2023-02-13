@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-13 10:40:50
+ * @LastEditTime: 2023-02-13 11:08:48
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -68,11 +68,11 @@
         </template>
       </el-table-column>
 
-      <el-table-column :align="'center'" label="操作" width="175" fixed="right">
+      <el-table-column :align="'center'" label="操作" :width="colWidth" fixed="right">
         <template v-slot="{ row }">
-          <el-button type="success" size="small" @click="viewDetail(row)">明细</el-button>
-          <el-button type="primary" size="small" plain @click="addEdit(row)">编辑</el-button>
-          <el-button type="danger" size="small" @click="deleteRow(row)">删除</el-button>
+          <el-button type="success" :size="btSize" :text="isText" @click="viewDetail(row)">明细</el-button>
+          <el-button type="primary" :size="btSize" :text="isText" plain @click="addEdit(row)">编辑</el-button>
+          <el-button type="danger" :size="btSize" :text="isText" @click="deleteRow(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -378,7 +378,7 @@ import { getVendors } from '@/api/purchase/vendor'
 import { message } from '@/utils/message'
 import { getCatalog } from '@/api/purchase/ingredientsCatalog'
 import { getPurchasers } from '@/api/purchase/purchaser'
-import { translateParam } from '@/utils/common'
+import { isMobileTerminal, translateParam } from '@/utils/common'
 import Pagination from '@/components/Pagination'
 
 const commonStore = useCommonStore()
@@ -493,6 +493,10 @@ data.formData.purchaseCost = computed(() =>
   Number((data.formData.purchasePrice * data.formData.purchaseNum).toFixed(2))
 )
 data.formData.grossProfit = computed(() => Number((data.formData.budgetary - data.formData.purchaseCost).toFixed(2)))
+
+const btSize = computed(() => (isMobileTerminal() ? 'small' : 'default'))
+const isText = computed(() => !isMobileTerminal())
+const colWidth = computed(() => (isMobileTerminal() ? '175' : '200'))
 
 const rules = ref({
   purchaseDate: [{ required: true, message: '请选择采购日期', trigger: 'change' }],
@@ -759,12 +763,6 @@ const {
 ::v-deep(.el-date-editor) {
   width: 130px;
   margin-left: 1px;
-}
-
-.page-separate {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
 }
 
 .el-table {
