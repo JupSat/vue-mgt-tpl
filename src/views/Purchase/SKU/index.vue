@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 09:59:20
+ * @LastEditTime: 2023-02-13 10:47:41
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -73,10 +73,13 @@
             />
           </el-form-item>
           <el-form-item label="数量" prop="skuNum">
-            <el-input
+            <el-input-number
               v-model="formData.skuNum"
-              autocomplete="on"
-              :disabled="oprType === 'query'"
+              :min="0"
+              :precision="0"
+              :size="'small'"
+              controls-position="right"
+              clearable
               style="width: 46vw !important"
             />
           </el-form-item>
@@ -287,15 +290,6 @@ const currentChange = (page) => {
 }
 
 const setFormData = (row) => {
-  // data.formData.skuName = row.skuName
-  // data.formData.skuNum = row.skuNum
-  // data.formData.skuUnit = row.skuUnit
-  // data.formData.conversionRate = row.conversionRate
-  // data.formData.optionalPrice = row.optionalPrice
-  // data.formData.unitPrice = row.unitPrice
-  // data.formData.amount = row.amount
-  // data.formData.note = row.note
-
   Object.keys(data.formData).forEach((key) => {
     data.formData[key] = row[key]
   })
@@ -391,7 +385,7 @@ const getSummaries = (param) => {
     }
     const values = data.map((item) => Number(item[column.property]))
     if (!values.every((value) => Number.isNaN(value))) {
-      sums[index] = `${values.reduce((prev, curr) => {
+      const tempTotal = `${values.reduce((prev, curr) => {
         const value = Number(curr)
         if (!Number.isNaN(value)) {
           return prev + curr
@@ -399,6 +393,7 @@ const getSummaries = (param) => {
           return prev
         }
       }, 0)}`
+      sums[index] = Number(tempTotal).toFixed(2)
     } else {
       sums[index] = ''
     }

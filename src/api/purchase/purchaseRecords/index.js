@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-05 12:45:13
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 10:47:02
+ * @LastEditTime: 2023-02-13 16:44:59
  */
 import { rPost } from '@/utils/http/function'
 
@@ -15,7 +15,7 @@ const prefix = 'api/purchaseRecord'
  * @description 获取采购记录
  * @return
  */
-export const getPurchaseRecords = (data) => rPost(`/${prefix}/find`, data)
+export const getPurchaseRecords = (data) => rPost(`/${prefix}/findByPage`, data)
 
 /**
  * @description 添加采购记录

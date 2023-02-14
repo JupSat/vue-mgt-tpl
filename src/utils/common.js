@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-12 22:07:21
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-09 21:59:58
+ * @LastEditTime: 2023-02-13 11:13:04
  */
 /**
  * @author JupSat
@@ -52,8 +52,19 @@ export const throttle = (fn, delay = 1000) => {
  * @param {*} val
  * @return
  */
-export const translateParam = (list, val) => {
-  if (!Array.isArray(list) || !list) return val
+export const translateParam = (list = [], val) => {
+  if (!Array.isArray(list)) return val
   const item = list.find((el) => el.value === val)
   return item ? item.label : val
+}
+
+/**
+ * @description 判断是否为手机端
+ * @param { }
+ * @return
+ */
+export const isMobileTerminal = () => {
+  return navigator.userAgent.match(
+    /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+  )
 }
