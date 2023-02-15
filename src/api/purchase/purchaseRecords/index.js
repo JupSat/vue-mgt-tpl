@@ -5,9 +5,10 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-05 12:45:13
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-13 16:44:59
+ * @LastEditTime: 2023-02-15 23:57:20
  */
 import { rPost } from '@/utils/http/function'
+import { downloadFile } from '@/utils/file'
 
 const prefix = 'api/purchaseRecord'
 
@@ -34,3 +35,17 @@ export const editPurchaseRecord = (data) => rPost(`/${prefix}/update`, data)
  * @return
  */
 export const delPurchaseRecord = (params) => rPost(`/${prefix}/delete`, null, params)
+
+/**
+ * @description 导入采购记录
+ * @return
+ */
+export const importPurchaseRecord = (data) => rPost(`/${prefix}/import`, data)
+
+/**
+ * @description 导出采购记录
+ * @return
+ */
+export const exportPurchaseRecord = () => {
+  return downloadFile(`/${prefix}/export`, null, '采购记录')
+}

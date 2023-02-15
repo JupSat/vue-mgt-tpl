@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-13 19:38:16
+ * @LastEditTime: 2023-02-15 23:59:25
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -34,6 +34,19 @@
         />
         <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()" class="query">添加</el-button>
+        <!-- <el-button @click="importData" class="query">导入</el-button> -->
+        <el-upload
+          class="upload"
+          action="#"
+          :show-file-list="false"
+          :on-change="importData"
+          accept="'.xlsx'"
+          :auto-upload="false"
+          :headers="headers"
+        >
+          <el-button class="query">导入</el-button>
+        </el-upload>
+        <el-button @click="exportData" class="query">导出</el-button>
       </el-form-item>
     </el-form>
 
@@ -95,7 +108,12 @@ export default {
 import { reactive, toRefs, computed } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { useCommonStore } from '@/pinia/modules/common'
-import { getPurchaseRecords, delPurchaseRecord } from '@/api/purchase/purchaseRecords'
+import {
+  getPurchaseRecords,
+  delPurchaseRecord,
+  importPurchaseRecord,
+  exportPurchaseRecord
+} from '@/api/purchase/purchaseRecords'
 import { getIngredientList } from '@/api/purchase/ingredientList'
 import { getVendors } from '@/api/purchase/vendor'
 import { message } from '@/utils/message'
@@ -210,7 +228,8 @@ const data = reactive({
     purchaser: '',
     note: ''
   },
-  rowData: null
+  rowData: null,
+  headers: { 'Content-Type': 'multipart/form-data;charset=UTF-8' }
 })
 
 const btSize = computed(() => (isMobileTerminal() ? 'small' : 'default'))
@@ -396,6 +415,27 @@ getAllCatalog()
 getAllVendor()
 getAllPurchaserInfo()
 
+const importData = (file) => {
+  let formData = new FormData()
+  formData.append('file', file.raw)
+  importPurchaseRecord(formData)
+    .then((res) => {
+      if (res && res.status === 200) {
+        message('导入成功')
+        getTableData()
+      } else {
+        message('导入失败', 'warning')
+      }
+    })
+    .catch(() => {
+      message('导入失败', 'warning')
+    })
+}
+
+const exportData = () => {
+  exportPurchaseRecord()
+}
+
 const {
   ingredientId,
   purchaseDate,
@@ -407,7 +447,8 @@ const {
   dialogVisible,
   oprType,
   rowData,
-  title
+  title,
+  headers
 } = toRefs(data)
 </script>
 <style scoped lang="scss">
