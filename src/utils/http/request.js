@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 15:38:54
+ * @LastEditTime: 2023-02-16 00:03:00
  */
 import axios from 'axios'
 import router from '@/router'
@@ -43,15 +43,16 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (res) => {
     removePendingRequest(res.config)
-    const { status, data } = res
+    const { status, data, config } = res
     if (status === 200) {
       if (!data) {
         clearToken()
         message('登录过期，请重新登录！', 'error')
         router.replace('/')
         return null
+      } else {
+        return config.url === '/api/purchaseRecord/export' ? res : res.data
       }
-      return res.data
     }
   },
   (error) => {

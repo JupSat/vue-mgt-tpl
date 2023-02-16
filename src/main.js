@@ -15,9 +15,4 @@ for (const [key, component] of Object.entries(Icons)) {
   app.component(key, component)
 }
 
-app
-  .use(router)
-  .use(store)
-  .use(ElementPlus, { locale: locale })
-  .use(i18n)
-  .mount('#app')
+app.use(router).use(store).use(ElementPlus, { locale: locale }).use(i18n).mount('#app')

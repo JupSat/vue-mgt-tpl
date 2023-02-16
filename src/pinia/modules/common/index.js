@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-02 14:58:02
+ * @LastEditTime: 2023-02-15 17:05:09
  */
 import { defineStore } from 'pinia'
 
@@ -13,7 +13,7 @@ export const useCommonStore = defineStore('common', {
   state: () => {
     return {
       language: 'zh',
-      theme: 'blue',
+      theme: 'light',
       isCollapse: false
     }
   },

@@ -8,7 +8,6 @@
  * @LastEditTime: 2023-02-09 16:03:02
  */
 import request from '@/utils/http/request'
-import { message } from '@/utils/message'
 
 export const rGet = (url, data = {}, params = {}) => {
   return request({
@@ -51,29 +50,5 @@ export const rDelete = (url, data = {}, params = {}) => {
     url,
     data,
     params
-  })
-}
-
-export const rDownloadFile = (url, data, filename, method = 'get') => {
-  const reqParams = {
-    method,
-    url,
-    responseType: 'blob',
-    timeout: 5 * 60 * 1000
-  }
-  method === 'get' ? (reqParams.params = data) : (reqParams.data = data)
-  return request(reqParams).then((res) => {
-    if (!res) {
-      message('文件不存在！', 'error')
-      return
-    }
-    const blob = new Blob([res.data], { type: res.type })
-    const href = window.URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.style.display = 'none'
-    link.setAttribute('download', filename)
-    link.href = href
-    link.click()
-    document.body.removeChild(link)
   })
 }
