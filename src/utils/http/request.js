@@ -1,17 +1,17 @@
+/*
+ * @Description: 请求服务创建、请求及响应拦截
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-10 19:48:03
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-02-16 00:03:00
+ */
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
-
 import router from '@/router'
 import Qs from 'qs'
-
-const message = (message) => {
-  ElMessage.closeAll()
-  ElMessage({
-    message,
-    type: 'error',
-    duration: 3 * 1000
-  })
-}
+import { getToken, clearToken } from '@/utils/token'
+import { message } from '@/utils/message'
 
 // 创建axios实例
 const service = axios.create({
@@ -29,7 +29,8 @@ service.interceptors.request.use(
     // console.log('req', config)
     config.headers = {
       'Content-Type': 'application/json',
-      ...config.headers
+      ...config.headers,
+      token: getToken() || ''
     }
     return config
   },
@@ -42,28 +43,48 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (res) => {
     removePendingRequest(res.config)
-    if (res.status === 200) {
-      return res.data
+    const { status, data, config } = res
+    if (status === 200) {
+      if (!data) {
+        clearToken()
+        message('登录过期，请重新登录！', 'error')
+        router.replace('/')
+        return null
+      } else {
+        return config.url === '/api/purchaseRecord/export' ? res : res.data
+      }
     }
   },
   (error) => {
-    removePendingRequest(error.config || {})
-    if (error.response.status === 401) {
-      message.error({ message: '请先登录' })
-      router.replace('/')
-    } else if (error.response.status === 403) {
-      message.error({ message: '没有权限!' })
-      router.push({ path: '/noAuth' })
-    } else if (error.response.status === 404) {
-      message.error('未找到！')
-    } else if (error.response.status === 504) {
-      message.error('网关超时！')
-    } else {
-      message.error({ message: '未知错误' })
+    if (error) {
+      error.config && removePendingRequest(error.config || {})
+      if (error.response) {
+        const { status = null } = error.response
+        dealError(status)
+      } else {
+        message('未知错误！', 'error')
+      }
     }
     return Promise.reject(error)
   }
 )
+
+const dealError = (status) => {
+  const errorObj = {
+    401: '请先登录！',
+    403: '没有权限！',
+    404: '未找到！',
+    500: '程序异常！',
+    504: '网关超时！'
+  }
+
+  message(errorObj[status] || '未知错误！', 'error')
+  if (status === 401) {
+    router.replace('/')
+  } else if (status === 403) {
+    router.push({ path: '/noAuth' })
+  }
+}
 
 // CancelToken 防止重复请求（防抖）
 // 创建pendingRequest

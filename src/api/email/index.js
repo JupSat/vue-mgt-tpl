@@ -1,10 +1,10 @@
-import { rPostByParams } from '@/utils/http/function'
+import { rPost } from '@/utils/http/function'
 
 const prefix = 'api'
 
 /**
  * @description 发送验证码
  * @param {*} params
- * @returns
+ * @return
  */
-export const sendVerificationCodeApi = (params) => rPostByParams(`/${prefix}/user/sendVerificationCodeToEmail`, params)
+export const sendVerificationCodeApi = (params) => rPost(`/${prefix}/user/sendVerificationCodeToEmail`, params)

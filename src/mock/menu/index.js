@@ -67,6 +67,87 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
         ]
       },
       {
+        key: 'purchase',
+        id: 'purchase',
+        path: '/purchase',
+        name: 'Purchase',
+        icon: 'ShoppingCartFull',
+        component: '',
+        componentName: 'Purchase',
+        hidden: false,
+        breadcrumb: false,
+        keepAlive: false,
+        fixed: false,
+        redirect: '/purchase/ingredientClassification',
+        children: [
+          {
+            key: 'ingredientClassification',
+            id: 'ingredientClassification',
+            path: '/purchase/ingredientClassification',
+            name: 'IngredientClassification',
+            icon: '',
+            component: 'Purchase/IngredientClassification',
+            componentName: 'IngredientClassification',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
+            key: 'ingredientList',
+            id: 'ingredientList',
+            path: '/purchase/ingredientList',
+            name: 'IngredientList',
+            icon: '',
+            component: 'Purchase/IngredientList',
+            componentName: 'IngredientList',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
+            key: 'sku',
+            id: 'sku',
+            path: '/purchase/sku',
+            name: 'SKU',
+            icon: '',
+            component: 'Purchase/SKU',
+            componentName: 'SKU',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
+            key: 'vendor',
+            id: 'vendor',
+            path: '/purchase/Vendor',
+            name: 'Vendor',
+            icon: '',
+            component: 'Purchase/Vendor',
+            componentName: 'Vendor',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
+            key: 'purchaseRecords',
+            id: 'purchaseRecords',
+            path: '/purchase/purchaseRecords',
+            name: 'PurchaseRecords',
+            icon: '',
+            component: 'Purchase/PurchaseRecords',
+            componentName: 'PurchaseRecords',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          }
+        ]
+      },
+      {
         key: 'dashboard',
         id: 'dashboard',
         path: '/dashboard',

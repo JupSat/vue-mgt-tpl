@@ -4,6 +4,6 @@ const prefix = 'api'
 
 /**
  * @description 获取菜单
- * @returns
+ * @return
  */
 export const asyncMenu = () => rPost(`/${prefix}/menu/getMenu`, null)
