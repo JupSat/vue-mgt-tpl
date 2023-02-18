@@ -22,7 +22,7 @@ jobs:
       - name: install Node.js
         uses: actions/setup-node@v2.5.0
         with:
-          node-version: '14.X'
+          node-version: '16.x'
       - name: install dep
         run: npm install
       - name: build app
