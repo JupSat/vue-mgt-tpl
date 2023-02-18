@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-15 23:59:25
+ * @LastEditTime: 2023-02-18 16:52:58
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -34,7 +34,6 @@
         />
         <el-button :color="'#626aef'" @click="getTableData" class="query">查询</el-button>
         <el-button :color="'#626aef'" @click="addEdit()" class="query">添加</el-button>
-        <!-- <el-button @click="importData" class="query">导入</el-button> -->
         <el-upload
           class="upload"
           action="#"
@@ -47,6 +46,7 @@
           <el-button class="query">导入</el-button>
         </el-upload>
         <el-button @click="exportData" class="query">导出</el-button>
+        <el-button @click="toggleSelection()">清除选项</el-button>
       </el-form-item>
     </el-form>
 
@@ -55,10 +55,12 @@
       v-loading="loading"
       :data="tableData"
       :summary-method="getSummaries"
+      @selection-change="selectionChange"
       show-summary
       :max-height="450"
       stripe
     >
+      <el-table-column type="selection" width="55" :align="'center'" />
       <el-table-column type="index" width="60" label="序号" :align="'center'" />
       <el-table-column
         v-for="item in tableFields"
@@ -105,7 +107,7 @@ export default {
 }
 </script>
 <script setup>
-import { reactive, toRefs, computed } from 'vue'
+import { reactive, toRefs, computed, ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { useCommonStore } from '@/pinia/modules/common'
 import {
@@ -258,6 +260,22 @@ const getTableData = () => {
     })
 }
 getTableData()
+
+const selectionChange = (val) => {
+  data.selectList = val
+}
+
+const purchaseRecordsRef = ref(null)
+
+const toggleSelection = (rows) => {
+  if (rows) {
+    rows.forEach((row) => {
+      purchaseRecordsRef.value.toggleRowSelection(row, undefined)
+    })
+  } else {
+    purchaseRecordsRef.value.clearSelection()
+  }
+}
 
 const sizeChange = (size) => {
   data.pagination.currentPage = 1
