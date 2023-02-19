@@ -5,19 +5,19 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-13 11:59:17
+ * @LastEditTime: 2023-02-19 11:17:22
 -->
 <template>
   <el-container>
     <el-main class="main-layout">
-      <div class="fixed-views" :style="{ width: isCollapse ? '98vw' : '83vw' }">
+      <div class="fixed-views" :style="{ width: isCollapse ? '98vw' : '83vw', top: !terminalChange ? '62px' : '0' }">
         <Breadcrumb class="main-breadcrumb"></Breadcrumb>
         <Tabs></Tabs>
       </div>
       <el-scrollbar>
         <div class="main-body">
           <div class="main-container">
-            <div class="main-content">
+            <div class="main-content" :class="[terminalChange ? 'content-margin-mb' : '']">
               <router-view v-slot="{ Component }">
                 <keep-alive include="PurchaseRecords,SKU">
                   <component :is="Component" />
@@ -52,9 +52,11 @@ import Breadcrumb from '@/views/Basics/Layout/Breadcrumb'
 import Tabs from '@/views/Basics/Layout/Tabs'
 import { useCommonStore } from '@/pinia/modules/common'
 import { computed } from 'vue'
+import { isMobileTerminal } from '@/utils/common'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
+const terminalChange = computed(() => isMobileTerminal())
 </script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
@@ -65,7 +67,6 @@ const isCollapse = computed(() => commonStore.isCollapse)
 
   .fixed-views {
     position: fixed;
-    top: 62px;
     z-index: 100;
     @include bg_color('mainBodyColor');
 
@@ -98,6 +99,9 @@ const isCollapse = computed(() => commonStore.isCollapse)
         flex: 1 0;
         //  min-width: 0;
         margin: 98px 35px 0 11px;
+      }
+      .content-margin-mb {
+        margin: 85px 35px 0 11px;
       }
     }
   }

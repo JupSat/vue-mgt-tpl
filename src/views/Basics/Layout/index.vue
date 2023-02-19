@@ -5,13 +5,13 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-04 10:02:52
+ * @LastEditTime: 2023-02-19 11:13:28
 -->
 <template>
   <el-container class="layout-container">
-    <Header @changeCollapse="setCollapse"></Header>
+    <Header @changeCollapse="setCollapse" v-show="showHeader"></Header>
     <!-- <Settings></Settings> -->
-    <el-container class="body-container">
+    <el-container class="body-container" :style="{ 'padding-top': showHeader ? '60px' : '0' }">
       <Aside ref="asideRef"></Aside>
       <Main></Main>
     </el-container>
@@ -24,12 +24,14 @@ export default {
 }
 </script>
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import Header from './Header'
 import Aside from './Aside'
 import Main from './Main'
 // import Settings from './Setting'
+import { isMobileTerminal } from '@/utils/common'
 
+const showHeader = computed(() => !isMobileTerminal())
 const asideRef = ref(null)
 
 const setCollapse = () => {
@@ -46,7 +48,7 @@ const setCollapse = () => {
 
   .body-container {
     height: 100vh;
-    padding-top: 60px;
+    // padding-top: 60px;
   }
 }
 </style>
