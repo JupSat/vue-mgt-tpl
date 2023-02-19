@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-02 12:42:00
+ * @LastEditTime: 2023-02-19 11:14:45
 -->
 <template>
   <div class="bread-crumb">
@@ -60,7 +60,7 @@ const { breadcrumbs } = toRefs(dataList)
 
 .bread-crumb {
   display: flex;
-  padding: 3px 0 3px 0;
+  padding: 10px 0 3px 0;
 
   :deep(.el-breadcrumb__inner) {
     @include font_color('fontColor');
