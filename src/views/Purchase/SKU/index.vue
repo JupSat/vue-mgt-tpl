@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-13 10:47:41
+ * @LastEditTime: 2023-02-20 12:34:39
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -181,6 +181,7 @@ import { useCommonStore } from '@/pinia/modules/common'
 import { getSkuInfo, addSkuInfo, editSkuInfo, delSkuInfo } from '@/api/purchase/sku'
 import { message } from '@/utils/message'
 import Pagination from '@/components/Pagination'
+import { doSummaries } from '@/utils/common'
 
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
@@ -372,34 +373,8 @@ const submit = async () => {
 }
 
 const getSummaries = (param) => {
-  const { columns, data } = param
-  const sums = []
-  columns.forEach((column, index) => {
-    if (index === 0) {
-      sums[index] = '合计'
-      return
-    }
-    if (!['amount'].includes(column.property)) {
-      sums[index] = ''
-      return
-    }
-    const values = data.map((item) => Number(item[column.property]))
-    if (!values.every((value) => Number.isNaN(value))) {
-      const tempTotal = `${values.reduce((prev, curr) => {
-        const value = Number(curr)
-        if (!Number.isNaN(value)) {
-          return prev + curr
-        } else {
-          return prev
-        }
-      }, 0)}`
-      sums[index] = Number(tempTotal).toFixed(2)
-    } else {
-      sums[index] = ''
-    }
-  })
-
-  return sums
+  const excludes = ['amount']
+  return doSummaries(param, excludes)
 }
 
 const {

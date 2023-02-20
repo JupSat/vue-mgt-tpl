@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-18 16:52:58
+ * @LastEditTime: 2023-02-20 12:31:53
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -121,7 +121,7 @@ import { getVendors } from '@/api/purchase/vendor'
 import { message } from '@/utils/message'
 import { getCatalog } from '@/api/purchase/ingredientsCatalog'
 import { getPurchasers } from '@/api/purchase/purchaser'
-import { isMobileTerminal, translateParam } from '@/utils/common'
+import { isMobileTerminal, translateParam, doSummaries } from '@/utils/common'
 import Pagination from '@/components/Pagination'
 import AddPurchaseRecord from './Widgets/AddPurchaseRecord'
 
@@ -342,34 +342,8 @@ const getAllIngredient = () => {
 }
 
 const getSummaries = (param) => {
-  const { columns, data } = param
-  const sums = []
-  columns.forEach((column, index) => {
-    if (index === 0) {
-      sums[index] = '合计'
-      return
-    }
-    if (!['budgetary', 'purchaseCost', 'grossProfit'].includes(column.property)) {
-      sums[index] = ''
-      return
-    }
-    const values = data.map((item) => Number(item[column.property]))
-    if (!values.every((value) => Number.isNaN(value))) {
-      const tempTotal = `${values.reduce((prev, curr) => {
-        const value = Number(curr)
-        if (!Number.isNaN(value)) {
-          return prev + curr
-        } else {
-          return prev
-        }
-      }, 0)}`
-      sums[index] = Number(tempTotal).toFixed(2)
-    } else {
-      sums[index] = ''
-    }
-  })
-
-  return sums
+  const excludes = ['budgetary', 'purchaseCost', 'grossProfit']
+  return doSummaries(param, excludes)
 }
 
 const closeDialog = () => {

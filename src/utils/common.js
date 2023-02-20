@@ -68,3 +68,39 @@ export const isMobileTerminal = () => {
     /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
   )
 }
+
+/**
+ * @description 合计
+ * @param { }
+ * @return
+ */
+export const doSummaries = (param, excludes) => {
+  const { columns, data } = param
+  const sums = []
+  columns.forEach((column, index) => {
+    if (index === 0) {
+      sums[index] = '合计'
+      return
+    }
+    if (!excludes.includes(column.property)) {
+      sums[index] = ''
+      return
+    }
+    const values = data.map((item) => Number(item[column.property]))
+    if (!values.every((value) => Number.isNaN(value))) {
+      const tempTotal = `${values.reduce((prev, curr) => {
+        const value = Number(curr)
+        if (!Number.isNaN(value)) {
+          return prev + curr
+        } else {
+          return prev
+        }
+      }, 0)}`
+      sums[index] = Number(tempTotal).toFixed(2)
+    } else {
+      sums[index] = ''
+    }
+  })
+
+  return sums
+}
