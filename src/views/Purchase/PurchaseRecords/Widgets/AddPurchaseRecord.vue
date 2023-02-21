@@ -406,19 +406,6 @@ const changeIngredient = () => {
 const { size, loading, formData, operationType } = toRefs(data)
 </script>
 <style scoped lang="scss">
-.purchase-records {
-  .query {
-    margin-left: 10px;
-  }
-  .el-input {
-    width: 115px;
-  }
-  .el-select {
-    width: 128px;
-    margin-left: 2px;
-  }
-}
-
 ::v-deep(.el-date-editor) {
   width: 130px;
   margin-left: 1px;

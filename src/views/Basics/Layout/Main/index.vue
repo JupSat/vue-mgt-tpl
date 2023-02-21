@@ -5,19 +5,19 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-19 11:17:22
+ * @LastEditTime: 2023-02-20 22:25:08
 -->
 <template>
   <el-container>
     <el-main class="main-layout">
-      <div class="fixed-views" :style="{ width: isCollapse ? '98vw' : '83vw', top: !terminalChange ? '62px' : '0' }">
+      <div class="fixed-views fixed-views-mb" :style="{ width: isCollapse ? '98vw' : '83vw' }">
         <Breadcrumb class="main-breadcrumb"></Breadcrumb>
         <Tabs></Tabs>
       </div>
       <el-scrollbar>
         <div class="main-body">
           <div class="main-container">
-            <div class="main-content" :class="[terminalChange ? 'content-margin-mb' : '']">
+            <div class="main-content main-content-mb">
               <router-view v-slot="{ Component }">
                 <keep-alive include="PurchaseRecords,SKU">
                   <component :is="Component" />
@@ -52,11 +52,8 @@ import Breadcrumb from '@/views/Basics/Layout/Breadcrumb'
 import Tabs from '@/views/Basics/Layout/Tabs'
 import { useCommonStore } from '@/pinia/modules/common'
 import { computed } from 'vue'
-import { isMobileTerminal } from '@/utils/common'
-
 const commonStore = useCommonStore()
 const isCollapse = computed(() => commonStore.isCollapse)
-const terminalChange = computed(() => isMobileTerminal())
 </script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';
@@ -68,11 +65,22 @@ const terminalChange = computed(() => isMobileTerminal())
   .fixed-views {
     position: fixed;
     z-index: 100;
+    top: 62px;
     @include bg_color('mainBodyColor');
 
     .main-breadcrumb {
       width: 100%;
       height: 30px;
+    }
+  }
+
+  @media screen and (min-width: 280px) and (max-width: 1024px) {
+    .fixed-views-mb {
+      top: 0;
+    }
+
+    .main-content-mb {
+      margin: 85px 35px 0 11px;
     }
   }
 
@@ -99,9 +107,6 @@ const terminalChange = computed(() => isMobileTerminal())
         flex: 1 0;
         //  min-width: 0;
         margin: 98px 35px 0 11px;
-      }
-      .content-margin-mb {
-        margin: 85px 35px 0 11px;
       }
     }
   }
