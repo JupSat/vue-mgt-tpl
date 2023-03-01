@@ -23,7 +23,7 @@
           <el-input v-model="formData.captcha" maxlength="6" :placeholder="$t('plzEnterCaptcha')" style="width: 60%" />
           <div class="captcha-img">
             <el-tooltip :content="'点击刷新'" placement="top" effect="light">
-              <span v-loading="doneLoading">
+              <span v-loading="loading">
                 <img v-if="captchaPicPath" :src="captchaPicPath" :alt="$t('plzEnterCaptcha')" @click="refreshCaptcha" />
               </span>
             </el-tooltip>
@@ -67,7 +67,7 @@ import { message } from '@/utils/message'
 
 const state = reactive({
   showLogin: true,
-  doneLoading: false
+  loading: false
 })
 
 const formData = reactive({
@@ -84,7 +84,7 @@ const rules = reactive({
 
 const captchaPicPath = ref('')
 const getGraphCaptcha = () => {
-  state.doneLoading = true
+  state.loading = true
   getGraphCaptchaApi()
     .then((res) => {
       if (res) {
@@ -100,7 +100,7 @@ const getGraphCaptcha = () => {
       }
     })
     .finally(() => {
-      state.doneLoading = false
+      state.loading = false
     })
 }
 
@@ -151,7 +151,7 @@ onMounted(() => {
   getGraphCaptcha()
 })
 
-const { showLogin, doneLoading } = toRefs(state)
+const { showLogin, loading } = toRefs(state)
 </script>
 <style scoped lang="scss">
 @import '@/styles/switchTheme.scss';

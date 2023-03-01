@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-20 12:31:53
+ * @LastEditTime: 2023-03-01 23:44:02
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -470,10 +470,5 @@ const {
 
 .el-button.is-circle {
   border-radius: 50%;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: center;
 }
 </style>

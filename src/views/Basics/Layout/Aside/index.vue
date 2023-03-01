@@ -175,6 +175,7 @@ const { isCollapse, menuNoChild, menuHasChild } = toRefs(state)
     top: 35%;
     border-radius: 0 5px 5px 0;
     @include bg_color('secondaryColor');
+    cursor: pointer;
   }
 }
 </style>
