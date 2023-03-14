@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-20 22:22:32
+ * @LastEditTime: 2023-03-01 23:36:31
 -->
 <template>
   <el-container class="layout-container">
@@ -31,9 +31,7 @@ import Main from './Main'
 // import Settings from './Setting'
 
 const asideRef = ref(null)
-const setCollapse = () => {
-  asideRef.value.setCollapse()
-}
+const setCollapse = () => asideRef.value.setCollapse()
 </script>
 
 <style scoped lang="scss">

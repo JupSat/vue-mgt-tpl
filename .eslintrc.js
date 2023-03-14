@@ -5,7 +5,8 @@ module.exports = {
   },
   extends: ['plugin:vue/vue3-essential', '@vue/standard'],
   parserOptions: {
-    parser: '@babel/eslint-parser'
+    parser: '@babel/eslint-parser',
+    requireConfigFile: false
   },
   rules: {
     'import/first': 0, // 不允许将导入声明放置在标有setup的script标签中

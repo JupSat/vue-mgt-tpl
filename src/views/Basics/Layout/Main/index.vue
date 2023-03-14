@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-20 22:25:08
+ * @LastEditTime: 2023-03-01 23:34:29
 -->
 <template>
   <el-container>
@@ -105,7 +105,6 @@ const isCollapse = computed(() => commonStore.isCollapse)
       .main-content {
         order: 1;
         flex: 1 0;
-        //  min-width: 0;
         margin: 98px 35px 0 11px;
       }
     }

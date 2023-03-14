@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-11 21:32:01
+ * @LastEditTime: 2023-03-01 23:45:54
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -284,11 +284,6 @@ const { vendorName, loading, tableFields, tableData, pagination, dialogVisible, 
   .el-input {
     width: 120px;
   }
-}
-.page-separate {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
 }
 
 .el-table {

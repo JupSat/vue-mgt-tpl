@@ -401,12 +401,6 @@ const {
   }
 }
 
-.page-separate {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-
 .el-table {
   .el-button + .el-button {
     margin-left: 1px;

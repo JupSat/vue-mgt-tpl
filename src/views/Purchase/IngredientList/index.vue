@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-13 12:08:15
+ * @LastEditTime: 2023-03-01 23:43:24
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -357,27 +357,11 @@ const {
     margin-left: 2px;
   }
 }
-
-.page-separate {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
-}
-
 .el-table {
   .el-button + .el-button {
     margin-left: 1px;
   }
 }
-
-.edit-catalogId {
-  display: flex;
-  align-items: center;
-  .el-button {
-    margin-left: 1px;
-  }
-}
-
 .dialog-footer {
   display: flex;
   justify-content: center;
