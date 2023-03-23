@@ -4,13 +4,18 @@ import { useMenuStore } from '@/pinia/modules/menu'
 import { message } from '@/utils/message'
 import { getToken } from '@/utils/token'
 
+// 判断环境是否是微应用打开
+let microPath = ''
+if (window.__POWERED_BY_QIANKUN__) {
+  microPath = '/vue-mgt-tpl'
+}
 const routes = [
   {
-    path: '/',
-    redirect: '/home'
+    path: microPath + '/',
+    redirect: microPath + '/home'
   },
   {
-    path: '/home',
+    path: microPath + '/home',
     name: 'Home',
     component: () => import(/* webpackChunkName: "home" */ '@/views/Basics/Home'),
     meta: {
@@ -19,7 +24,7 @@ const routes = [
     }
   },
   {
-    path: '/404',
+    path: microPath + '/404',
     name: '404',
     component: () => import(/* webpackChunkName: "404" */ '@/views/Basics/Exceptions/404.vue'),
     meta: {
@@ -28,7 +33,7 @@ const routes = [
     }
   },
   {
-    path: '/500',
+    path: microPath + '/500',
     name: '500',
     component: () => import(/* webpackChunkName: "500" */ '@/views/Basics/Exceptions/500.vue'),
     meta: {
