@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-23 22:26:03
+ * @LastEditTime: 2023-03-23 23:03:32
  */
 import './qiankun/public-path'
 import { createApp } from 'vue'
@@ -24,19 +24,25 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 
 let instance = null
 let router = null
-function render() {
+function render(props = {}) {
   const routerHistory = createWebHashHistory()
 
   router = createRouter({
     history: routerHistory,
     routes: routes
   })
+  const { container } = props
   instance = createApp(App)
   for (const [key, component] of Object.entries(Icons)) {
     instance.component(key, component)
   }
 
-  instance.use(router).use(store).use(ElementPlus, { locale: locale }).use(i18n).mount('#app')
+  instance
+    .use(router)
+    .use(store)
+    .use(ElementPlus, { locale: locale })
+    .use(i18n)
+    .mount(container ? container.querySelector('#app') : '#app')
   // 这里的app是在public/index.html里的div的id,和之前主应用了配置的无关
 }
 
@@ -58,8 +64,9 @@ export async function mount(props) {
  */
 export async function unmount() {
   console.log('Vue Child unmount')
-  instance._container.innerHTML = ''
   instance.unmount()
+  instance._container.innerHTML = ''
+
   instance = null
   router = null
 }
