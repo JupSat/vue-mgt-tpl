@@ -5,6 +5,7 @@ const CompressionWebpackPlugin = require('compression-webpack-plugin')
 const productionGzipExtensions = ['html', 'js', 'css']
 const path = require('path')
 const resolve = (dir) => path.resolve(__dirname, dir)
+const packageName = require('./package.json').name
 
 module.exports = defineConfig({
   publicPath: './',
@@ -16,8 +17,13 @@ module.exports = defineConfig({
   devServer: {
     open: true,
     host: 'localhost',
-    port: 8080,
+    port: 8081,
     hot: true,
+    historyApiFallback: true,
+    allowedHosts: 'all',
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:8082/',
@@ -107,6 +113,16 @@ module.exports = defineConfig({
     })
   },
   configureWebpack: {
-    plugins: []
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      }
+    },
+    output: {
+      // 把子应用打包成 umd 库格式
+      library: packageName, // 与主应用配置的一致
+      libraryTarget: 'umd', // 暴露为所有的模块定义下都可运行的方式
+      chunkLoadingGlobal: `chunkLoadingGlobal_${packageName}` // 按需加载相关，设置为 webpackJsonp_微应用名称 即可
+    }
   }
 })
