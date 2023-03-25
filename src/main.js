@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-23 23:03:32
+ * @LastEditTime: 2023-03-25 17:57:58
  */
 import './qiankun/public-path'
 import { createApp } from 'vue'
@@ -31,11 +31,18 @@ function render(props = {}) {
     history: routerHistory,
     routes: routes
   })
-  const { container } = props
   instance = createApp(App)
+
   for (const [key, component] of Object.entries(Icons)) {
     instance.component(key, component)
   }
+
+  router.beforeEach((to, from, next) => {
+    console.log('路由守卫xxx', to)
+    next()
+  })
+
+  const { container } = props
 
   instance
     .use(router)
