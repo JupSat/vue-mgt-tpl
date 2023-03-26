@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-23 23:03:32
+ * @LastEditTime: 2023-03-25 23:51:06
  */
 import './qiankun/public-path'
 import { createApp } from 'vue'
@@ -25,17 +25,24 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 let instance = null
 let router = null
 function render(props = {}) {
-  const routerHistory = createWebHashHistory()
+  const hashHistory = createWebHashHistory(window.__POWERED_BY_QIANKUN__ ? '/vue-mgt-tpl' : '')
 
   router = createRouter({
-    history: routerHistory,
+    history: hashHistory,
     routes: routes
   })
-  const { container } = props
   instance = createApp(App)
+
   for (const [key, component] of Object.entries(Icons)) {
     instance.component(key, component)
   }
+
+  router.beforeEach((to, from, next) => {
+    console.log('路由守卫xxx', to)
+    next()
+  })
+
+  const { container } = props
 
   instance
     .use(router)

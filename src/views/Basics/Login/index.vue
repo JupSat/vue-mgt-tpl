@@ -56,7 +56,8 @@ export default {
 
 <script setup>
 import { reactive, defineEmits, ref, toRefs, onMounted } from 'vue'
-import router from '@/router'
+// import router from '@/router'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { loginApi, getGraphCaptchaApi } from '@/api/user'
 import { useUserStore } from '@/pinia/modules/user'
@@ -64,6 +65,8 @@ import Register from './../Register'
 import Language from '@/components/Language'
 import { regUserName, regLoginPwd, getValidator } from '@/utils/validate'
 import { message } from '@/utils/message'
+
+const router = useRouter()
 
 const state = reactive({
   showLogin: true,
@@ -122,8 +125,12 @@ const submitForm = () => {
           message(t('LoginSucJumping'))
           formData.token = token
           useUserStore().setUserInfo(formData)
+          let microPath = ''
+          if (window.__POWERED_BY_QIANKUN__) {
+            microPath = '/vue-mgt-tpl'
+          }
           setTimeout(() => {
-            router.push({ path: '/overview' })
+            router.push({ path: microPath + '/overview' })
           }, 2000)
         } else if (code === 2) {
           message(t('accOrPwdAErr'), 'warning')
