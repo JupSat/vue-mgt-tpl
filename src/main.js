@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-25 23:51:06
+ * @LastEditTime: 2023-03-27 12:53:59
  */
 import './qiankun/public-path'
 import { createApp } from 'vue'
@@ -31,10 +31,15 @@ function render(props = {}) {
     history: hashHistory,
     routes: routes
   })
+
   instance = createApp(App)
 
   for (const [key, component] of Object.entries(Icons)) {
     instance.component(key, component)
+  }
+
+  if (window.__POWERED_BY_QIANKUN__) {
+    instance.config.globalProperties.$microRouter = props.router
   }
 
   router.beforeEach((to, from, next) => {

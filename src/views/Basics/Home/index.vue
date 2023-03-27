@@ -6,6 +6,7 @@
       </ul>
     </div>
     <div class="home-container" v-else>
+      <el-button @click="goToParent" style="position: absolute" v-if="isDependency">跳转到父项目</el-button>
       <div class="home-left"></div>
       <div class="home-right">
         <Login v-if="showLogin" @toResetPwd="showLogin = !showLogin"></Login>
@@ -30,16 +31,29 @@ export default {
 <script setup>
 import Login from './../Login'
 import ResetPassword from './../ResetPwd'
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs, getCurrentInstance } from 'vue'
+
+const { proxy } = getCurrentInstance()
+
 const state = reactive({
   showLoading: true,
-  showLogin: true
+  showLogin: true,
+  isDependency: false
 })
+
+state.isDependency = !!window.__POWERED_BY_QIANKUN__
 
 setTimeout(() => {
   state.showLoading = false
 }, 2000)
-const { showLoading, showLogin } = toRefs(state)
+
+const goToParent = () => {
+  console.log('主应用传来的router实例', proxy.$microRouter)
+  if (window.__POWERED_BY_QIANKUN__) {
+    proxy.$microRouter.push('/master-home')
+  }
+}
+const { showLoading, showLogin, isDependency } = toRefs(state)
 </script>
 <style lang="scss" scoped>
 .home {
