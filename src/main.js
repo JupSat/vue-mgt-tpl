@@ -5,9 +5,10 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-27 12:53:59
+ * @LastEditTime: 2023-03-28 22:08:54
  */
 import './qiankun/public-path'
+import microActions from './qiankun/qiankun-actions'
 import { createApp } from 'vue'
 import App from './App.vue'
 // import router from './router'
@@ -21,6 +22,9 @@ import i18n from '@/language'
 import { store } from '@/pinia'
 import * as Icons from '@element-plus/icons-vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
+import { useUserStoreWithOut } from '@/pinia/modules/user'
+
+const useUserStore = useUserStoreWithOut()
 
 let instance = null
 let router = null
@@ -39,7 +43,17 @@ function render(props = {}) {
   }
 
   if (window.__POWERED_BY_QIANKUN__) {
+    if (props) {
+      // 注入 actions 实例
+      microActions.setActions(props)
+    }
     instance.config.globalProperties.$microRouter = props.router
+
+    props.onGlobalStateChange((state, prevState) => {
+      // state: 变更后的状态; prev 变更前的状态
+      console.log('通信状态发生改变xxx：', state, prevState)
+      useUserStore.setTestVal(state.globalToken)
+    }, true)
   }
 
   router.beforeEach((to, from, next) => {
