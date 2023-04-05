@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-04-05 14:02:10
+ * @LastEditTime: 2023-04-05 20:04:52
  */
 import './qiankun/public-path'
 import microActions from './qiankun/qiankun-actions'
@@ -42,7 +42,10 @@ function render(props = {}) {
 
   router = createRouter({
     history: hashHistory,
-    routes
+    routes: routes.map((el) => {
+      el.path = microPath + el.path
+      return el
+    })
   })
 
   instance = createApp(App)
@@ -74,7 +77,7 @@ function render(props = {}) {
     const token = getToken()
     if (to.name !== 'Home' && !token) {
       message('请先登录！', 'warning')
-      next({ name: 'Home', replace: true })
+      next(microPath + '/home')
     }
 
     const menuStore = useMenuStore()

@@ -1,18 +1,13 @@
 import Layout from '@/views/Basics/Layout'
 import { useMenuStore } from '@/pinia/modules/menu'
 
-// 判断环境是否是微应用打开
-let microPath = ''
-if (window.__POWERED_BY_QIANKUN__) {
-  microPath = '/vue-mgt-tpl'
-}
 const routes = [
   {
-    path: microPath + '/',
-    redirect: microPath + '/home'
+    path: '/',
+    redirect: '/home'
   },
   {
-    path: microPath + '/home',
+    path: '/home',
     name: 'Home',
     component: () => import(/* webpackChunkName: "home" */ '@/views/Basics/Home'),
     meta: {
@@ -21,7 +16,7 @@ const routes = [
     }
   },
   {
-    path: microPath + '/404',
+    path: '/404',
     name: '404',
     component: () => import(/* webpackChunkName: "404" */ '@/views/Basics/Exceptions/404.vue'),
     meta: {
@@ -30,7 +25,7 @@ const routes = [
     }
   },
   {
-    path: microPath + '/500',
+    path: '/500',
     name: '500',
     component: () => import(/* webpackChunkName: "500" */ '@/views/Basics/Exceptions/500.vue'),
     meta: {
@@ -40,6 +35,11 @@ const routes = [
   }
 ]
 
+// 判断环境是否是微应用打开
+let microPath = ''
+if (window.__POWERED_BY_QIANKUN__) {
+  microPath = '/vue-mgt-tpl'
+}
 async function getDynamicRoutes() {
   const menuStore = useMenuStore()
   await menuStore.loadMenu()

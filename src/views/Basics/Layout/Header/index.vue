@@ -134,13 +134,15 @@ export default {
 <script setup>
 import { reactive, toRefs, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import router from '@/router'
+import { useRouter } from 'vue-router'
 import { useMenuStore } from '@/pinia/modules/menu'
 import { useCommonStore } from '@/pinia/modules/common'
 import { useUserStore } from '@/pinia/modules/user'
 import Fullscreen from '@/components/Fullscreen'
 import { logoutApi } from '@/api/user'
 import { message } from '@/utils/message'
+
+const router = useRouter()
 
 const tempList = [1, 2, 3, 4, 5, 6, 7, 8]
 const data = reactive({
