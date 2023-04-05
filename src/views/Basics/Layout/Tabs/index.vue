@@ -32,8 +32,9 @@
 <script>
 import { computed, watch, reactive, toRefs, onMounted } from 'vue'
 import { useTabsStore } from '@/pinia/modules/tabs'
-import { useRoute } from 'vue-router'
-import router from '@/router'
+// import router from '@/router'
+import { useRoute, useRouter } from 'vue-router'
+const router = useRouter()
 
 export default {
   name: 'Tabs',

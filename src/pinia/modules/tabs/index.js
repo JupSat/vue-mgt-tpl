@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
-import router from '@/router'
+// import router from '@/router'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 export const useTabsStore = defineStore('tabs', {
   state: () => {

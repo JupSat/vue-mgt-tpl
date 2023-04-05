@@ -8,10 +8,12 @@
  * @LastEditTime: 2023-02-16 00:03:00
  */
 import axios from 'axios'
-import router from '@/router'
+import { useRouter } from 'vue-router'
 import Qs from 'qs'
 import { getToken, clearToken } from '@/utils/token'
 import { message } from '@/utils/message'
+
+const router = useRouter()
 
 // 创建axios实例
 const service = axios.create({
