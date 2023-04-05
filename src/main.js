@@ -5,14 +5,14 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-28 22:08:54
+ * @LastEditTime: 2023-04-05 12:18:17
  */
 import './qiankun/public-path'
 import microActions from './qiankun/qiankun-actions'
 import { createApp } from 'vue'
 import App from './App.vue'
 // import router from './router'
-import routes from './router'
+import { routes, getDynamicRoutes, checkPath } from './router'
 import ElementPlus from 'element-plus'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import '@/styles/index.scss'
@@ -23,6 +23,9 @@ import { store } from '@/pinia'
 import * as Icons from '@element-plus/icons-vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import { useUserStoreWithOut } from '@/pinia/modules/user'
+import { useMenuStore } from '@/pinia/modules/menu'
+import { message } from '@/utils/message'
+import { getToken } from '@/utils/token'
 
 const useUserStore = useUserStoreWithOut()
 
@@ -56,9 +59,37 @@ function render(props = {}) {
     }, true)
   }
 
-  router.beforeEach((to, from, next) => {
-    console.log('路由守卫xxx', to)
-    next()
+  let firstLoad = true
+  router.beforeEach(async (to, from, next) => {
+    if (to.meta.title) {
+      document.title = to.meta.title
+    }
+
+    const token = getToken()
+    if (to.name !== 'Home' && !token) {
+      message('请先登录！', 'warning')
+      next({ name: 'Home', replace: true })
+    }
+
+    const menuStore = useMenuStore()
+    if ((!Array.isArray(menuStore.menuList) || !menuStore.menuList.length) && firstLoad) {
+      firstLoad = false
+      await getDynamicRoutes().then((menus) => {
+        Array.isArray(menus) &&
+          menus.forEach((route) => {
+            if (!router.hasRoute(route.name)) {
+              router.addRoute(route)
+            }
+          })
+        next({ ...to, replace: true })
+      })
+    } else {
+      if (!checkPath(to.path) && to.path !== '/404') {
+        next('/404')
+      } else {
+        next()
+      }
+    }
   })
 
   const { container } = props
