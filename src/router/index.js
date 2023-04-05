@@ -68,7 +68,10 @@ async function getDynamicRoutes() {
           item.component = () => import(`@/views/${parent.name}/${el.name}`)
         }
         if (el.children && el.children.length > 0) {
-          item.children = iterator(el.children, el)
+          item.children = iterator(el.children, el).map((item) => {
+            item.path = microPath + item.path
+            return item
+          })
           item.redirect = el.redirect
         }
         menus.push(item)
@@ -80,10 +83,16 @@ async function getDynamicRoutes() {
 }
 
 function checkPath(subPath) {
+  const prefix = '/vue-mgt-tpl'
+  let finalSubPath = ''
+  if (microPath && subPath.includes(prefix)) {
+    finalSubPath = subPath.split(prefix)[1]
+  }
+
   const componentPaths = require.context('@/components/', true, /.vue$/).keys()
   const viewPaths = require.context('@/views/', true, /.vue$/).keys()
   const paths = [...componentPaths, ...viewPaths]
-  const flag = paths.some((path) => path.toLowerCase().includes(subPath.toLowerCase()))
+  const flag = paths.some((path) => path.toLowerCase().includes(finalSubPath.toLowerCase()))
   return flag
 }
 

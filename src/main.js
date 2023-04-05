@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-04-05 12:18:17
+ * @LastEditTime: 2023-04-05 14:02:10
  */
 import './qiankun/public-path'
 import microActions from './qiankun/qiankun-actions'
@@ -31,12 +31,18 @@ const useUserStore = useUserStoreWithOut()
 
 let instance = null
 let router = null
+
+let microPath = ''
+if (window.__POWERED_BY_QIANKUN__) {
+  microPath = '/vue-mgt-tpl'
+}
+
 function render(props = {}) {
   const hashHistory = createWebHashHistory(window.__POWERED_BY_QIANKUN__ ? '/vue-mgt-tpl' : '')
 
   router = createRouter({
     history: hashHistory,
-    routes: routes
+    routes
   })
 
   instance = createApp(App)
@@ -75,17 +81,28 @@ function render(props = {}) {
     if ((!Array.isArray(menuStore.menuList) || !menuStore.menuList.length) && firstLoad) {
       firstLoad = false
       await getDynamicRoutes().then((menus) => {
-        Array.isArray(menus) &&
+        if (Array.isArray(menus)) {
           menus.forEach((route) => {
             if (!router.hasRoute(route.name)) {
+              route.path = microPath + route.path
+              route.redirect = microPath + route.redirect
               router.addRoute(route)
             }
           })
+        }
+
+        if (window.__POWERED_BY_QIANKUN__ && !to.path.includes('vue-mgt-tpl')) {
+          to.path = microPath + to.path
+        }
+        console.log(router.getRoutes())
         next({ ...to, replace: true })
       })
     } else {
-      if (!checkPath(to.path) && to.path !== '/404') {
-        next('/404')
+      if (window.__POWERED_BY_QIANKUN__ && !to.path.includes('vue-mgt-tpl')) {
+        to.path = microPath + to.path
+      }
+      if (!checkPath(to.path)) {
+        next(microPath + '/404')
       } else {
         next()
       }
