@@ -162,7 +162,6 @@ onMounted(() => {
   getGraphCaptcha()
   microActions.onGlobalStateChange((state, prevState) => {
     // state: 变更后的状态; prevState: 变更前的状态
-    debugger //  测试是否会阻断提交
     console.log('子应用观察者：状态改变', state, prevState)
   }, true)
 })
