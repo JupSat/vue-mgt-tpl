@@ -5,13 +5,12 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-04-05 20:04:52
+ * @LastEditTime: 2023-04-07 10:23:54
  */
 import './qiankun/public-path'
 import microActions from './qiankun/qiankun-actions'
-import { createApp } from 'vue'
 import App from './App.vue'
-// import router from './router'
+import { createApp } from 'vue'
 import { routes, getDynamicRoutes, checkPath } from './router'
 import ElementPlus from 'element-plus'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
@@ -28,20 +27,15 @@ import { message } from '@/utils/message'
 import { getToken } from '@/utils/token'
 
 const useUserStore = useUserStoreWithOut()
+const qiankunPath = 'vue-mgt-tpl'
+const microPath = window.__POWERED_BY_QIANKUN__ ? '/' + qiankunPath : ''
 
 let instance = null
 let router = null
 
-let microPath = ''
-if (window.__POWERED_BY_QIANKUN__) {
-  microPath = '/vue-mgt-tpl'
-}
-
 function render(props = {}) {
-  const hashHistory = createWebHashHistory(window.__POWERED_BY_QIANKUN__ ? '/vue-mgt-tpl' : '')
-
   router = createRouter({
-    history: hashHistory,
+    history: createWebHashHistory(microPath),
     routes: routes.map((el) => {
       el.path = microPath + el.path
       return el
@@ -94,14 +88,14 @@ function render(props = {}) {
           })
         }
 
-        if (window.__POWERED_BY_QIANKUN__ && !to.path.includes('vue-mgt-tpl')) {
+        if (window.__POWERED_BY_QIANKUN__ && !to.path.includes(qiankunPath)) {
           to.path = microPath + to.path
         }
         console.log(router.getRoutes())
         next({ ...to, replace: true })
       })
     } else {
-      if (window.__POWERED_BY_QIANKUN__ && !to.path.includes('vue-mgt-tpl')) {
+      if (window.__POWERED_BY_QIANKUN__ && !to.path.includes(qiankunPath)) {
         to.path = microPath + to.path
       }
       if (!checkPath(to.path)) {
@@ -142,8 +136,6 @@ export async function mount(props) {
 export async function unmount() {
   console.log('Vue Child unmount')
   instance.unmount()
-  instance._container.innerHTML = ''
-
   instance = null
   router = null
 }
