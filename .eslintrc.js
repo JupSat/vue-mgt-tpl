@@ -1,3 +1,12 @@
+/*
+ * @Description:
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-10 19:48:02
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-04-05 20:19:10
+ */
 module.exports = {
   root: true,
   env: {
@@ -13,7 +22,7 @@ module.exports = {
     'space-before-function-paren': 0, // 在函数定义左括号前强制保持一致间距
     'vue/multi-word-component-names': 'off',
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': 'warn',
     'no-unreachable': 2, // 不允许在return、throw、continue和break语句后出现无法访问的代码
     'no-unsafe-finally': 2, // 不允许finally块中的控制流语句
     'prefer-const': 0, // 对于声明后从未重新赋值的变量，需要常量声明

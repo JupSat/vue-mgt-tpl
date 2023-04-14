@@ -65,6 +65,7 @@ import Register from './../Register'
 import Language from '@/components/Language'
 import { regUserName, regLoginPwd, getValidator } from '@/utils/validate'
 import { message } from '@/utils/message'
+import microActions from '@/qiankun/qiankun-actions'
 
 const router = useRouter()
 
@@ -125,6 +126,9 @@ const submitForm = () => {
           message(t('LoginSucJumping'))
           formData.token = token
           useUserStore().setUserInfo(formData)
+          // 变更父项目参数token
+          microActions.setGlobalState({ globalToken: token })
+
           let microPath = ''
           if (window.__POWERED_BY_QIANKUN__) {
             microPath = '/vue-mgt-tpl'
@@ -156,6 +160,10 @@ const forgetPwd = () => {
 
 onMounted(() => {
   getGraphCaptcha()
+  microActions.onGlobalStateChange((state, prevState) => {
+    // state: 变更后的状态; prevState: 变更前的状态
+    console.log('子应用观察者：状态改变', state, prevState)
+  }, true)
 })
 
 const { showLogin, loading } = toRefs(state)
