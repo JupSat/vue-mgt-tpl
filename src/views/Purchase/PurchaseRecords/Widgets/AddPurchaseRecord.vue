@@ -382,13 +382,13 @@ const submit = async () => {
     if (valid) {
       if (data.operationType === 'add') {
         const res = await addPurchaseRecord([data.formData])
-        if (res && res.status === 200) {
+        if (res.code === 0) {
           closeDialog()
           message(res.msg)
         }
       } else {
         const res = await editPurchaseRecord(data.formData)
-        if (res && res.status === 200) {
+        if (res.code === 0) {
           closeDialog()
           message(res.msg)
         }

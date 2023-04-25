@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-20 12:34:39
+ * @LastEditTime: 2023-04-25 16:57:19
 -->
 <template>
   <div class="sku" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -267,7 +267,7 @@ const getTableData = () => {
   }
   getSkuInfo(params)
     .then((res) => {
-      const records = res.result || []
+      const records = res.data || []
       data.tableData = records
       data.pagination.total = records.length
     })
@@ -329,7 +329,7 @@ const deleteRow = (row) => {
     .then(() => {
       delSkuInfo({ id: row.id })
         .then((res) => {
-          if (res && res.status === 200) {
+          if (res.code === 0) {
             getTableData()
             message(res.msg)
           } else {
@@ -355,14 +355,14 @@ const submit = async () => {
     if (valid) {
       if (data.oprType === 'add') {
         const res = await addSkuInfo([data.formData])
-        if (res && res.status === 200) {
+        if (res.code === 0) {
           message(res.msg)
           closeDialog()
           getTableData()
         }
       } else {
         const res = await editSkuInfo(data.formData)
-        if (res && res.status === 200) {
+        if (res.code === 0) {
           message(res.msg)
           closeDialog()
           getTableData()
