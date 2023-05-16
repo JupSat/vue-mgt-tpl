@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-01 23:45:54
+ * @LastEditTime: 2023-04-25 17:28:23
 -->
 <template>
   <div class="vendor" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -177,7 +177,7 @@ const getTableData = () => {
   }
   getVendors(params)
     .then((res) => {
-      const records = res.result || []
+      const records = res.data || []
       data.tableData = records
       data.pagination.total = records.length
     })
@@ -236,7 +236,7 @@ const deleteCatalog = (row) => {
     .then(() => {
       delVendor({ id: row.id })
         .then((res) => {
-          if (res && res.status === 200) {
+          if (res.code === 0) {
             message(res.msg)
             getTableData()
           }
@@ -260,8 +260,7 @@ const submit = async () => {
     if (valid) {
       const doFunction = data.oprType === 'add' ? addVendor : editVendor
       const res = await doFunction(data.formData)
-      const { status = null } = res
-      if (status === 200) {
+      if (res.code === 0) {
         message(res.msg)
         closeDialog()
         getTableData()

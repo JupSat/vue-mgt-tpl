@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-02 12:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-01 23:44:02
+ * @LastEditTime: 2023-04-25 17:27:33
 -->
 <template>
   <div class="purchase-records" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -248,7 +248,7 @@ const getTableData = () => {
   }
   getPurchaseRecords(params)
     .then((res) => {
-      const { records = [], total = 0 } = res.result || []
+      const { records = [], total = 0 } = res.data || []
       data.tableData = records
       data.pagination.total = total
     })
@@ -314,7 +314,7 @@ const deleteRow = (row) => {
   })
     .then(async () => {
       const res = await delPurchaseRecord({ id: row.id })
-      if (res && res.status === 200) {
+      if (res.code === 0) {
         getTableData()
         message(res.msg)
       } else {
@@ -326,7 +326,7 @@ const deleteRow = (row) => {
 const getAllIngredient = () => {
   getIngredientList({ ingredientName: '', catalogId: '' })
     .then((res) => {
-      const records = res.result || []
+      const records = res.data || []
       data.selectList.ingredientIdList = records.map((item) => {
         const option = {
           label: item.ingredientName,
@@ -354,7 +354,7 @@ const closeDialog = () => {
 const getAllCatalog = () => {
   getCatalog({ ingredientCategory: '' })
     .then((res) => {
-      const records = res.result || []
+      const records = res.data || []
       data.selectList.ingredientCatalogIdList = records.map((item) => {
         const option = {
           label: item.ingredientCategory,
@@ -388,7 +388,7 @@ const getAllVendor = () => {
 const getAllPurchaserInfo = () => {
   getPurchasers()
     .then((res) => {
-      const records = res.result || []
+      const records = res.data || []
       data.selectList.purchaserList = records.map((item) => {
         const option = {
           label: item.purchaserName,
@@ -412,7 +412,7 @@ const importData = (file) => {
   formData.append('file', file.raw)
   importPurchaseRecord(formData)
     .then((res) => {
-      if (res && res.status === 200) {
+      if (res.code === 0) {
         message('导入成功')
         getTableData()
       } else {

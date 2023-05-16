@@ -143,7 +143,7 @@ const getTableData = () => {
   }
   getCatalog(params)
     .then((res) => {
-      const records = res.result || []
+      const records = res.data || []
       data.tableData = records
       data.pagination.total = records.length
     })
@@ -198,8 +198,7 @@ const deleteCatalog = (row) => {
     .then(() => {
       delCatalog({ id: row.id })
         .then((res) => {
-          const { status = null } = res
-          if (status === 200) {
+          if (res.code) {
             message(res.msg)
             getTableData()
           } else {
@@ -232,8 +231,7 @@ const submit = async () => {
       params.id = data.oprType === 'add' ? '' : data.formData.id
       const doFunction = data.oprType === 'add' ? addCatalog([params]) : editCatalog(params)
       const res = await doFunction
-      const { status = null } = res
-      if (status === 200) {
+      if (res.code === 0) {
         message(res.msg)
         closeDialog()
         getTableData()

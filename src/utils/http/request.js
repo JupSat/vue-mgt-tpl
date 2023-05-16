@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-16 00:03:00
+ * @LastEditTime: 2023-04-20 16:19:43
  */
 import axios from 'axios'
 import { useRouter } from 'vue-router'
@@ -22,6 +22,8 @@ const service = axios.create({
 
 // 请求头信息
 service.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'
+service.defaults.headers.common['Cache-Control'] = 'no-cache'
+service.defaults.headers.common.Pragma = 'no-cache'
 
 // 请求拦截器
 service.interceptors.request.use(

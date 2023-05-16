@@ -91,8 +91,8 @@ const getGraphCaptcha = () => {
   state.loading = true
   getGraphCaptchaApi()
     .then((res) => {
-      if (res) {
-        const { captcha = '', captchaImgStr = '' } = res.result
+      if (res && res.code === 0) {
+        const { captcha = '', captchaImgStr = '' } = res.data
         const len = captcha.length
         rules.captcha.push({
           max: len,
@@ -121,13 +121,13 @@ const submitForm = () => {
     if (valid) {
       const res = await loginApi(formData)
       if (res) {
-        const { code = null, token = '' } = res.result || {}
-        if (code === 1) {
+        const { code = null, data = '', msg = '' } = res || {}
+        if (code === 0) {
           message(t('LoginSucJumping'))
-          formData.token = token
+          formData.token = data
           useUserStore().setUserInfo(formData)
           // 变更父项目参数token
-          microActions.setGlobalState({ globalToken: token })
+          microActions.setGlobalState({ globalToken: data })
 
           let microPath = ''
           if (window.__POWERED_BY_QIANKUN__) {
@@ -136,14 +136,23 @@ const submitForm = () => {
           setTimeout(() => {
             router.push({ path: microPath + '/overview' })
           }, 2000)
-        } else if (code === 2) {
-          message(t('accOrPwdAErr'), 'warning')
-          return false
-        } else if (code === 3) {
-          message(t('captchaError'), 'warning')
-          getGraphCaptcha()
+        } else {
+          if (msg === '验证码错误！') {
+            message(t('captchaError'), 'warning')
+            getGraphCaptcha()
+          } else {
+            message(t('accOrPwdAErr'), 'warning')
+          }
           return false
         }
+        //  else if (code === 2) {
+        //   message(t('accOrPwdAErr'), 'warning')
+        //   return false
+        // } else if (code === 3) {
+        //   message(t('captchaError'), 'warning')
+        //   getGraphCaptcha()
+        //   return false
+        // }
       }
     } else {
       console.log('error submit!')

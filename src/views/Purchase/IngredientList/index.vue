@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-02-08 10:16:58
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-01 23:43:24
+ * @LastEditTime: 2023-04-25 16:51:36
 -->
 <template>
   <div class="ingredient-list" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
@@ -200,7 +200,7 @@ const getTableData = () => {
   }
   getIngredientList(params)
     .then((res) => {
-      const records = res.result || []
+      const records = res.data || []
       data.tableData = records
       data.pagination.total = records.length
     })
@@ -259,7 +259,7 @@ const deleteIngredient = (row) => {
     .then(() => {
       delIngredient({ id: row.id })
         .then((res) => {
-          if (res && res.status === 200) {
+          if (res) {
             message(res.msg)
             getTableData()
           }
@@ -299,8 +299,7 @@ const submit = async () => {
       params.id = data.oprType === 'add' ? '' : data.formData.id
       const doFunction = data.oprType === 'add' ? addIngredient([params]) : editIngredient(params)
       const res = await doFunction
-      const { status = null } = res
-      if (status === 200) {
+      if (res.code === 0) {
         message(res.msg)
         closeDialog()
         getTableData()
@@ -314,7 +313,7 @@ const submit = async () => {
 const getAllCatalog = () => {
   getCatalog({ ingredientCategory: '' })
     .then((res) => {
-      const records = res.result || []
+      const records = res.data || []
       data.categoryList = records.map((item) => {
         const option = {
           label: item.ingredientCategory,
