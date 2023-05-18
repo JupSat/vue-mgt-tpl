@@ -1,3 +1,12 @@
+/*
+ * @Description:
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-10 19:48:03
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-05-18 21:04:36
+ */
 import Layout from '@/views/Basics/Layout'
 import { useMenuStore } from '@/pinia/modules/menu'
 
@@ -36,10 +45,8 @@ const routes = [
 ]
 
 // 判断环境是否是微应用打开
-let microPath = ''
-if (window.__POWERED_BY_QIANKUN__) {
-  microPath = '/vue-mgt-tpl'
-}
+const microPath = window.__POWERED_BY_QIANKUN__ ? '/vue-mgt-tpl' : ''
+
 async function getDynamicRoutes() {
   const menuStore = useMenuStore()
   await menuStore.loadMenu()
@@ -87,6 +94,8 @@ function checkPath(subPath) {
   let finalSubPath = ''
   if (microPath && subPath.includes(prefix)) {
     finalSubPath = subPath.split(prefix)[1]
+  } else {
+    finalSubPath = subPath
   }
 
   const componentPaths = require.context('@/components/', true, /.vue$/).keys()

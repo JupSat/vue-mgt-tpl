@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-04-07 10:23:54
+ * @LastEditTime: 2023-04-07 10:44:12
  */
 import './qiankun/public-path'
 import microActions from './qiankun/qiankun-actions'
@@ -49,10 +49,8 @@ function render(props = {}) {
   }
 
   if (window.__POWERED_BY_QIANKUN__) {
-    if (props) {
-      // 注入 actions 实例
-      microActions.setActions(props)
-    }
+    // 注入 actions 实例
+    props && microActions.setActions(props)
     instance.config.globalProperties.$microRouter = props.router
 
     props.onGlobalStateChange((state, prevState) => {
@@ -73,7 +71,6 @@ function render(props = {}) {
       message('请先登录！', 'warning')
       next(microPath + '/home')
     }
-
     const menuStore = useMenuStore()
     if ((!Array.isArray(menuStore.menuList) || !menuStore.menuList.length) && firstLoad) {
       firstLoad = false
@@ -117,9 +114,7 @@ function render(props = {}) {
   // 这里的app是在public/index.html里的div的id,和之前主应用了配置的无关
 }
 
-if (!window.__POWERED_BY_QIANKUN__) {
-  render()
-}
+!window.__POWERED_BY_QIANKUN__ && render()
 
 export async function bootstrap() {
   console.log('Vue Child bootstraped')
