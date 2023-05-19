@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-05-18 21:04:36
+ * @LastEditTime: 2023-05-19 20:24:01
  */
 import Layout from '@/views/Basics/Layout'
 import { useMenuStore } from '@/pinia/modules/menu'
@@ -60,21 +60,22 @@ async function getDynamicRoutes() {
     const menus = []
     list &&
       list.forEach((el) => {
+        const { path, name, icon, id } = el
         const item = {
-          path: el.path,
-          name: el.name,
-          icon: el.icon,
+          path,
+          name,
+          icon,
           component: Layout,
           meta: {
-            title: el.id,
-            id: el.id
+            title: id,
+            id
           }
         }
 
         if (parent && parent.name && (!el.children || el.children.length === 0)) {
           item.component = () => import(`@/views/${parent.name}/${el.name}`)
         }
-        if (el.children && el.children.length > 0) {
+        if (Array.isArray(el.children) && el.children.length > 0) {
           item.children = iterator(el.children, el).map((item) => {
             item.path = microPath + item.path
             return item
