@@ -1,12 +1,10 @@
 <template>
   <el-popover trigger="hover" placement="top" width="auto">
     <template #default>
-      <div>
-        <el-image style="height: 120px" :src="src" :fit="'contain'" />
-      </div>
+      <el-image style="height: 120px" :src="src" :fit="fit" />
     </template>
     <template #reference>
-      <el-button type="text" class="underline">{{ text }}</el-button>
+      <span type="text" class="underline">{{ text }}</span>
     </template>
   </el-popover>
 </template>
@@ -24,6 +22,10 @@ defineProps({
     type: String,
     default: ''
   },
+  fit: {
+    type: String,
+    default: 'contain'
+  },
   text: {
     type: String,
     default: ''
@@ -33,6 +35,8 @@ defineProps({
 
 <style scoped lang="scss">
 .underline {
+  color: #409eff;
+  cursor: pointer;
   text-decoration: underline;
 }
 </style>

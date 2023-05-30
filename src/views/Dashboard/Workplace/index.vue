@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" style="width: 100%" :row-class-name="tableRowClassName">
+  <el-table :data="tableData" style="width: 100%">
     <el-table-column :prop="date" label="Date" width="180">
       <template #default="scope">
         <JsPopover
@@ -19,16 +19,6 @@ export default {
 </script>
 <script setup>
 import JsPopover from '@/components/JsPopover'
-
-const tableRowClassName = ({ row, rowIndex }) => {
-  if (rowIndex === 1) {
-    return 'warning-row'
-  } else if (rowIndex === 3) {
-    return 'success-row'
-  }
-  return ''
-}
-
 const tableData = [
   {
     date: '2016-05-03',
@@ -53,11 +43,4 @@ const tableData = [
 ]
 </script>
 
-<style scoped lang="scss">
-.el-table .warning-row {
-  --el-table-tr-bg-color: var(--el-color-warning-light-9);
-}
-.el-table .success-row {
-  --el-table-tr-bg-color: var(--el-color-success-light-9);
-}
-</style>
+<style scoped lang="scss"></style>
