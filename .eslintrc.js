@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:02
  * @LastEditors: JupSat
- * @LastEditTime: 2023-04-05 20:19:10
+ * @LastEditTime: 2023-06-02 20:36:43
  */
 module.exports = {
   root: true,
@@ -53,6 +53,7 @@ module.exports = {
         avoidEscape: true,
         allowTemplateLiterals: true
       }
-    ]
+    ],
+    camelcase: 'off'
   }
 }
