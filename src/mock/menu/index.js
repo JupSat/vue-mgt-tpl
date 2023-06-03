@@ -840,8 +840,21 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
         breadcrumb: false,
         keepAlive: false,
         fixed: false,
-        redirect: '/auth/signIn',
+        redirect: '/auth/roleAuth',
         children: [
+          {
+            key: 'roleAuth',
+            id: 'roleAuth',
+            path: '/auth/roleAuth',
+            name: 'RoleAuth',
+            icon: '',
+            component: 'Auth/RoleAuth',
+            componentName: 'RoleAuth',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
           {
             key: 'signIn',
             id: 'signIn',
