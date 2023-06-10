@@ -198,7 +198,7 @@ const deleteCatalog = (row) => {
     .then(() => {
       delCatalog({ id: row.id })
         .then((res) => {
-          if (res.code) {
+          if (res.code === 0) {
             message(res.msg)
             getTableData()
           } else {

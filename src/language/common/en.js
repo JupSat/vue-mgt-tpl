@@ -126,5 +126,6 @@ export default {
   captchaError: 'Captcha error',
   required: 'This item is required',
   pwdRule: 'The password is 6-40 digits and letters "." and "_"',
-  plzEnterCorrectMobileNumber: 'Please enter the correct mobile number'
+  plzEnterCorrectMobileNumber: 'Please enter the correct mobile number',
+  roleAuth: 'Role Auth'
 }

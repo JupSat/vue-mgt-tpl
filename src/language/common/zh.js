@@ -126,5 +126,6 @@ export default {
   captchaError: '验证码错误',
   required: '此项必填',
   pwdRule: '密码为6-40位数字字母“.” 和 “_”',
-  plzEnterCorrectMobileNumber: '请输入正确的手机号'
+  plzEnterCorrectMobileNumber: '请输入正确的手机号',
+  roleAuth: '菜单权限'
 }

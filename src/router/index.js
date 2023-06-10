@@ -1,3 +1,12 @@
+/*
+ * @Description:
+ * @version:
+ * @Author: JupSat
+ * @email: jupsat@163.com
+ * @Date: 2023-01-10 19:48:03
+ * @LastEditors: JupSat
+ * @LastEditTime: 2023-05-19 20:24:01
+ */
 import Layout from '@/views/Basics/Layout'
 import { useMenuStore } from '@/pinia/modules/menu'
 
@@ -36,10 +45,8 @@ const routes = [
 ]
 
 // 判断环境是否是微应用打开
-let microPath = ''
-if (window.__POWERED_BY_QIANKUN__) {
-  microPath = '/vue-mgt-tpl'
-}
+const microPath = window.__POWERED_BY_QIANKUN__ ? '/vue-mgt-tpl' : ''
+
 async function getDynamicRoutes() {
   const menuStore = useMenuStore()
   await menuStore.loadMenu()
@@ -53,21 +60,22 @@ async function getDynamicRoutes() {
     const menus = []
     list &&
       list.forEach((el) => {
+        const { path, name, icon, id } = el
         const item = {
-          path: el.path,
-          name: el.name,
-          icon: el.icon,
+          path,
+          name,
+          icon,
           component: Layout,
           meta: {
-            title: el.id,
-            id: el.id
+            title: id,
+            id
           }
         }
 
         if (parent && parent.name && (!el.children || el.children.length === 0)) {
           item.component = () => import(`@/views/${parent.name}/${el.name}`)
         }
-        if (el.children && el.children.length > 0) {
+        if (Array.isArray(el.children) && el.children.length > 0) {
           item.children = iterator(el.children, el).map((item) => {
             item.path = microPath + item.path
             return item
@@ -87,6 +95,8 @@ function checkPath(subPath) {
   let finalSubPath = ''
   if (microPath && subPath.includes(prefix)) {
     finalSubPath = subPath.split(prefix)[1]
+  } else {
+    finalSubPath = subPath
   }
 
   const componentPaths = require.context('@/components/', true, /.vue$/).keys()
