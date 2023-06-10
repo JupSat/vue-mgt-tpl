@@ -168,8 +168,8 @@ const userStore = useUserStore()
 // 退出
 const signOut = async () => {
   const res = await logoutApi()
-  const { code = null, msg = '' } = res.result || {}
-  if (code === 1) {
+  const { code = null, msg = '' } = res || {}
+  if (code === 0) {
     message(msg)
     userStore.clearUserInfo()
     router.push({ path: '/' })
