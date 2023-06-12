@@ -127,5 +127,6 @@ export default {
   required: '此项必填',
   pwdRule: '密码为6-40位数字字母“.” 和 “_”',
   plzEnterCorrectMobileNumber: '请输入正确的手机号',
-  roleAuth: '菜单权限'
+  roleAuth: '菜单权限',
+  tenLine: '通辽水利工程施工程序图'
 }

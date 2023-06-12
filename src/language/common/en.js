@@ -127,5 +127,6 @@ export default {
   required: 'This item is required',
   pwdRule: 'The password is 6-40 digits and letters "." and "_"',
   plzEnterCorrectMobileNumber: 'Please enter the correct mobile number',
-  roleAuth: 'Role Auth'
+  roleAuth: 'Role Auth',
+  tenLine: '通辽水利工程施工程序图'
 }
