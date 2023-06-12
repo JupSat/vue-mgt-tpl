@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-15 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-01 23:34:29
+ * @LastEditTime: 2023-06-12 12:29:04
 -->
 <template>
   <el-container>
@@ -29,13 +29,13 @@
             </div>
           </div>
         </div>
-        <div class="put-on-record">
+        <!-- <div class="put-on-record">
           <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030602007395">
             <img src="~@/assets/img/beian.png" style="float: left" />
             <p>粤公网安备 44030602007395号</p>
           </a>
           <a href="https://beian.miit.gov.cn" target="_blank">粤ICP备2023004209号</a>
-        </div>
+        </div> -->
       </el-scrollbar>
     </el-main>
   </el-container>

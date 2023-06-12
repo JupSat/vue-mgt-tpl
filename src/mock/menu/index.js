@@ -162,6 +162,19 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
         redirect: '/dashboard/workplace',
         children: [
           {
+            key: 'tenLine',
+            id: 'tenLine',
+            path: '/dashboard/workplace',
+            name: 'TenLine',
+            icon: '',
+            component: 'Dashboard/TenLine',
+            componentName: 'TenLine',
+            hidden: false,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          },
+          {
             key: 'workplace',
             id: 'workplace',
             path: '/dashboard/workplace',
