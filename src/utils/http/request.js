@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-04-20 16:19:43
+ * @LastEditTime: 2023-06-12 18:49:47
  */
 import axios from 'axios'
 import { useRouter } from 'vue-router'
@@ -28,8 +28,8 @@ service.defaults.headers.common.Pragma = 'no-cache'
 // 请求拦截器
 service.interceptors.request.use(
   (config) => {
-    removePendingRequest(config)
-    addPendingRequest(config)
+    // removePendingRequest(config)
+    // addPendingRequest(config)
     // console.log('req', config)
     config.headers = {
       'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (res) => {
-    removePendingRequest(res.config)
+    // removePendingRequest(res.config)
     const { status, data, config } = res
     if (status === 200) {
       if (!data) {
@@ -61,7 +61,7 @@ service.interceptors.response.use(
   },
   (error) => {
     if (error) {
-      error.config && removePendingRequest(error.config || {})
+      // error.config && removePendingRequest(error.config || {})
       if (error.response) {
         const { status = null } = error.response
         dealError(status)
