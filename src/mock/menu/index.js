@@ -164,7 +164,7 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
           {
             key: 'tenLine',
             id: 'tenLine',
-            path: '/dashboard/workplace',
+            path: '/dashboard/tenLine',
             name: 'TenLine',
             icon: '',
             component: 'Dashboard/TenLine',
