@@ -134,7 +134,7 @@ const submitForm = () => {
             microPath = '/vue-mgt-tpl'
           }
           setTimeout(() => {
-            router.push({ path: microPath + '/overview' })
+            router.push({ path: microPath + '/tenLine' })
           }, 2000)
         } else {
           if (msg === '验证码错误！') {
