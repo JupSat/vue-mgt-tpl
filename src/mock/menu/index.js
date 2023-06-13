@@ -37,6 +37,36 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
           }
         ]
       },
+      // 临时构建菜单，后续需修改
+      {
+        key: 'tenLine',
+        id: 'tenLine',
+        path: '/tenLine',
+        name: 'Dashboard',
+        icon: 'TrendCharts',
+        component: '',
+        componentName: 'TenLine',
+        hidden: false,
+        breadcrumb: false,
+        keepAlive: false,
+        fixed: false,
+        redirect: '/dashboard/tenLine',
+        children: [
+          {
+            key: 'tenLine',
+            id: 'tenLine',
+            path: '/dashboard/tenLine',
+            name: 'TenLine',
+            icon: '',
+            component: 'Dashboard/TenLine',
+            componentName: 'TenLine',
+            hidden: true,
+            breadcrumb: false,
+            keepAlive: false,
+            fixed: false
+          }
+        ]
+      },
       {
         key: 'eCommerce',
         id: 'analytics',
@@ -161,19 +191,6 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
         fixed: false,
         redirect: '/dashboard/workplace',
         children: [
-          {
-            key: 'tenLine',
-            id: 'tenLine',
-            path: '/dashboard/tenLine',
-            name: 'TenLine',
-            icon: '',
-            component: 'Dashboard/TenLine',
-            componentName: 'TenLine',
-            hidden: false,
-            breadcrumb: false,
-            keepAlive: false,
-            fixed: false
-          },
           {
             key: 'workplace',
             id: 'workplace',
