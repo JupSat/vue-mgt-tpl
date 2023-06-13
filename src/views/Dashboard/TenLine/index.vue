@@ -1,5 +1,5 @@
 <template>
-  <div class="cart">
+  <div class="cart" :style="{ width: isCollapse ? '96.5vw' : '81.5vw' }">
     <div id="chartFlow" ref="chartRef" class="flow-chart">
       <!-- 段标 -->
       <div class="container" v-for="(ele, idx) in wellList" :key="idx">
@@ -76,6 +76,13 @@
   </div>
 </template>
 
+<script setup>
+import { computed } from 'vue'
+import { useCommonStore } from '@/pinia/modules/common'
+const commonStore = useCommonStore()
+const isCollapse = computed(() => commonStore.isCollapse)
+
+</script>
 <script>
 import { apiCodeMap, getWellListApi, nodeAddApi, nodeUpdateApi, nodeFindApi } from './services'
 import { getImgUrlList, showCodeTip } from './utils'
@@ -113,12 +120,10 @@ export default {
       }
     }
   },
-
   async created() {
     // 节点列表信息
     await this.updateWellList()
   },
-
   methods: {
     async updateWellList() {
       const data = await getWellListApi()
