@@ -5,11 +5,11 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-03-28 21:59:10
+ * @LastEditTime: 2023-06-14 19:13:59
  */
 import { defineStore } from 'pinia'
 import { setToken, clearToken } from '@/utils/token'
-import { store } from '@/pinia'
+// import { store } from '@/pinia'
 
 export const useUserStore = defineStore('user', {
   state: () => {
@@ -44,14 +44,13 @@ export const useUserStore = defineStore('user', {
     strategies: [
       {
         key: 'user', // 自定义key
-        storage: sessionStorage, // 自定义存储方式，默认sessionStorage
-        paths: ['user']
+        storage: localStorage // 自定义存储方式，默认sessionStorage
       }
     ]
   }
 })
 
-// 防止提示安装pinia
-export function useUserStoreWithOut() {
-  return useUserStore(store)
-}
+// // 防止提示安装pinia
+// export function useUserStoreWithOut() {
+//   return useUserStore(store)
+// }

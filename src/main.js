@@ -21,12 +21,12 @@ import i18n from '@/language'
 import { store } from '@/pinia'
 import * as Icons from '@element-plus/icons-vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { useUserStoreWithOut } from '@/pinia/modules/user'
+// import { useUserStoreWithOut } from '@/pinia/modules/user'
 import { useMenuStore } from '@/pinia/modules/menu'
 import { message } from '@/utils/message'
 import { getToken } from '@/utils/token'
 
-const useUserStore = useUserStoreWithOut()
+// const useUserStore = useUserStoreWithOut()
 const qiankunPath = 'vue-mgt-tpl'
 const microPath = window.__POWERED_BY_QIANKUN__ ? '/' + qiankunPath : ''
 
@@ -56,7 +56,7 @@ function render(props = {}) {
     props.onGlobalStateChange((state, prevState) => {
       // state: 变更后的状态; prev 变更前的状态
       console.log('通信状态发生改变xxx：', state, prevState)
-      useUserStore.setTestVal(state.globalToken)
+      // useUserStore.setTestVal(state.globalToken)
     }, true)
   }
 
