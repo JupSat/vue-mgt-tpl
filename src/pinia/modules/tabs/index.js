@@ -47,5 +47,15 @@ export const useTabsStore = defineStore('tabs', {
       }
       return activeName
     }
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        key: 'tabs',
+        // 自定义存储方式，默认sessionStorage
+        storage: localStorage
+      }
+    ]
   }
 })
