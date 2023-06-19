@@ -41,7 +41,7 @@
               <el-radio :label="0">未建</el-radio>
               <el-radio :label="2">建设中</el-radio>
               <el-radio :label="1">建设完成</el-radio>
-              <el-radio :label="3">故障</el-radio>
+              <el-radio :label="3">问题井</el-radio>
             </el-radio-group>
           </el-form-item>
           <el-form-item label="备注信息" prop="nodeRemark">
