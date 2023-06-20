@@ -128,5 +128,6 @@ export default {
   pwdRule: 'The password is 6-40 digits and letters "." and "_"',
   plzEnterCorrectMobileNumber: 'Please enter the correct mobile number',
   roleAuth: 'Role Auth',
-  tenLine: '通辽水利工程施工程序图'
+  tenLine: '通辽水利工程施工程序图',
+  programGraph: '通辽水利工程施工程序图'
 }

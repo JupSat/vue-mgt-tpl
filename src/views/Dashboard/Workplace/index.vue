@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" style="width: 100%" v-if="!['DODO', 'dodo'].includes(username)">
+  <el-table :data="tableData" style="width: 100%" v-if="['DODO', 'dodo'].includes(username)">
     <el-table-column :prop="date" label="Date" width="180">
       <template #default="scope">
         <JsPopover
@@ -11,7 +11,7 @@
     <el-table-column prop="name" label="Name" width="180" />
     <el-table-column prop="address" label="Address" />
   </el-table>
-  <div class="cart" v-show="['DODO', 'dodo'].includes(username)">
+  <div class="cart" v-show="!['DODO', 'dodo'].includes(username)">
     <div id="chartFlow" ref="chartRef" class="flow-chart"></div>
   </div>
   <el-dialog v-model="showDialog" align-center :title="'修改节点信息'" :fullscreen="true">
@@ -90,7 +90,18 @@ lineArray.forEach((el) => {
   series.push({
     name: chineseList[el - 1],
     type: 'line',
-    data: dataArray.map(() => el * 100),
+    data: dataArray.map((value, index) => ({
+      value: el * 100,
+      itemStyle: {
+        color: (val, f) => {
+          debugger
+          // Define an array of colors to use
+          const colors = ['#fff', 'rgba(0, 128, 0, 0.5) ', 'yellow', 'red']
+          // Return the color corresponding to the index of the current point
+          return colors[index % colors.length]
+        }
+      }
+    })),
     symbol: 'rect',
     symbolSize: 15,
     itemStyle: {

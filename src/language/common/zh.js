@@ -128,5 +128,6 @@ export default {
   pwdRule: '密码为6-40位数字字母“.” 和 “_”',
   plzEnterCorrectMobileNumber: '请输入正确的手机号',
   roleAuth: '菜单权限',
-  tenLine: '通辽水利工程施工程序图'
+  tenLine: '通辽水利工程施工程序图',
+  programGraph: '通辽水利工程施工程序图'
 }

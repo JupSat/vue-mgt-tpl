@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2023-01-10 19:48:03
  * @LastEditors: JupSat
- * @LastEditTime: 2023-02-19 11:14:45
+ * @LastEditTime: 2023-06-20 19:29:28
 -->
 <template>
   <div class="bread-crumb">
@@ -35,7 +35,7 @@ const dataList = reactive({
 const route = useRoute()
 const getBreadcrumb = () => {
   const matched = route.matched.filter((item) => item.meta.title)
-  dataList.breadcrumbs = matched.filter((item) => item.meta && item.meta.title)
+  dataList.breadcrumbs = matched.filter((item) => item.meta && item.meta.title && item.name !== 'ProgramGraph')
 }
 
 const firstCharChange = (item) => {

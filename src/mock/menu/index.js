@@ -37,28 +37,27 @@ Mock.mock(/\/api\/menu\/getMenu/, 'post', () => ({
           }
         ]
       },
-      // 临时构建菜单，后续需修改
       {
-        key: 'tenLine',
-        id: 'tenLine',
-        path: '/tenLine',
-        name: 'Dashboard',
+        key: 'programGraph',
+        id: 'programGraph',
+        path: '/programGraph',
+        name: 'ProgramGraph',
         icon: 'TrendCharts',
         component: '',
-        componentName: 'TenLine',
+        componentName: 'ProgramGraph',
         hidden: false,
         breadcrumb: false,
         keepAlive: false,
         fixed: false,
-        redirect: '/dashboard/tenLine',
+        redirect: '/programGraph/tenLine',
         children: [
           {
             key: 'tenLine',
             id: 'tenLine',
-            path: '/dashboard/tenLine',
+            path: '/programGraph/tenLine',
             name: 'TenLine',
             icon: '',
-            component: 'Dashboard/TenLine',
+            component: 'ProgramGraph/TenLine',
             componentName: 'TenLine',
             hidden: true,
             breadcrumb: false,
