@@ -91,18 +91,21 @@ lineArray.forEach((el) => {
     name: chineseList[el - 1],
     type: 'line',
     data: dataArray.map((value, index) => ({
-      value: el * 100,
-      itemStyle: {
-        color: (val, f) => {
-          debugger
-          // Define an array of colors to use
-          const colors = ['#fff', 'rgba(0, 128, 0, 0.5) ', 'yellow', 'red']
-          // Return the color corresponding to the index of the current point
-          return colors[index % colors.length]
-        }
-      }
+      value: el * 100
+      // itemStyle: {
+      //   color: (val, f) => {
+      //     // Define an array of colors to use
+      //     const colors = ['#fff', 'rgba(0, 128, 0, 0.5) ', 'yellow', 'red']
+      //     // Return the color corresponding to the index of the current point
+      //     return colors[index]
+      //   }
+      // }
     })),
-    symbol: 'rect',
+    symbol: (e, i) => {
+      const shapes = ['circle', 'rect', 'triangle']
+      const randomIndex = Math.floor(Math.random() * shapes.length)
+      return shapes[randomIndex]
+    },
     symbolSize: 15,
     itemStyle: {
       emphasis: {
@@ -115,6 +118,7 @@ lineArray.forEach((el) => {
       //    return params.seriesName
       // }
     }
+    // color: '#8f9bb3'
   })
 })
 console.log('series', series)
@@ -221,7 +225,7 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .cart {
-  width: 1000px;
+  width: 80vw;
   height: 800px;
 }
 
