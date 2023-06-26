@@ -11,7 +11,7 @@
     <el-table-column prop="name" label="Name" width="180" />
     <el-table-column prop="address" label="Address" />
   </el-table>
-  <div class="cart" v-show="!['DODO', 'dodo'].includes(username)">
+  <div class="cart" :style="{ width: isCollapse ? '82vw' : '98.5vw' }" v-show="!['DODO', 'dodo'].includes(username)">
     <div id="chartFlow" ref="chartRef" class="flow-chart"></div>
   </div>
   <el-dialog v-model="showDialog" align-center :title="'修改节点信息'" :fullscreen="true">
@@ -50,11 +50,13 @@ export default {
 }
 </script>
 <script setup>
-import { ref, nextTick, onMounted, onUnmounted, shallowRef } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted, shallowRef, computed, watch } from 'vue'
 import * as echarts from 'echarts'
 import { useUserStore } from '@/pinia/modules/user'
 import JsPopover from '@/components/JsPopover'
-
+import { useCommonStore } from '@/pinia/modules/common'
+const commonStore = useCommonStore()
+const isCollapse = computed(() => commonStore.isCollapse)
 const userStore = useUserStore()
 const username = userStore.user.username
 const tableData = [
@@ -106,7 +108,7 @@ lineArray.forEach((el) => {
       const randomIndex = Math.floor(Math.random() * shapes.length)
       return shapes[randomIndex]
     },
-    symbolSize: 15,
+    symbolSize: 28,
     itemStyle: {
       emphasis: {
         focus: 'series'
@@ -220,6 +222,12 @@ onUnmounted(() => {
   }
   chart.value.dispose()
   chart.value = null
+})
+
+watch(isCollapse, () => {
+  chart.value.dispose()
+  chart.value = null
+  setEChartsBar()
 })
 </script>
 
