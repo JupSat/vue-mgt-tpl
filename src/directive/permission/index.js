@@ -1,12 +1,20 @@
-import permission from './permission'
+import store from '@/pinia'
 
-const install = function (Vue) {
-  Vue.directive('permission', permission)
+export default (app) => {
+  app.directive('permissions', (el, binding) => {
+    const { value } = binding
+    if (!value) return
+    const roles = store.getters.getPermissions
+    if (value.length > 1) {
+      let isRemove = true
+      value.forEach((item) => {
+        if (roles[item]) {
+          isRemove = false
+        }
+      })
+      isRemove && el.parentNode && el.parentNode.removeChild(el)
+    } else {
+      !roles[value[0]] && el.parentNode && el.parentNode.removeChild(el)
+    }
+  })
 }
-if (window.Vue) {
-  window.permission = permission
-  Vue.use(install) // eslint-disable-line
-}
-
-permission.install = install
-export default permission

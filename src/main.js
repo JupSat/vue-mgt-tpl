@@ -5,7 +5,7 @@
  * @email: jupsat@163.com
  * @Date: 2022-11-13 22:42:20
  * @LastEditors: JupSat
- * @LastEditTime: 2023-05-25 16:39:07
+ * @LastEditTime: 2023-07-04 12:28:57
  */
 import './qiankun/public-path'
 import microActions from './qiankun/qiankun-actions'
@@ -25,6 +25,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { useMenuStore } from '@/pinia/modules/menu'
 import { message } from '@/utils/message'
 import { getToken } from '@/utils/token'
+import permission from './directive/permission'
 
 // const useUserStore = useUserStoreWithOut()
 const qiankunPath = 'vue-mgt-tpl'
@@ -110,6 +111,7 @@ function render(props = {}) {
     .use(store)
     .use(ElementPlus, { locale: locale })
     .use(i18n)
+    .use(permission)
     .mount(container ? container.querySelector('#app') : '#app')
   // 这里的app是在public/index.html里的div的id,和之前主应用了配置的无关
 }
