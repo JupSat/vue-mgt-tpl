@@ -1,7 +1,7 @@
 import store from '@/pinia'
 
 export default (app) => {
-  app.directive('permissions', (el, binding) => {
+  app.directive('permission', (el, binding) => {
     const { value } = binding
     if (!value) return
     const roles = store.getters.getPermissions
