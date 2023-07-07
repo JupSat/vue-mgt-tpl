@@ -120,7 +120,6 @@ const setEChartsLine = () => {
         type: 'line',
         symbol: 'circle',
         sampling: 'average',
-
         emphasis: {
           itemStyle: {
             opacity: 0
