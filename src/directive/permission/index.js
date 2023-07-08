@@ -1,4 +1,4 @@
-import store from '@/pinia'
+import { store } from '@/pinia'
 
 export default (app) => {
   app.directive('permission', (el, binding) => {
