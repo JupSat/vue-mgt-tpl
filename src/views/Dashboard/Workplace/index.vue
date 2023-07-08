@@ -109,8 +109,8 @@ lineArray.forEach((el) => {
       return shapes[randomIndex]
     },
     symbolSize: 28,
-    itemStyle: {
-      emphasis: {
+    emphasis: {
+      itemStyle: {
         focus: 'series'
       }
     },
