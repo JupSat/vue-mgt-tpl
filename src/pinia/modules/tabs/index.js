@@ -1,7 +1,5 @@
 import { defineStore } from 'pinia'
-// import router from '@/router'
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { getRouter } from '@/main'
 
 export const useTabsStore = defineStore('tabs', {
   state: () => {
@@ -30,6 +28,7 @@ export const useTabsStore = defineStore('tabs', {
       const activeName = this.getNextTab(targetName)
       this.setActiveTab(activeName)
       this.setTabs(tabs.filter((tab) => tab.name !== targetName))
+      const router = getRouter()
       router.push({ name: activeName })
     },
     getNextTab(targetName) {
